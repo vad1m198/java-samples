@@ -36,7 +36,7 @@ public class PointTest {
 	* return 0
 	*/
 	@Test
-	public void whenPointsAreEqualDIStanceToShouldReturnZero() {
+	public void whenPointsAreEqualDistanceToShouldReturnZero() {
 		Point p1 = new Point(1, 1);
 		Point p2 = new Point(1, 1);		
 		assertThat(0.0, closeTo(p2.distanceTo(p1), 0.01));
