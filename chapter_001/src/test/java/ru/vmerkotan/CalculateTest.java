@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
 public class CalculateTest {
 	
 	/**
-	* Test add.
+	* Test verify print to console 'Hello World!'.
 	*/
 	@Test
 	public void whenExecuteMainThenPrintToConsole() {
