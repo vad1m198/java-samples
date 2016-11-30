@@ -1,6 +1,6 @@
 package ru.vmerkotan;
 /**
-* The {@code Calculator} class предоставляет возмоожность
+* The {@code Calculator} class предоставляет возможность
 * выполнения арифметических операций. Таких как сложение,
 * вычитание, умножение, деление
 * @author Vadim Merkotans
