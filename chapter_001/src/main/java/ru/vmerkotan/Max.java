@@ -2,7 +2,7 @@ package ru.vmerkotan;
 /**
 * The {@code Max} class предоставляет возможность
 * выполнения сравнения двух чисел
-* @author Vadim Merkotans
+* @author Vadim Merkotan
 * @since  1.0
 */
 public class Max {
