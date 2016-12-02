@@ -8,11 +8,26 @@ package ru.vmerkotan;
 public class SquareArray {
 	
 	/**
-	* turns array by 90 degrees clockwise.
+	* rotates array by 90 degrees clockwise.
 	* Works only with square arrays
 	*/
-	public int[][] turn(int[][] array) {
-		return array;
+	public int[][] rotate(int[][] arr) {
+		int temp;
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = i; j < arr.length - 1; j++) {
+				temp = arr[i][j + 1];
+				arr[i][j + 1] = arr[j + 1][i];
+				arr[j + 1][i] = temp;
+			}
+		}
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = 0; j < arr.length / 2; j++) {
+				temp = arr[i][j];
+				arr[i][j] = arr[i][arr.length - j - 1];
+				arr[i][arr.length - j - 1] = temp;
+			}
+		}
+		return arr;
 	}
 	
 }

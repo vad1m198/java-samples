@@ -12,19 +12,21 @@ import static org.hamcrest.core.Is.is;
 public class SquareArrayTest {
 	
 	/**
-	* test turn method.
+	* test rotate method.
 	*/
-	//@Test
+	@Test
 	public void test() {
 		SquareArray sa = new SquareArray();
 		int[][] testArray = new int[][]{
-		  { 1, 1 },
-		  { 0, 0 }
+		  { 1, 2, 3 },
+		  { 1, 2, 3 },
+		  { 1, 2, 3 },
 		};
 		int[][] expectedArray = new int[][]{
-		  { 0, 1 },
-		  { 0, 1 }
+		  { 1, 1, 1 },
+		  { 2, 2, 2 },
+		  { 3, 3, 3 },
 		};		
-		assertThat(expectedArray, is(sa.turn(testArray)));
+		assertThat(expectedArray, is(sa.rotate(testArray)));
 	}
 }
