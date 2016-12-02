@@ -70,4 +70,14 @@ public class TestTaskTest {
 		TestTask task = new TestTask();		
 		assertEquals(true, task.contains("123Hello123", "123"));
 	}
+	
+	/**
+	* test contains method. Should return true
+	* if origin string contains multi entries
+	*/
+	@Test
+	public void whenOriginContainsMultiEntriesThenReturnTrue() {
+		TestTask task = new TestTask();		
+		assertEquals(true, task.contains("1123Hello", "123"));
+	}
 }

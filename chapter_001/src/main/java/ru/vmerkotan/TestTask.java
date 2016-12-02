@@ -26,7 +26,7 @@ public class TestTask {
 		for(int i = 0; i < originArray.length; i++) {
 			if(originArray[i] == subArray[0]) {
 				boolean result = true;
-				char[] originSubArray = Arrays.copyOfRange(originArray, i, subArray.length);
+				char[] originSubArray = Arrays.copyOfRange(originArray, i, i + subArray.length);
 				for(int j = 0; j < subArray.length; j++) {
 					if(subArray[j] != originSubArray[j]) {
 						result = false;
