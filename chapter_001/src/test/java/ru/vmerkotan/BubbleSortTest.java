@@ -14,9 +14,10 @@ public class BubbleSortTest {
 	/**
 	* test sort method. Should sort array descending
 	*/
+	@Test
 	public void whenSortInvokedThenSortedArrayShouldBeReturned() {
 		BubbleSort bs = new BubbleSort();
-		int[] array = new int[]{-10,11,3,15,82};		
+		int[] array = new int[]{82,-10,11,3,15};		
 		assertThat(new int[]{82,15,11,3,-10}, is(bs.sort(array)));
 	}
 	
@@ -24,6 +25,7 @@ public class BubbleSortTest {
 	* test sort method. Should work properly with arrays with one 
 	* element
 	*/
+	@Test
 	public void whenArrayLengthIsOneThenItShouldWorkAsWell() {
 		BubbleSort bs = new BubbleSort();
 		int[] array = new int[]{1};		

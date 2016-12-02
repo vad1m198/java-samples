@@ -17,13 +17,16 @@ public class BubbleSort {
 		if(array.length < 2) {
 			return array;
 		}		
-		for(int i = 1; i < array.length; i++) {
-			int current = array[i];
-			int previous = array[i-1];
-			if(current < previous) {
-				array[i-1] = current;
-				array[i] = previous;
+		for(int i = 0; i < array.length - 1; i++) {
+			for(int j = 0; j < array.length - 1 - i; j++) {
+				int current = array[j];
+				int next = array[j+1];
+				if(current < next) {
+					array[j+1] = current;
+					array[j] = next;
+				}
 			}
+			
 		}
 		return array;
 	}

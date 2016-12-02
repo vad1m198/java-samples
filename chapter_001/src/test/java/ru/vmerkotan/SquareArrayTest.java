@@ -15,7 +15,7 @@ public class SquareArrayTest {
 	* test rotate method.
 	*/
 	@Test
-	public void test() {
+	public void shouldRotateSquareArray() {
 		SquareArray sa = new SquareArray();
 		int[][] testArray = new int[][]{
 		  { 1, 2, 3 },
