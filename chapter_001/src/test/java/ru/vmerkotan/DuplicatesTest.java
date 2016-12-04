@@ -20,6 +20,6 @@ public class DuplicatesTest {
 		Duplicates duplicates = new Duplicates();
 		String[] originArray = new String[]{"Hi", "Hello", "Hello", "Hi"};
 		String[] expectedArray = new String[]{"Hi", "Hello"};
-		assertThat(expectedArray, is(duplicates.removeDuplicates(originArray)) );
+		assertThat(duplicates.removeDuplicates(originArray), is(expectedArray) );
 	}
 }

@@ -17,7 +17,7 @@ public class PointTest {
 		Point p1 = new Point(1, 1);
 		Point p2 = new Point(2, 1);
 		
-		assertThat(1.0, closeTo(p1.distanceTo(p2), 0.01));
+		assertThat(p1.distanceTo(p2), closeTo(1.0, 0.01));
 	}
 	
 	/**
@@ -28,7 +28,7 @@ public class PointTest {
 	public void testDistancesEquality() {
 		Point p1 = new Point(1, 1);
 		Point p2 = new Point(2, 1);		
-		assertThat(p1.distanceTo(p2), closeTo(p2.distanceTo(p1), 0.01));
+		assertThat(p2.distanceTo(p1), closeTo(p1.distanceTo(p2), 0.01));
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public class PointTest {
 	public void whenPointsAreEqualDistanceToShouldReturnZero() {
 		Point p1 = new Point(1, 1);
 		Point p2 = new Point(1, 1);		
-		assertThat(0.0, closeTo(p2.distanceTo(p1), 0.01));
+		assertThat(p2.distanceTo(p1), closeTo(0.0, 0.01));
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class PointTest {
 	public void whenCoordinatesNegativeThenDistanceToShouldWork() {
 		Point p1 = new Point(-1, 1);
 		Point p2 = new Point(1, 1);		
-		assertThat(2.0, closeTo(p2.distanceTo(p1), 0.01));
+		assertThat(p2.distanceTo(p1), closeTo(2.0, 0.01));
 	}
 	
 }

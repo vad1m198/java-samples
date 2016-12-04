@@ -27,6 +27,7 @@ public class SquareArrayTest {
 		  { 2, 2, 2 },
 		  { 3, 3, 3 },
 		};		
-		assertThat(expectedArray, is(sa.rotate(testArray)));
+		assertThat(sa.rotate(testArray), is(expectedArray));
 	}
+
 }
