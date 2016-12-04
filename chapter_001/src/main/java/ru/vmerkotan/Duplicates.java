@@ -7,25 +7,46 @@ import java.util.Arrays;
 * @author Vadim Merkotan
 * @since  1.0
 */
-public class Duplicates {
+class Duplicates {
 	
 	/**
 	* Remove duplicates from String[]
-	* @param  String[]	to remove duplicates
+	* @param  arr	String[] to remove duplicates
 	* @return	String[] with unique values
 	*/
-	public String[] removeDuplicates(String[] arr) {		
-		for (int i = 0; i < arr.length; i++) {
-			for(int j = i + 1; j < arr.length; j++) {
+    String[] removeDuplicates(String[] arr) {
+        int counter = 0;
+        for (int i = 0; i < arr.length; i++) {
+            for(int j = i + 1; j < arr.length; j++) {
+                if(arr[i] != null && arr[i].equals(arr[j])  ) {
+                    arr[j] = null;
+                    counter++;
+                }
+            }
+        }
+
+        for(int i = 0; i < arr.length - 1; i++) {
+            for(int j = 0; j < arr.length - 1 - i; j++) {
+                if(arr[j] == null && arr[j+1] != null) {
+                    arr[j] = arr[j+1];
+                    arr[j+1] = null;
+                }
+            }
+        }
+
+        return Arrays.copyOf(arr, arr.length - counter);
+    }
+	/*public String[] removeDuplicates(String[] arr) {
+		int counter = 0;
+		for (int i = 0; i < arr.length - counter; i++) {
+			for(int j = i + 1; j < arr.length - counter; j++) {
 				if(arr[i].equals(arr[j]) ) {
-					arr[j] = arr[arr.length - 1];
-					arr = Arrays.copyOf(arr, arr.length - 1);
+					arr[j] = arr[arr.length - 1 - counter];
+					counter++;
 				}
 			}			
 		}
-		
-		
-		return arr;
-	}
+		return Arrays.copyOf(arr, arr.length - counter);
+	}*/
 	
 }
