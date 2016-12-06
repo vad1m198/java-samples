@@ -1,0 +1,87 @@
+package ru.vmerkotan.tracker;
+
+import java.util.Arrays;
+/**
+* The {@code Ticket} class represents an item in Tracker instance
+* @author Vadim Merkotan
+* @since  1.0
+*/
+public class Ticket {
+	private long id;
+	private String name;
+	private String description;
+	private long createdDate;
+	private String[] comments = new String[10];
+	private int commentPossition = 0;
+	
+	/**
+	* initiates new Ticket object
+	*
+	* @param name			Ticket name
+	* @param description	Ticket description
+	*/
+	public Ticket(String name, String description) {
+		this.name = name;
+		this.description = description;
+		this.id = System.currentTimeMillis();
+		this.createdDate = System.currentTimeMillis();
+	}
+	
+	/**
+	* adds new comment to comments array
+	* If comments array is full then new array
+	* should be created and all values from old one 
+	* should be copied to new array
+	*
+	* @param comment	comment which should be added
+	*/
+	public void addComment(String comment) {
+		if(comment != null) {			
+			if(commentPossition == this.comments.length) {
+				String[] newCommentsArr = Arrays.copyOf(this.comments, this.comments.length * 2);
+				this.comments = newCommentsArr;
+			}
+			this.comments[commentPossition++] = comment;
+		}		
+	}
+	
+	/**
+	* returns value of id field
+	* @return	Id field value
+	*/
+	public long getId() {
+		return this.id;
+	}
+	
+	/**
+	* returns value of name field
+	* @return	name field value
+	*/
+	public String getName() {
+		return this.name;
+	}
+	
+	/**
+	* returns value of createdDate field
+	* @return	createdDate field value
+	*/
+	public long getCreatedDate() {
+		return this.createdDate;
+	}
+	
+	/**
+	* sets value to name field
+	* @param	new name
+	*/
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	* sets value to description field
+	* @param	new description
+	*/
+	public void setDescription(String description) {
+		this.description = description;
+	}
+}
