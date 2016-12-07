@@ -24,8 +24,15 @@ public class TrackerRunner {
 	
 	public void init() {
 		tracker = new Tracker();
-		boolean exit = false;
-		while(!exit) {
+		MenuTracker menu = new MenuTracker(this.input, tracker);
+		menu.fillActions();
+		do {
+			menu.show();
+			int key = Integer.valueOf(input.ask("select: "));
+			menu.select(key);
+		} while(!"y".equals(this.input.ask("Exit? y")));
+		//boolean exit = false;
+		/*while(!exit) {
 			showMenu();
 			String menuItem = this.input.ask("Please select menu item");
 			if(menuItem.equals("1")) {			
@@ -63,7 +70,7 @@ public class TrackerRunner {
 			} else if(menuItem.equals("0")) {
 				exit = true;
 			}
-		}
+		}*/
 	}
 	
 	private void printTicketToConsole(Ticket t) {		
