@@ -77,6 +77,11 @@
                     <formats>
                         <format>html</format>
                     </formats>
+					<instrumentation>
+						<excludes>
+						  <exclude>**/ConsoleInput.class</exclude>
+						</excludes>
+					 </instrumentation>
                 </configuration>
                 <executions>
                     <execution>

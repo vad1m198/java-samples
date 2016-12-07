@@ -28,7 +28,7 @@ public class Paint {
 			for(int j = 1; j <=i; j++) {
 				builder.append("^ ");
 			}
-			builder.append("\n\r");
+			builder.append(System.getProperty("line.separator"));
 		}
 		return builder.toString();		
 	}

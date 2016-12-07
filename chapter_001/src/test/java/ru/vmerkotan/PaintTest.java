@@ -36,6 +36,6 @@ public class PaintTest {
 	@Test
 	public void whenHeigthIsGreaterOneThenReturnPiramid() {
 		Paint paint = new Paint();
-		assertEquals(" ^ \n\r^ ^ \n\r", paint.piramid(2));
+		assertEquals(" ^ " + System.getProperty("line.separator") + "^ ^ " + System.getProperty("line.separator"), paint.piramid(2));
 	}
 }
