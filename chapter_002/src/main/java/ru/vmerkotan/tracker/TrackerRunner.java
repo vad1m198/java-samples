@@ -38,7 +38,10 @@ public class TrackerRunner {
 				System.out.println("Ticket was created successfully. Ticket Id is: " + ticket.getId());
 			} else if(menuItem.equals("3")) {
 				String ticketId = this.input.ask("Please type ticket id:");
-				tracker.deleteTicketById(Long.parseLong(ticketId));
+				try{
+					long ticketIdL = Long.parseLong(ticketId);
+					tracker.deleteTicketById(ticketIdL);
+				} catch(Exception e) {}
 			} else if(menuItem.equals("4")) {
 				String ticketId = this.input.ask("Please type ticket id:");
 				String newName = this.input.ask("Please type new Name:");
@@ -46,8 +49,11 @@ public class TrackerRunner {
 				tracker.updateTicket(Long.parseLong(ticketId), newName, newDescription);
 			} else if(menuItem.equals("5")) {
 				String ticketId = this.input.ask("Please type ticket id:");
-				String comment = this.input.ask("Please type comment:");			
-				tracker.addCommentToTicket(Long.parseLong(ticketId), comment);
+				String comment = this.input.ask("Please type comment:");
+				try{
+					long ticketIdL = Long.parseLong(ticketId);
+					tracker.addCommentToTicket(ticketIdL, comment);
+				} catch(Exception e) {}
 			} else if(menuItem.equals("6")) {			
 				String matchString = this.input.ask("Please type string to search in name field:");	
 				printTicketsToConsole(this.tracker.filterTicketsByName(matchString));
