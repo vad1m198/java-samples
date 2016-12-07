@@ -1,6 +1,7 @@
 package ru.vmerkotan.tracker;
 
 import java.util.Arrays;
+import  java.util.Random;
 /**
 * The {@code Ticket} class represents an item in Tracker instance
 * @author Vadim Merkotan
@@ -13,6 +14,7 @@ public class Ticket {
 	private long createdDate;
 	private String[] comments = new String[10];
 	private int commentPossition = 0;
+	static final Random random = new Random();
 	
 	/**
 	* initiates new Ticket object
@@ -23,7 +25,7 @@ public class Ticket {
 	public Ticket(String name, String description) {
 		this.name = name;
 		this.description = description;
-		this.id = System.currentTimeMillis();
+		this.id = System.currentTimeMillis() + this.random.nextInt(100);
 		this.createdDate = System.currentTimeMillis();
 	}
 	
@@ -62,11 +64,34 @@ public class Ticket {
 	}
 	
 	/**
+	* returns value of description field
+	* @return	description field value
+	*/
+	public String getDescription() {
+		return this.description;
+	}
+	
+	/**
 	* returns value of createdDate field
 	* @return	createdDate field value
 	*/
 	public long getCreatedDate() {
 		return this.createdDate;
+	}
+	
+	/**
+	* returns all related not null comments
+	* @return	related comments
+	*/
+	public String[] getComments() {
+		String [] result = new String[commentPossition];		
+		for(int i = 0; i < this.comments.length; i++) {			
+			if(this.comments[i] == null) {
+				break;
+			}
+			result[i] = this.comments[i];
+		}
+		return result;
 	}
 	
 	/**

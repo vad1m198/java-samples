@@ -2,7 +2,7 @@ package ru.vmerkotan.tracker;
 
 import java.util.Arrays;
 /**
-* The {@code Ticket} class represents a Tracker instance
+* The {@code Tracker} class represents a Tracker instance
 * to hold tickets
 * @author Vadim Merkotan
 * @since  1.0
@@ -31,11 +31,21 @@ public class Tracker {
 	
 	/**
 	* returns all tickets present in tracker
+	* without null values
 	*
 	* @return all tickets
 	*/
-	public Ticket[] getAllTickets() {
-		return this.tickets;
+	public Ticket[] getAllTickets() {		
+		Ticket [] result = new Ticket[this.position];
+		int counter = 0;
+		for(int i = 0; i < this.tickets.length; i++) {			
+			if(this.tickets[i] != null) {
+				result[counter++] = this.tickets[i];
+			}
+		}
+		return Arrays.copyOf(result, counter);
+		
+		
 	}
 	
 	/**
@@ -47,7 +57,7 @@ public class Tracker {
 	public Ticket getTicketById(long ticketId) {
 		Ticket result = null;
 		for(Ticket t: this.tickets) {
-			if(t.getId() == ticketId) {
+			if(t != null && t.getId() == ticketId) {
 				result = t;
 				break;
 			}
@@ -63,7 +73,7 @@ public class Tracker {
 	*/
 	public void deleteTicketById(long ticketId) {		
 		for(int i = 0; i < this.tickets.length; i++) {
-			if(this.tickets[i].getId() == ticketId) {
+			if(this.tickets[i] != null && this.tickets[i].getId() == ticketId) {
 				this.tickets[i] = null;
 				break;
 			}
@@ -105,14 +115,17 @@ public class Tracker {
 	* @param  partName
 	* @return Ticket[] which satisfy passed part name
 	*/
-	public Ticket[] filterTicketsByName(String partName) {
+	public Ticket[] filterTicketsByName(String partName) {		
 		Ticket[] result = new Ticket[this.tickets.length];
 		int counter = 0;
-		for(Ticket t: this.getAllTickets()) {
-			if(t.getName().toLowerCase().contains(partName.toLowerCase())) {
-				result[counter++] = t;
+		if(partName != null) {
+			for(Ticket t: this.getAllTickets()) {
+				if(t.getName().toLowerCase().contains(partName.toLowerCase())) {
+					result[counter++] = t;
+				}
 			}
 		}
+		
 		return Arrays.copyOf(result, counter);
 	}
 	
