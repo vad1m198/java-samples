@@ -4,7 +4,11 @@ package ru.vmerkotan;
 * The {@code EditTicket} class represents edit Tickets UserAction	
 * @since  1.0
 */
-class EditTicket implements UserAction {
+class EditTicket extends BaseAction {
+	
+	public EditTicket(String actionName) {
+		super(actionName);
+	}
 			
 	/*
 	* returns UserAction key
@@ -29,13 +33,6 @@ class EditTicket implements UserAction {
 			System.out.println("Invalid Id. Please type valid Id number.");
 		}
 	}
-	/*
-	* Returns key and name of action
-	* @return String information about UserAction
-	*/
-	public String info() {
-		return String.format("%s. %s", this.key(), "Edit Item");
-	}
 }
 
 /**
@@ -49,6 +46,7 @@ public class MenuTracker {
 	private Input input;
 	private Tracker tracker;
 	private UserAction[] actions = new UserAction[7];
+	private int position = 0;
 	
 	public MenuTracker (Input input, Tracker tracker) {
 		this.input = input;
@@ -56,13 +54,17 @@ public class MenuTracker {
 	}
 	
 	public void fillActions() {
-		this.actions[0] = this.new AddItem();
-		this.actions[1] = new MenuTracker.ShowItems();
-		this.actions[2] = new EditTicket();
-		this.actions[3] = this.new DeleteItem();
-		this.actions[4] = this.new AddComment();
-		this.actions[5] = this.new FilterItemsByName();
-		this.actions[6] = this.new FilterItemsCreatedAfter();
+		this.actions[position++] = this.new AddItem("Add Item");
+		this.actions[position++] = new MenuTracker.ShowItems("Show all Items");
+		this.actions[position++] = new EditTicket("Edit Item");
+		this.actions[position++] = this.new DeleteItem("Delete Item");
+		this.actions[position++] = this.new AddComment("Comment Item");
+		this.actions[position++] = this.new FilterItemsByName("Filter Items by name");
+		//this.actions[position++] = this.new FilterItemsCreatedAfter();
+	}
+	
+	public void addAction(UserAction action) {
+		this.actions[position++] = action;
 	}
 	
 	/*
@@ -101,7 +103,11 @@ public class MenuTracker {
 	* @author Vadim Merkotan
 	* @since  1.0
 	*/
-	private class AddItem implements UserAction {
+	private class AddItem extends BaseAction {
+		
+		public AddItem(String actionName) {
+			super(actionName);
+		}
 		
 		/*
 		* returns UserAction key
@@ -119,16 +125,7 @@ public class MenuTracker {
 			String ticketName = input.ask("Please type ticket name:");
 			String ticketDescription = input.ask("Please type ticket description:");			
 			tracker.addTicket(new Ticket(ticketName, ticketDescription));
-		}
-		
-		/*
-		* Returns key and name of action
-		* @return String information about UserAction
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Add new Item");
-		}
-	
+		}	
 	}
 	
 	/**
@@ -136,8 +133,11 @@ public class MenuTracker {
 	* @author Vadim Merkotan
 	* @since  1.0
 	*/
-	private class DeleteItem implements UserAction {
+	private class DeleteItem extends BaseAction {
 		
+		public DeleteItem(String actionName) {
+			super(actionName);
+		}
 		/*
 		* returns UserAction key
 		*/
@@ -159,14 +159,6 @@ public class MenuTracker {
 				System.out.println("[ERROR] Invalid Id. Please type valid Id number.");
 			}
 		}
-		
-		/*
-		* Returns key and name of action
-		* @return String information about UserAction
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Delete Item");
-		}
 	}
 	
 	/**
@@ -175,7 +167,11 @@ public class MenuTracker {
 	* @author Vadim Merkotan
 	* @since  1.0
 	*/
-	private class AddComment implements UserAction {
+	private class AddComment extends BaseAction {
+		
+		public AddComment(String actionName) {
+			super(actionName);
+		}
 		
 		/*
 		* returns UserAction key
@@ -198,14 +194,6 @@ public class MenuTracker {
 				System.out.println("[ERROR] Invalid Id. Please type valid Id number.");
 			}
 		}
-		
-		/*
-		* Returns key and name of action
-		* @return String information about UserAction
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Add comment to Item");
-		}
 	}
 	
 	/**
@@ -214,7 +202,11 @@ public class MenuTracker {
 	* @author Vadim Merkotan
 	* @since  1.0
 	*/
-	private class FilterItemsByName implements UserAction {
+	private class FilterItemsByName extends BaseAction {
+		
+		public FilterItemsByName(String actionName) {
+			super(actionName);
+		}
 		
 		/*
 		* returns UserAction key
@@ -236,16 +228,7 @@ public class MenuTracker {
 				for(String s: ticket.getComments()) {
 					System.out.println("	Comment: " + s);
 				}
-			}
-			
-		}
-		
-		/*
-		* Returns key and name of action
-		* @return String information about UserAction
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Filter Items by name");
+			}			
 		}
 	}
 	
@@ -255,12 +238,12 @@ public class MenuTracker {
 	* @author Vadim Merkotan
 	* @since  1.0
 	*/
-	private class FilterItemsCreatedAfter implements UserAction {
+	/*private class FilterItemsCreatedAfter implements UserAction {
 		
 		/*
 		* returns UserAction key
 		*/
-		public int key() {
+		/*public int key() {
 			return 6;
 		}
 		
@@ -270,7 +253,7 @@ public class MenuTracker {
 		* @param input 	 Input system instance
 		* @param tracker Tracker instance to work with
 		*/
-		public void execute(Input input, Tracker tracker) {			
+		/*public void execute(Input input, Tracker tracker) {			
 			String createdDateStr = input.ask("Please type target created date:");
 			Ticket[] tickets = new Ticket[0];
 			try {
@@ -293,16 +276,20 @@ public class MenuTracker {
 		* Returns key and name of action
 		* @return String information about UserAction
 		*/
-		public String info() {
+		/*public String info() {
 			return String.format("%s. %s", this.key(), "Filter Items by created name");
 		}
-	}
+	}*/
 	
 	/**
 	* The {@code ShowItems} class represents show all Tickets UserAction	
 	* @since  1.0
 	*/
-	private static class ShowItems implements UserAction {
+	private static class ShowItems extends BaseAction {
+		
+		public ShowItems(String actionName) {
+			super(actionName);
+		}
 		/*
 		* returns UserAction key
 		*/
@@ -324,14 +311,6 @@ public class MenuTracker {
 				}
 			}			
 		}
-		/*
-		* Returns key and name of action
-		* @return String information about UserAction
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Show all tickets");
-		}
-	
 	}
 	
 }

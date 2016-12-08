@@ -1,6 +1,8 @@
 package ru.vmerkotan.interfaces;
 /*
  * Tickets should implement this interface.
+ * not used. 
+ * 3. Проанализировать полученный код и попытаться выделить в нем группы классов и методов 
  */
 public interface ITicket {	
 	
