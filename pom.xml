@@ -76,12 +76,7 @@
                     </check>
                     <formats>
                         <format>html</format>
-                    </formats>
-					<instrumentation>
-						<excludes>
-						  <exclude>**/ConsoleInput.class</exclude>
-						</excludes>
-					 </instrumentation>
+                    </formats>					
                 </configuration>
                 <executions>
                     <execution>
