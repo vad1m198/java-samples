@@ -10,6 +10,7 @@ public class TrackerRunner {
 	
 	private Input input;
 	private Tracker tracker;
+	private int[] range = new int[0];
 	
 	public TrackerRunner(Input i, Tracker tracker) {
 		this.input = i;
@@ -18,7 +19,7 @@ public class TrackerRunner {
 	}
 	
 	public static void main(String [] args) {			
-		Input input = new ConsoleInput();
+		Input input = new ValidateInput();
 		Tracker tracker = new Tracker();
 		new TrackerRunner(input, tracker).init();
 		
@@ -27,10 +28,11 @@ public class TrackerRunner {
 	public void init() {		
 		MenuTracker menu = new MenuTracker(this.input, tracker);
 		menu.fillActions();
+		range = menu.getActionsKeys();
+		
 		do {
-			menu.show();
-			int key = Integer.valueOf(input.ask("select: "));
-			menu.select(key);
+			menu.show();			
+			menu.select(input.ask("select: ", range));
 		} while(!"y".equals(this.input.ask("Exit? (y)")));
 	}	
 }

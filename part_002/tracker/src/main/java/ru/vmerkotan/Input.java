@@ -8,10 +8,11 @@ package ru.vmerkotan;
 public interface Input {
 	
 	/*
-	* Asks  aquestion
+	* Asks  a question
 	* @param question	Question to ask user
 	* @return String	answer
 	*/
 	String ask(String question);
-		
+	
+	int ask(String question, int[] range);
 }

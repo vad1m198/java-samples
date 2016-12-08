@@ -54,7 +54,9 @@
                     </formats>
 					<instrumentation>
 						<excludes>
-						  <exclude>**/ConsoleInput.class</exclude>						  
+						  <exclude>**/ConsoleInput.class</exclude>
+						  <exclude>**/ValidateInput.class</exclude>
+						  <exclude>**/MenuOutException.class</exclude>
 						</excludes>
 					</instrumentation>
                 </configuration>

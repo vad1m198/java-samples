@@ -25,7 +25,9 @@ class EditTicket implements UserAction {
 		try {
 			long ticketId = Long.parseLong(ticketIdStr);
 			tracker.updateTicket(ticketId, ticketUpdatedName, ticketUpdatedDescription);
-		} catch(Exception e) {/*NOP*/}
+		} catch(NumberFormatException e) {
+			System.out.println("Invalid Id. Please type valid Id number.");
+		}
 	}
 	/*
 	* Returns key and name of action
@@ -65,11 +67,12 @@ public class MenuTracker {
 	
 	/*
 	* Selects appropriate menu item
-	* @param key int numberof action
+	* @param key int number of action
 	*/
 	public void select(int key) {
 		this.actions[key].execute(this.input, this.tracker);
 	}
+	
 	/*
 	* Prints tracker menu to console
 	*/
@@ -79,6 +82,18 @@ public class MenuTracker {
 				System.out.println(action.info());
 			}			
 		}
+	}
+	
+	/*
+	* Invokes key method on each action from actions array
+	* @return Array contains UserAction keys from this.actions field
+	*/
+	public int[] getActionsKeys() {
+		int[] result = new int[this.actions.length];
+		for(int i = 0; i < this.actions.length; i++) {
+			result[i] = this.actions[i].key();
+		}
+		return result;
 	}
 	
 	/**
@@ -140,7 +155,9 @@ public class MenuTracker {
 			try {
 				long ticketId = Long.parseLong(ticketIdStr);
 				tracker.deleteTicketById(ticketId);
-			} catch(Exception e){/*NOP*/}
+			} catch(NumberFormatException e){
+				System.out.println("[ERROR] Invalid Id. Please type valid Id number.");
+			}
 		}
 		
 		/*
@@ -177,7 +194,9 @@ public class MenuTracker {
 			try {
 				long ticketId = Long.parseLong(ticketIdStr);
 				tracker.addCommentToTicket(ticketId, comment);
-			} catch(Exception e){/*NOP*/}
+			} catch(NumberFormatException e) {
+				System.out.println("[ERROR] Invalid Id. Please type valid Id number.");
+			}
 		}
 		
 		/*
@@ -262,7 +281,9 @@ public class MenuTracker {
 						System.out.println("	Comment: " + s);
 					}
 				}
-			} catch(Exception e){/*NOP*/}
+			} catch(NumberFormatException e) {
+				System.out.println("[ERROR] Invalid Id. Please type valid Id number.");
+			}
 			
 			
 			
