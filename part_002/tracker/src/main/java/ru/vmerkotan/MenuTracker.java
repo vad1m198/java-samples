@@ -28,7 +28,10 @@ class EditTicket extends BaseAction {
 		String ticketUpdatedDescription = input.ask("Please type new ticket description:");			
 		try {
 			long ticketId = Long.parseLong(ticketIdStr);
-			tracker.updateTicket(ticketId, ticketUpdatedName, ticketUpdatedDescription);
+			Ticket ticketToUpdate = new Ticket(ticketUpdatedName, ticketUpdatedDescription);
+			ticketToUpdate.setName(ticketUpdatedName);
+			ticketToUpdate.setDescription(ticketUpdatedDescription);
+			tracker.updateTicket(ticketId, ticketToUpdate);						
 		} catch(NumberFormatException e) {
 			System.out.println("Invalid Id. Please type valid Id number.");
 		}
@@ -231,55 +234,6 @@ public class MenuTracker {
 			}			
 		}
 	}
-	
-	/**
-	* The {@code FilterItemsCreatedAfter} class represents filter tickets
-	* user action based on createdDate
-	* @author Vadim Merkotan
-	* @since  1.0
-	*/
-	/*private class FilterItemsCreatedAfter implements UserAction {
-		
-		/*
-		* returns UserAction key
-		*/
-		/*public int key() {
-			return 6;
-		}
-		
-		/*
-		* Performs filtering Items by createdDate which created date is greater then passed value
-		* Prints Items to console
-		* @param input 	 Input system instance
-		* @param tracker Tracker instance to work with
-		*/
-		/*public void execute(Input input, Tracker tracker) {			
-			String createdDateStr = input.ask("Please type target created date:");
-			Ticket[] tickets = new Ticket[0];
-			try {
-				long createdDate = Long.parseLong(createdDateStr);				
-				for(Ticket ticket: tracker.filterTicketsCreatedAfter(createdDate)) {
-					System.out.println(String.format("%s. %s. %s", ticket.getId(), ticket.getName(), ticket.getDescription()));
-					for(String s: ticket.getComments()) {
-						System.out.println("	Comment: " + s);
-					}
-				}
-			} catch(NumberFormatException e) {
-				System.out.println("[ERROR] Invalid Id. Please type valid Id number.");
-			}
-			
-			
-			
-		}
-		
-		/*
-		* Returns key and name of action
-		* @return String information about UserAction
-		*/
-		/*public String info() {
-			return String.format("%s. %s", this.key(), "Filter Items by created name");
-		}
-	}*/
 	
 	/**
 	* The {@code ShowItems} class represents show all Tickets UserAction	

@@ -95,18 +95,19 @@ public class Tracker {
 	}
 	
 	/**
-	* updates Ticket with new name and new description
+	* updates Ticket with new one
 	*
-	* @param  ticketId			Ticket id where comment should be added
-	* @param  newName			new value for name field
-	* @param  newDescription	new value for description field
+	* @param  ticketId	ID of Ticket to be updated
+	* @param  ticket	Ticket updated Ticket object
 	*/
-	public void updateTicket(long ticketId, String newName, String newDescription) {
-		Ticket ticket = this.getTicketById(ticketId);
-		if(ticket != null) {
-			ticket.setName(newName);
-			ticket.setDescription(newDescription);
+	public void updateTicket(long ticketId, Ticket ticket) {		
+		for(int i = 0; i < this.tickets.length; i++ ) {
+			if(this.tickets[i] != null && this.tickets[i].getId() == ticketId) {
+				ticket.setId(ticketId);
+				this.tickets[i] = ticket;
+			}
 		}
+		
 	}
 	
 	/**

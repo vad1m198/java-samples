@@ -56,6 +56,14 @@ public class Ticket {
 	}
 	
 	/**
+	* sets Ticket passed Id
+	* @param	Id for field value
+	*/
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	/**
 	* returns value of name field
 	* @return	name field value
 	*/

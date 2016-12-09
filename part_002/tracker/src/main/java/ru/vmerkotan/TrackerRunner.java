@@ -12,6 +12,7 @@ public class TrackerRunner {
 	private Tracker tracker;
 	private int[] range = new int[0];
 	
+	
 	public TrackerRunner(Input i, Tracker tracker) {
 		this.input = i;
 		this.tracker = tracker;

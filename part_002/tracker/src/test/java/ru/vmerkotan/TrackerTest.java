@@ -128,7 +128,7 @@ public class TrackerTest {
 	* should update Ticket object with passed name and description
 	*/
 	@Test
-	public void whenUpdateTicketThenProperTicketUpdate() {
+	public void whenUpdateTicketThenProperTicketShopuldBeUpdated() {
 		Tracker tracker = new Tracker();
 		String ticketName = "Ticket name";
 		String ticketDescription = "Ticket description";
@@ -138,8 +138,9 @@ public class TrackerTest {
 		Ticket firstTicket = new Ticket(ticketName, ticketDescription);
 		Ticket secondTicket = new Ticket(ticketName, ticketDescription);
 		tracker.addTicket(firstTicket);
-		tracker.addTicket(secondTicket);
-		tracker.updateTicket(firstTicket.getId(), ticketNewName, ticketNewDescription);		
+		tracker.addTicket(secondTicket);		
+		Ticket updatedTicket = new Ticket(ticketNewName, ticketNewDescription);
+		tracker.updateTicket(firstTicket.getId(), updatedTicket);
 		
 		assertThat("name field should be updated in proper Ticket", tracker.getTicketById(firstTicket.getId()).getName(), is(ticketNewName) );
 		assertThat("description field should be updated in proper Ticket", tracker.getTicketById(firstTicket.getId()).getDescription(), is(ticketNewDescription) );
