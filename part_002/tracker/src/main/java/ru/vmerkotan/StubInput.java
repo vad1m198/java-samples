@@ -18,8 +18,11 @@ public class StubInput implements Input {
 	}
 	
 	public int ask(String question, int[] range) {		
-		return Integer.valueOf(this.ask(question));
-		
+		return Integer.valueOf(this.ask(question));		
+	}
+	
+	public long ask(String question, long[] range) {		
+		return Long.valueOf(this.ask(question));		
 	}
 	
 }

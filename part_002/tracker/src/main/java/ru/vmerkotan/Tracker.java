@@ -35,7 +35,7 @@ public class Tracker {
 	*
 	* @return all tickets
 	*/
-	public Ticket[] getAllTickets() {		
+	public Ticket[] getAllTickets() {
 		Ticket [] result = new Ticket[this.position];
 		int counter = 0;
 		for(int i = 0; i < this.tickets.length; i++) {			
@@ -44,8 +44,23 @@ public class Tracker {
 			}
 		}
 		return Arrays.copyOf(result, counter);
-		
-		
+	}
+	
+	/**
+	* returns all ticket Ids present in tracker
+	* without null values
+	*
+	* @return all ticket ids
+	*/
+	public long[] getAllTicketIds() {
+		long[] result = new long[this.position];
+		int counter = 0;
+		for(int i = 0; i < this.tickets.length; i++) {			
+			if(this.tickets[i] != null) {
+				result[counter++] = this.tickets[i].getId();
+			}
+		}
+		return Arrays.copyOf(result, counter);
 	}
 	
 	/**

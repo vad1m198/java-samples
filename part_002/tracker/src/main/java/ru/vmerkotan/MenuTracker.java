@@ -154,13 +154,11 @@ public class MenuTracker {
 		* @param tracker Tracker instance to work with
 		*/
 		public void execute(Input input, Tracker tracker) {
-			String ticketIdStr = input.ask("Please type ticket Id:");
-			try {
-				long ticketId = Long.parseLong(ticketIdStr);
-				tracker.deleteTicketById(ticketId);
-			} catch(NumberFormatException e){
-				System.out.println("[ERROR] Invalid Id. Please type valid Id number.");
-			}
+			String ticketIdStr = input.ask("Please type ticket Id:");			
+			long[] range = tracker.getAllTicketIds();
+			long ticketId = input.ask("Please type ticket Id:", range);			
+			tracker.deleteTicketById(ticketId);
+			
 		}
 	}
 	
