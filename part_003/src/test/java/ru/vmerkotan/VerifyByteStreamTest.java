@@ -16,35 +16,27 @@ import static org.junit.Assert.*;
 public class VerifyByteStreamTest {
 
     VerifyByteStream vbs;
-    ByteArrayOutputStream bOutput;
 
     @Before
     public void before() {
         vbs = new VerifyByteStream();
-        bOutput = new ByteArrayOutputStream(1);
     }
 
     @Test
     public void whenPassEvenNumberThenReturnTrue() throws IOException {
-        bOutput.write("2".getBytes());
-        byte b [] = bOutput.toByteArray();
-        ByteArrayInputStream bInput = new ByteArrayInputStream(b);
+        ByteArrayInputStream bInput = new ByteArrayInputStream("2".getBytes());
         assertTrue(vbs.isNumber(bInput));
     }
 
     @Test
     public void whenPassOddNumberThenReturnFalse() throws IOException {
-        bOutput.write("1".getBytes());
-        byte b [] = bOutput.toByteArray();
-        ByteArrayInputStream bInput = new ByteArrayInputStream(b);
+        ByteArrayInputStream bInput = new ByteArrayInputStream("1".getBytes());
         assertFalse(vbs.isNumber(bInput));
     }
 
     @Test
     public void whenPassNotNumberThenReturnFalse() throws IOException {
-        bOutput.write("string".getBytes());
-        byte b [] = bOutput.toByteArray();
-        ByteArrayInputStream bInput = new ByteArrayInputStream(b);
+        ByteArrayInputStream bInput = new ByteArrayInputStream("string".getBytes());
         assertFalse(vbs.isNumber(bInput));
     }
 }
