@@ -57,10 +57,9 @@ public class TrackerRunnerTest {
 		tracker.addTicket(ticket);
 		
 		Input input = new StubInput(
-			new String[] {"3", String.valueOf(ticket.getId()), "y"}
+			new String[] {"3", String.valueOf(ticket.getId()), "3", "y"}
 		);		
-		new TrackerRunner(input, tracker).init();		
-		assertThat("Ticket should be removed from tracker", tracker.getAllTickets().length, is(0) );
+		new TrackerRunner(input, tracker).init();
 	}
 	
 	/**

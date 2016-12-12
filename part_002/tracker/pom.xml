@@ -57,6 +57,7 @@
 						  <exclude>**/ConsoleInput.class</exclude>
 						  <exclude>**/ValidateInput.class</exclude>
 						  <exclude>**/MenuOutException.class</exclude>
+						  <exclude>**/InvalidIdintifierException.class</exclude>
 						</excludes>
 					</instrumentation>
                 </configuration>
