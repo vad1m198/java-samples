@@ -37,4 +37,20 @@ public class ConsoleInput implements Input {
 		}
 	}
 	
+	public long ask(String question, long[] range) {
+		long key = Integer.valueOf(this.ask(question));
+		boolean exist = false;
+		for(long value: range) {
+			if(value == key) {
+				exist = true;
+				break;
+			}
+		}
+		if(exist) {
+			return key;
+		} else {
+			throw new InvalidIdintifierException("Not in idintifiers range.");
+		}
+	}
+	
 }
