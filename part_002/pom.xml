@@ -12,6 +12,7 @@
 	<modules>
 		<module>tracker</module>
 		<module>chess</module>
+		<module>brackets</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
