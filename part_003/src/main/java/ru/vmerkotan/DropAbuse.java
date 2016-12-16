@@ -20,7 +20,6 @@ public class DropAbuse {
                     s = s.replaceAll(str, "");
                 }
                 out.write(s.getBytes());
-                out.flush();
             }
         }
     }
