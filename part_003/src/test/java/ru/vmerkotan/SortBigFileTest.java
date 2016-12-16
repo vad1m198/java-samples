@@ -27,11 +27,13 @@ public class SortBigFileTest {
 
         File in = tempFolder.newFile("in.txt");
         File out = tempFolder.newFile("out.txt");
-
+        int CAPACITY = 10;
         FileWriter writer = new FileWriter(in);
-        writer.write("biggest" + System.getProperty("line.separator"));
-        writer.write("big" + System.getProperty("line.separator"));
-        writer.write("small" + System.getProperty("line.separator"));
+        for(int i = 0; i < CAPACITY; i++) {
+            writer.write("biggest" + System.getProperty("line.separator"));
+            writer.write("big" + System.getProperty("line.separator"));
+            writer.write("small" + System.getProperty("line.separator"));
+        }
         writer.flush();
         writer.close();
 
@@ -47,9 +49,15 @@ public class SortBigFileTest {
         raf.close();
 
         List<String> expected = new ArrayList<>();
-        expected.add("big");
-        expected.add("small");
-        expected.add("biggest");
+        for(int i = 0; i < CAPACITY; i++) {
+            expected.add("big");
+        }
+        for(int i = 0; i < CAPACITY; i++) {
+            expected.add("small");
+        }
+        for(int i = 0; i < CAPACITY; i++) {
+            expected.add("biggest");
+        }
 
         assertThat(actual, is(expected));
     }

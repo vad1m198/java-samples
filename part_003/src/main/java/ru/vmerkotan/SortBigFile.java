@@ -22,6 +22,9 @@ public class SortBigFile {
      * @throws IOException
      */
     public void sort(File source, File dest) throws IOException {
+
+        int LINES_CAPACITY = 10;
+
         dest.getParentFile().mkdirs();
         dest.createNewFile();
 
@@ -30,21 +33,33 @@ public class SortBigFile {
         List<String> lines = new ArrayList<>();
 
         String str;
+        int counter = LINES_CAPACITY;
         while((str = raf.readLine()) != null) {
             lines.add(str);
-        }
 
-        lines.sort(new Comparator<String>(){
-            public int compare(String s1, String s2) {
-                return s1.length() >  s2.length() ? 1 : -1;
+            if(--counter == 0 || raf.getFilePointer() == raf.length()) {
+                lines.sort(new CompareStringsByLength());
+                for(String s: lines) {
+                    rafOut.writeBytes(s + System.getProperty("line.separator"));
+                }
+                lines.clear();
+                counter = LINES_CAPACITY;
             }
-        });
+        }
+/*
+        lines.sort(new CompareStringsByLength());
 
         for(String s: lines) {
             rafOut.writeBytes(s + System.getProperty("line.separator"));
-        }
+        }*/
         raf.close();
         rafOut.close();
+    }
+
+    private class CompareStringsByLength implements Comparator<String> {
+        public int compare(String s1, String s2) {
+            return s1.length() >  s2.length() ? 1 : -1;
+        }
     }
 
 }
