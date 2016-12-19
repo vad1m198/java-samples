@@ -71,4 +71,27 @@ public class DropAbuseTest {
         da.dropAbuses(new ByteArrayInputStream(testString.getBytes()), bOutputExpected, abuse);
         assertEquals("nneold127", bOutputExpected.toString());
     }
+
+    /**
+     * tests dropAbuses method
+     * If outputstream is empty string return origin
+     * @throws IOException
+     */
+    @Test(expected = NullPointerException.class)
+    public void whenOutputStringIsNullThenException () throws IOException {
+        String[] abuse = new String[0];
+        String testString = "nneold127";
+        da.dropAbuses(new ByteArrayInputStream(testString.getBytes()), null, abuse);
+    }
+    /**
+     * tests dropAbuses method
+     * If inputstream is empty string return origin
+     * @throws IOException
+     */
+    @Test(expected = NullPointerException.class)
+    public void whenInputStringIsNullThenException () throws IOException {
+        String[] abuse = new String[0];
+        ByteArrayOutputStream bOutputExpected = new ByteArrayOutputStream();
+        da.dropAbuses(null, bOutputExpected, abuse);
+    }
 }

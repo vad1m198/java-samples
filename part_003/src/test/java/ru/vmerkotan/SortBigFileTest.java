@@ -22,12 +22,12 @@ public class SortBigFileTest {
     /**
      * verify sort method
      */
-    //@Test
+    @Test
     public void whenPassUnOrderedThenReturnOrdered() throws IOException {
 
         File in = tempFolder.newFile("in.txt");
         File out = tempFolder.newFile("out.txt");
-        int CAPACITY = 10;
+        int CAPACITY = 1000;
         FileWriter writer = new FileWriter(in);
         for(int i = 0; i < CAPACITY; i++) {
             writer.write("biggest" + System.getProperty("line.separator"));
@@ -38,8 +38,10 @@ public class SortBigFileTest {
         writer.close();
 
         SortBigFile sbf = new SortBigFile();
+//        long starttime = System.currentTimeMillis();
         sbf.sort(in, out);
-
+//        long endtime = System.currentTimeMillis();
+//        System.out.println("Test took: " +  (endtime - starttime) / 1000 + " seconds");
         RandomAccessFile raf = new RandomAccessFile(out, "r");
         List<String> actual = new ArrayList<>();
         String str;

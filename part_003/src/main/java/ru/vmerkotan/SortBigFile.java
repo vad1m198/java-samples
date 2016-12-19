@@ -1,11 +1,9 @@
 package ru.vmerkotan;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * Created by vmerkotan on 12/15/2016.
@@ -23,75 +21,97 @@ public class SortBigFile {
      */
     public void sort(File source, File dest) throws IOException {
 
-        final int LINES_CAPACITY = 10;
-
         dest.getParentFile().mkdirs();
-        dest.createNewFile();
+        String absolutePath = dest.getParentFile().getAbsolutePath();
 
-        File tmp1 = new File(dest.getParentFile().getAbsolutePath() + File.separator + "tmp1.txt");
-        File tmp2 = new File(dest.getParentFile().getAbsolutePath() + File.separator + "tmp2.txt");
-        File tmp3 = new File(dest.getParentFile().getAbsolutePath() + File.separator + "tmp3.txt");
-        File tmp4 = new File(dest.getParentFile().getAbsolutePath() + File.separator + "tmp4.txt");
-        tmp1.createNewFile();
-        tmp2.createNewFile();
-        tmp3.createNewFile();
-        tmp4.createNewFile();
-
-        RandomAccessFile raf = new RandomAccessFile(source, "r");
-        RandomAccessFile rafOut = new RandomAccessFile(dest, "rw");
-        RandomAccessFile rafTmp1 = new RandomAccessFile(tmp1, "rw");
-        RandomAccessFile rafTmp2 = new RandomAccessFile(tmp2, "rw");
-        RandomAccessFile rafTmp3 = new RandomAccessFile(tmp3, "rw");
-        RandomAccessFile rafTmp4 = new RandomAccessFile(tmp4, "rw");
-        List<String> lines = new ArrayList<>();
-
+        RandomAccessFile rafIn = new RandomAccessFile(source, "r");
+        String fileNameMask = "sortFilesTmp";
         String str;
-        int counter = LINES_CAPACITY;
-        boolean writeFirst = false;
-        while((str = raf.readLine()) != null) {
-            lines.add(str);
-            if(--counter == 0 || raf.getFilePointer() == raf.length()) {
-                lines.sort(new CompareStringsByLength());
-                for(String s: lines) {
-                    if(writeFirst) {
-                        rafTmp1.writeBytes(s + System.getProperty("line.separator"));
+        int linesCounter = 0;
+        //create temporary files with length of one line
+        while((str = rafIn.readLine()) != null) {
+            File f = new File(absolutePath + File.separator + fileNameMask + linesCounter++ + ".txt");
+            f.createNewFile();
+            RandomAccessFile rafTmp = new RandomAccessFile(f, "rw");
+            rafTmp.writeBytes(str);
+            rafTmp.close();
+        }
+        rafIn.close();
+
+        File parent = new File(absolutePath);
+        File[] files = parent.listFiles(new FilesFilter(fileNameMask));
+
+        while(files.length > 1) {
+            for(int i = 0; i < files.length; i+=2) {
+                RandomAccessFile rafTmp1 = new RandomAccessFile(files[i], "r");
+                RandomAccessFile rafTmp2 = null;
+                if(i+1 < files.length) {
+                    rafTmp2 = new RandomAccessFile(files[i+1], "r");
+                }
+
+                File fOut = new File(absolutePath + File.separator + fileNameMask + files.length + i + ".txt");
+                fOut.createNewFile();
+                RandomAccessFile rafTmp = new RandomAccessFile(fOut, "rw");
+
+                String str1 = rafTmp1.readLine();
+                String str2 = null;
+                if(rafTmp2!=null) {
+                    str2 = rafTmp2.readLine();
+                }
+                boolean breakLoop = false;
+                while(!breakLoop) {
+
+                    if(str2 != null && str1 != null && str1.length() > str2.length()) {
+                        rafTmp.writeBytes(str2 + System.getProperty("line.separator"));
+                        str2 = rafTmp2.readLine();
+                    } else if(str2 != null && str1 != null){
+                        rafTmp.writeBytes(str1 + System.getProperty("line.separator"));
+                        str1 = rafTmp1.readLine();
+                    } else if(str2 != null) {
+                        rafTmp.writeBytes(str2 + System.getProperty("line.separator"));
+                        str2 = rafTmp2.readLine();
+                    } else if(str1 != null) {
+                        rafTmp.writeBytes(str1 + System.getProperty("line.separator"));
+                        str1 = rafTmp1.readLine();
                     } else {
-                        rafTmp2.writeBytes(s + System.getProperty("line.separator"));
+                        breakLoop = true;
                     }
                 }
-                writeFirst = !writeFirst;
-                lines.clear();
-                counter = LINES_CAPACITY;
+                rafTmp1.close();
+                if(rafTmp2!=null)rafTmp2.close();
+                rafTmp.close();
+                files[i].delete();
+                if(i+1 < files.length) {
+                    files[i+1].delete();
+                }
+
             }
+            files = parent.listFiles(new FilesFilter(fileNameMask));
         }
 
-        rafTmp1.seek(0);
-        rafTmp2.seek(0);
-
-        System.out.println(rafTmp1.length() + ":" + rafTmp2.length());
-        while((str = rafTmp1.readLine()) != null) {
-            rafOut.writeBytes( str + System.getProperty("line.separator"));
+        dest.createNewFile();
+        RandomAccessFile rafDest = new RandomAccessFile(dest, "rw");
+        RandomAccessFile rafRead = new RandomAccessFile(files[0], "r");
+        String strout;
+        while((strout=rafRead.readLine())!=null) {
+            rafDest.writeBytes(strout + System.getProperty("line.separator") );
         }
+        rafRead.close();
+        rafDest.close();
+        files[0].delete();
 
-        while((str = rafTmp2.readLine()) != null) {
-            rafOut.writeBytes( str + System.getProperty("line.separator"));
-        }
-
-        rafTmp1.close();
-        rafTmp2.close();
-        rafTmp3.close();
-        rafTmp4.close();
-        raf.close();
-        rafOut.close();
-//        tmp1.delete();
-//        tmp2.delete();
-//        tmp3.delete();
-//        tmp4.delete();
     }
 
-    private class CompareStringsByLength implements Comparator<String> {
-        public int compare(String s1, String s2) {
-            return s1.length() >  s2.length() ? 1 : -1;
+    private class FilesFilter implements FilenameFilter {
+        private final String fileMask;
+
+        public FilesFilter(String mask) {
+            this.fileMask = mask;
+        }
+
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.contains(fileMask);
         }
     }
 
