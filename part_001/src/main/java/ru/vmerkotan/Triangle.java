@@ -1,22 +1,27 @@
 package ru.vmerkotan;
-import java.lang.*;
 
 /**
-* The {@code Triangle} class представляет 
-* треугольник на плоскости
+* The {@code Triangle} class представляет
+* треугольник на плоскости.
 * @author Vadim Merkotan
 * @since  1.0
 */
 public class Triangle {
 	/**
-	* поля для хранения {@code Point} треугольника
+	* поле для хранения {@code Point} треугольника.
 	*/
-	public Point a;
-	public Point b;
-	public Point c;
+	private Point a;
+	/**
+	 * поле для хранения {@code Point} треугольника.
+	 */
+	private Point b;
+	/**
+	 * поле для хранения {@code Point} треугольника.
+	 */
+	private Point c;
 
 	/**
-     * Создает новый обьет {@code Triangle}
+     * Создает новый обьет {@code Triangle}.
      *
      * @param   a   первая {@code Point} треугольника
 	 * @param   b   вторая {@code Point} треугольника
@@ -27,9 +32,9 @@ public class Triangle {
 		this.b = b;
 		this.c = c;
 	}
-	
+
 	/**
-     * Считает площадь треугольника
+     * Считает площадь треугольника.
      *
 	 * @return  площадь треугольника
      */
@@ -38,6 +43,6 @@ public class Triangle {
 		double bcDistance = this.b.distanceTo(c);
 		double acDistance = this.a.distanceTo(c);
 		double perimeter = (abDistance + bcDistance + acDistance) / 2;
-		return Math.sqrt( perimeter * (perimeter - abDistance) * (perimeter - bcDistance) * (perimeter - acDistance) );
+		return Math.sqrt(perimeter * (perimeter - abDistance) * (perimeter - bcDistance) * (perimeter - acDistance));
 	}
 }

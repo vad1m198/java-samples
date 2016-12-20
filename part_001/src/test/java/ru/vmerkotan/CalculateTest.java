@@ -7,14 +7,14 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
-* Tests for Calculate class
-* 
+* Tests for Calculate class.
+*
 * @author Vadim Merkotans
 * @since  1.0
 * @version $Id$
 */
 public class CalculateTest {
-	
+
 	/**
 	* Test verify print to console 'Hello World!'.
 	*/

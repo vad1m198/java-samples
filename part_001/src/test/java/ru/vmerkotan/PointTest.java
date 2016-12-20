@@ -3,12 +3,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.number.IsCloseTo.closeTo;
 /**
-* Tests for {@code Point} class
+* Tests for {@code Point} class.
 * @author Vadim Merkotan
 * @since  1.0
 */
 public class PointTest {
-	
+
 	/**
 	* Test distanceTo.
 	*/
@@ -16,10 +16,9 @@ public class PointTest {
 	public void whenDistanceIsOneThenDistanceToShouldReturnOne() {
 		Point p1 = new Point(1, 1);
 		Point p2 = new Point(2, 1);
-		
 		assertThat(p1.distanceTo(p2), closeTo(1.0, 0.01));
 	}
-	
+
 	/**
 	* Test distanceTo. Verify that distance from first point to second
 	* is equal to distance from second point to the first
@@ -27,10 +26,10 @@ public class PointTest {
 	@Test
 	public void testDistancesEquality() {
 		Point p1 = new Point(1, 1);
-		Point p2 = new Point(2, 1);		
+		Point p2 = new Point(2, 1);
 		assertThat(p2.distanceTo(p1), closeTo(p1.distanceTo(p2), 0.01));
 	}
-	
+
 	/**
 	* Test distanceTo. When 2 points are equal distanceTo should
 	* return 0
@@ -38,10 +37,10 @@ public class PointTest {
 	@Test
 	public void whenPointsAreEqualDistanceToShouldReturnZero() {
 		Point p1 = new Point(1, 1);
-		Point p2 = new Point(1, 1);		
+		Point p2 = new Point(1, 1);
 		assertThat(p2.distanceTo(p1), closeTo(0.0, 0.01));
 	}
-	
+
 	/**
 	* Test distanceTo. When coordinates are negative
 	* distanceTo should correctly calculate distance
@@ -50,8 +49,7 @@ public class PointTest {
 	@Test
 	public void whenCoordinatesNegativeThenDistanceToShouldWork() {
 		Point p1 = new Point(-1, 1);
-		Point p2 = new Point(1, 1);		
+		Point p2 = new Point(1, 1);
 		assertThat(p2.distanceTo(p1), closeTo(2.0, 0.01));
 	}
-	
 }

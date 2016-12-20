@@ -1,24 +1,23 @@
 package ru.vmerkotan;
-import java.lang.*;
 /**
 * The {@code Point} class представляет точку на плоскости
-* с координатами x, y
+* с координатами x, y.
 * @author Vadim Merkotan
 * @since  1.0
 */
 public class Point {
 	/**
-	* поле для храниия {@code X} координаты точки
+	* поле для храниия {@code X} координаты точки.
 	*/
-	public double x;
-	
+	private double x;
+
 	/**
-	* поле для храниия {@code Y} координаты точки
+	* поле для храниия {@code Y} координаты точки.
 	*/
-	public double y;
-	
+    private double y;
+
 	/**
-     * создает обьект {@code Point}
+     * создает обьект {@code Point}.
      *
      * @param   x   значение {@code x} координаты {@code Point} обьекта.
 	 * @param   y   значение {@code y} координаты {@code Point} обьекта.
@@ -29,12 +28,12 @@ public class Point {
 	}
 
 	/**
-     * высчитывает расстояние к заданой точке {@code Point}
+     * высчитывает расстояние к заданой точке {@code Point}.
      *
      * @param   point   {@code Point} обьект к которому нужно посчитать расстояние
-	 * @return  расстояние от текущей до заданой точки 
+	 * @return  расстояние от текущей до заданой точки
      */
 	public double distanceTo(Point point) {
-		return  Math.sqrt( Math.pow(Math.abs((this.x - point.x)), 2) + Math.pow(Math.abs((this.y - point.y)), 2) );
+		return  Math.sqrt(Math.pow(Math.abs((this.x - point.x)), 2) + Math.pow(Math.abs((this.y - point.y)), 2));
 	}
 }

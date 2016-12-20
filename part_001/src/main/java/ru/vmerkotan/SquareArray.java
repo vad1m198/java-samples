@@ -1,15 +1,17 @@
 package ru.vmerkotan;
 
 /**
-* The {@code SquareArray} class
+* The {@code SquareArray} class.
 * @author Vadim Merkotan
 * @since  1.0
 */
 public class SquareArray {
-	
+
 	/**
 	* rotates array by 90 degrees clockwise.
 	* Works only with square arrays
+    * @param  arr array to rotate
+    * @return  rotated array
 	*/
 	public int[][] rotate(int[][] arr) {
 		int temp;
@@ -29,5 +31,4 @@ public class SquareArray {
 		}
 		return arr;
 	}
-	
 }

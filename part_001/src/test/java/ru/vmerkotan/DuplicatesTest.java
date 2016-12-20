@@ -1,16 +1,16 @@
 package ru.vmerkotan;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
-* Tests for Duplicates class
+* Tests for Duplicates class.
 * @author Vadim Merkotan
 * @since  1.0
 */
 public class DuplicatesTest {
-	
+
 	/**
 	* test removeDuplicates method.
 	* should return without duplicates
@@ -18,9 +18,9 @@ public class DuplicatesTest {
 	@Test
 	public void whenPassArrayWithDuplicatesThenShouldReturnWithoutDuplicates() {
 		Duplicates duplicates = new Duplicates();
-		String[] originArray = new String[]{"w10","w20","w10","w30","w20","w40","w50","w50"};
-		String[] expectedArray = new String[]{"w10","w20","w30","w40","w50"};
-		assertThat(duplicates.removeDuplicates(originArray), is(expectedArray) );
+		String[] originArray = new String[]{"w10", "w20", "w10", "w30", "w20", "w40", "w50", "w50"};
+		String[] expectedArray = new String[]{"w10", "w20", "w30", "w40", "w50"};
+		assertThat(duplicates.removeDuplicates(originArray), is(expectedArray));
 	}
 
     /**
@@ -32,7 +32,7 @@ public class DuplicatesTest {
         Duplicates duplicates = new Duplicates();
         String[] originArray = new String[]{"Hi", "Hello"};
         String[] expectedArray = new String[]{"Hi", "Hello"};
-        assertThat(duplicates.removeDuplicates(originArray), is(expectedArray) );
+        assertThat(duplicates.removeDuplicates(originArray), is(expectedArray));
     }
 
     /**
@@ -45,7 +45,6 @@ public class DuplicatesTest {
         Duplicates duplicates = new Duplicates();
         String[] originArray = new String[]{"Hi", "Hi", "Hi", "Hi"};
         String[] expectedArray = new String[]{"Hi"};
-        assertThat(duplicates.removeDuplicates(originArray), is(expectedArray) );
+        assertThat(duplicates.removeDuplicates(originArray), is(expectedArray));
     }
-
 }

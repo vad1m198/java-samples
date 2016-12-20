@@ -1,16 +1,16 @@
 package ru.vmerkotan;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 /**
-* Tests for Factorial class
+* Tests for Factorial class.
 * @author Vadim Merkotan
 * @since  1.0
 */
 public class FactorialTest {
-	
+
 	/**
-	* Test Factorial method. 
+	* Test Factorial method.
 	* When base is 1 return 1;
 	*/
 	@Test
@@ -18,9 +18,9 @@ public class FactorialTest {
 		Factorial factorial = new Factorial();
 		assertEquals(1, factorial.factorial(1));
 	}
-	
+
 	/**
-	* Test Factorial method. 
+	* Test Factorial method.
 	* When base is 3 return 6;
 	*/
 	@Test
@@ -28,9 +28,9 @@ public class FactorialTest {
 		Factorial factorial = new Factorial();
 		assertEquals(6, factorial.factorial(3));
 	}
-	
+
 	/**
-	* Test Factorial method. 
+	* Test Factorial method.
 	* When base is negative return 0;
 	*/
 	@Test
