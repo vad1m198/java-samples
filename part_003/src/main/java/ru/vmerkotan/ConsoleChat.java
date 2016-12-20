@@ -1,8 +1,9 @@
 package ru.vmerkotan;
 
+import org.omg.CORBA.portable.*;
+
 import java.io.*;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.Properties;
 
 /**
  * Created by vmerkotan on 12/20/2016.
@@ -26,10 +27,12 @@ public class ConsoleChat {
     }
 
     public static void main(String[] args) throws IOException {
-        File f = new File("C:" + File.separator + "consoleChat" + File.separator + "hi.txt");
-        File fOut = new File("C:" + File.separator + "consoleChat" + File.separator + "out.txt");
+        Properties p = new Properties();
+        p.load(new InputStreamReader(new FileInputStream(new File(".\\part_003\\app.properties"))));
+        File in = new File(p.getProperty("pathIn"));
+        File out = new File(p.getProperty("pathOut"));
         Input input = new ConsoleInput();
-        ConsoleChat chat = new ConsoleChat(f, fOut, input);
+        ConsoleChat chat = new ConsoleChat(in, out, input);
         chat.run();
     }
 
@@ -40,7 +43,6 @@ public class ConsoleChat {
     public void run() throws IOException {
         RandomAccessFile raf = new RandomAccessFile(log, "rw");
 
-        //Scanner scanner = new Scanner(System.in);
         boolean stopAnswers = false;
         boolean exit = false;
         System.out.println("Type something and press Enter to get answer");
@@ -51,13 +53,13 @@ public class ConsoleChat {
             while(!exit) {
                 String nextLine = input.read();//scanner.nextLine().toLowerCase();
                 out.writeBytes(nextLine + System.getProperty("line.separator"));
-                if(nextLine.equals("stop")){
+                if("stop".equals(nextLine)){
                     stopAnswers = true;
-                } else if(nextLine.equals("continue")) {
+                } else if("continue".equals(nextLine)) {
                     stopAnswers = false;
                 }
 
-                if(nextLine.equals("exit")) {
+                if("exit".equals(nextLine)) {
                     exit = true;
                 } else {
                     if(!stopAnswers){
