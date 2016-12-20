@@ -27,7 +27,7 @@ public class SortBigFileTest {
 
         File in = tempFolder.newFile("in.txt");
         File out = tempFolder.newFile("out.txt");
-        int CAPACITY = 1000;
+        int CAPACITY = 100;
         FileWriter writer = new FileWriter(in);
         for(int i = 0; i < CAPACITY; i++) {
             writer.write("biggest" + System.getProperty("line.separator"));
