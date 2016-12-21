@@ -1,4 +1,4 @@
-package ru.vmerkotan;
+package ru.vmerkotan.figures;
 
 import ru.vmerkotan.figures.*;
 import ru.vmerkotan.exceptions.*;
