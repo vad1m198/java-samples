@@ -7,22 +7,34 @@ import ru.vmerkotan.exceptions.ImpossibleMoveException;
 
 /**
  * The {@code Queen} class represents a descrition of
- * King figure on chess board
+ * Queen figure on chess board.
  * @since  1.0
  */
 public class Queen extends Figure {
+    /**
+     * internal Bishop instance.
+     */
     private Bishop bishop;
+    /**
+     * internal Rook instance.
+     */
     private Rook rook;
+
+    /**
+     * Constructs new Queen object.
+     * @param position Cell to place new Queen object to
+     */
     public Queen(Cell position) {
         super(position);
         bishop = new Bishop(position);
         rook = new Rook(position);
     }
 
-    /*
-    * Returns cells on the figure way
-    * @param dist Cell destination figure Cell
-    * @throw ImpossibleMoveException if Figure can not be moved to destination cell
+    /**
+    * Returns cells on the figure way.
+    * @param dest Cell destination figure Cell
+    * @throws ImpossibleMoveException if Figure can not be moved to destination cell
+    * @return Cell[] figure should pass to get to dest
     */
     public Cell[] way(Cell dest) throws ImpossibleMoveException {
         Cell[] result = null;
@@ -40,17 +52,15 @@ public class Queen extends Figure {
             canRookMove = false;
         }
 
-        if(!canBishopMove && !canRookMove) {
+        if (!canBishopMove && !canRookMove) {
             throw new ImpossibleMoveException();
         }
-
         return result;
-
     }
 
-    /*
+    /**
     * Returns new Queen placed on
-    * dist Cell
+    * dist Cell.
     * @param dist		Cell where new Queen should be created
     * @return Figure	Queen Figure placed on the dist Cell
     */
