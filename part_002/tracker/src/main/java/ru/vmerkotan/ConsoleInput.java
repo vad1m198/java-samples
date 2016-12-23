@@ -1,5 +1,7 @@
 package ru.vmerkotan;
 
+import java.util.Scanner;
+
 /**
 * The {@code ConsoleInput} class represents an interaction
 * with user through console.

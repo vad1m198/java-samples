@@ -26,7 +26,7 @@ public class King extends Figure {
     */
     public Cell[] way(Cell dist) throws ImpossibleMoveException {
         Cell[] result;
-        if (Math.abs(this.position.getXvalue() - dist.getXvalue()) > 1 || Math.abs(this.position.getYvalue() - dist.getYvalue()) > 1) {
+        if (Math.abs(this.getPosition().getXvalue() - dist.getXvalue()) > 1 || Math.abs(this.getPosition().getYvalue() - dist.getYvalue()) > 1) {
             throw new ImpossibleMoveException();
         }
         result = new Cell[1];

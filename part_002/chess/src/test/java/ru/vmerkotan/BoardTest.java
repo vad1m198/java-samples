@@ -16,7 +16,6 @@ import static org.junit.Assert.assertTrue;
 */
 public class BoardTest {
 
-
 	/**
 	* Test move method.
 	* If no figures are present on the way

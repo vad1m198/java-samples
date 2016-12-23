@@ -1,6 +1,7 @@
 package ru.vmerkotan.figures;
 
 import org.junit.Test;
+import ru.vmerkotan.Cell;
 import ru.vmerkotan.exceptions.ImpossibleMoveException;
 
 import static org.hamcrest.core.Is.is;

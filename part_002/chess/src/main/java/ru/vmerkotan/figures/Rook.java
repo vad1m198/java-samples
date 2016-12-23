@@ -26,8 +26,8 @@ public class Rook extends Figure {
     */
     public Cell[] way(Cell dist) throws ImpossibleMoveException {
         Cell[] result;
-        int lengthX = dist.getXvalue() - this.position.getXvalue();
-        int lengthY = dist.getYvalue() - this.position.getYvalue();
+        int lengthX = dist.getXvalue() - this.getPosition().getXvalue();
+        int lengthY = dist.getYvalue() - this.getPosition().getYvalue();
 
         if (lengthX != 0 && lengthY != 0) {
             throw new ImpossibleMoveException();
@@ -35,8 +35,8 @@ public class Rook extends Figure {
 
         boolean isHorizontal = lengthY == 0;
 
-        int currentXposition = this.position.getXvalue();
-        int currentYposition =  this.position.getYvalue();
+        int currentXposition = this.getPosition().getXvalue();
+        int currentYposition =  this.getPosition().getYvalue();
 
         if (isHorizontal) {
             result = new Cell[Math.abs(lengthX)];

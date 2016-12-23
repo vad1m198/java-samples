@@ -50,7 +50,7 @@ public class Board {
 		Cell[] wayCells = sourceFigure.way(dist);
 		for (Cell c: wayCells) {
 			for (Figure f: this.figures) {
-				if (f.position.equals(c)) {
+				if (f.getPosition().equals(c)) {
 					throw new OccupiedWayException();
 				}
 			}

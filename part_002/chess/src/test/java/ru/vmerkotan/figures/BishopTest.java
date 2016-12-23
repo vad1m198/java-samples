@@ -1,5 +1,6 @@
 package ru.vmerkotan.figures;
 
+import ru.vmerkotan.Cell;
 import ru.vmerkotan.exceptions.ImpossibleMoveException;
 
 import org.junit.Test;

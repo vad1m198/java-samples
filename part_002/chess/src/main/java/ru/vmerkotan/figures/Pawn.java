@@ -27,7 +27,7 @@ public class Pawn extends Figure {
     */
     public Cell[] way(Cell dist) throws ImpossibleMoveException {
         Cell[] result;
-        if (this.position.getXvalue() != dist.getXvalue() || Math.abs(this.position.getYvalue() - dist.getYvalue()) > 1) {
+        if (this.getPosition().getXvalue() != dist.getXvalue() || Math.abs(this.getPosition().getYvalue() - dist.getYvalue()) > 1) {
             throw new ImpossibleMoveException();
         }
         result = new Cell[1];

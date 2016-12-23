@@ -26,15 +26,15 @@ public class Bishop extends Figure {
 	*/
 	public Cell[] way(Cell dist) throws ImpossibleMoveException {
 		Cell[] result;
-		if (Math.abs(this.position.getXvalue() - dist.getXvalue())
-                != Math.abs(this.position.getYvalue() - dist.getYvalue())) {
+		if (Math.abs(this.getPosition().getXvalue() - dist.getXvalue())
+                != Math.abs(this.getPosition().getYvalue() - dist.getYvalue())) {
 			throw new ImpossibleMoveException();
 		}
-		result = new Cell[Math.abs(this.position.getXvalue() - dist.getXvalue())];
-		boolean incrementX = dist.getXvalue() - this.position.getXvalue() > 0;
-		boolean incrementY = dist.getYvalue() - this.position.getYvalue() > 0;
-		int currentXposition = incrementX ? this.position.getXvalue() + 1 : this.position.getXvalue() - 1;
-		int currentYposition = incrementY ? this.position.getYvalue() + 1 : this.position.getYvalue() - 1;
+		result = new Cell[Math.abs(this.getPosition().getXvalue() - dist.getXvalue())];
+		boolean incrementX = dist.getXvalue() - this.getPosition().getXvalue() > 0;
+		boolean incrementY = dist.getYvalue() - this.getPosition().getYvalue() > 0;
+		int currentXposition = incrementX ? this.getPosition().getXvalue() + 1 : this.getPosition().getXvalue() - 1;
+		int currentYposition = incrementY ? this.getPosition().getYvalue() + 1 : this.getPosition().getYvalue() - 1;
 		for (int i = 0; i < result.length; i++) {
 			result[i] = new Cell(
 			incrementX ? currentXposition++ : currentXposition--,

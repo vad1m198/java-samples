@@ -2,13 +2,13 @@ package ru.vmerkotan;
 
 /**
 * The {@code Input} class represents an interaction
-* with user
+* with user.
 * @since  1.0
 */
 public interface Input {
-	
-	/*
-	* Returns input
+
+	/**
+	* Returns input.
 	* @return String	answer
 	*/
 	String read();

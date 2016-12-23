@@ -27,8 +27,8 @@ public class Knight extends Figure {
     */
     public Cell[] way(Cell dest) throws ImpossibleMoveException {
         Cell[] result;
-        int lengthX = Math.abs(dest.getXvalue() - this.position.getXvalue());
-        int lengthY = Math.abs(dest.getYvalue() - this.position.getYvalue());
+        int lengthX = Math.abs(dest.getXvalue() - this.getPosition().getXvalue());
+        int lengthY = Math.abs(dest.getYvalue() - this.getPosition().getYvalue());
         if ((lengthX != 2 && lengthY != 1) || (lengthX != 1 && lengthY != 2)) {
             throw new ImpossibleMoveException();
         }

@@ -10,24 +10,22 @@ import java.io.InputStream;
 public class VerifyByteStream {
 
     /**
-     * verifies that input contains only even number
-     * @param input
-     * @return true if input conntains even number else false
-     * @throws IOException
+     * verifies that input contains only even number.
+     * @param input InputStream to read from
+     * @return true if input contains even number else false
+     * @throws IOException when error present
      */
     public boolean isNumber(InputStream input) throws IOException {
         StringBuffer buff = new StringBuffer();
         int i;
-
         try (InputStream in = input) {
-            while((i=in.read())!=-1) {
-                buff.append((char)i);
+            while ((i = in.read()) != -1) {
+                buff.append((char) i);
             }
             int result = Integer.valueOf(String.valueOf(buff));
-            return result %2 == 0;
+            return result % 2 == 0;
         } catch (NumberFormatException nfe) {
             return false;
         }
-
     }
 }

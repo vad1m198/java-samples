@@ -8,16 +8,16 @@ import java.io.RandomAccessFile;
 /**
  * Created by vmerkotan on 12/15/2016.
  * SortBigFile class presents a container of
- * methods to work with big files
+ * methods to work with big files.
  */
 public class SortBigFile {
 
     /**
      * Updates dest file with strings form source
-     * ordered in ascending by string length
+     * ordered in ascending by string length.
      * @param source    File to read from
      * @param dest      File to write to from
-     * @throws IOException
+     * @throws IOException when error presents
      */
     public void sort(File source, File dest) throws IOException {
 
@@ -29,7 +29,7 @@ public class SortBigFile {
         String str;
         int linesCounter = 0;
         //create temporary files with length of one line
-        while((str = rafIn.readLine()) != null) {
+        while ((str = rafIn.readLine()) != null) {
             File f = new File(absolutePath + File.separator + fileNameMask + linesCounter++ + ".txt");
             f.createNewFile();
             RandomAccessFile rafTmp = new RandomAccessFile(f, "rw");
@@ -41,12 +41,12 @@ public class SortBigFile {
         File parent = new File(absolutePath);
         File[] files = parent.listFiles(new FilesFilter(fileNameMask));
 
-        while(files.length > 1) {
-            for(int i = 0; i < files.length; i+=2) {
+        while (files.length > 1) {
+            for (int i = 0; i < files.length; i += 2) {
                 RandomAccessFile rafTmp1 = new RandomAccessFile(files[i], "r");
                 RandomAccessFile rafTmp2 = null;
-                if(i+1 < files.length) {
-                    rafTmp2 = new RandomAccessFile(files[i+1], "r");
+                if (i + 1 < files.length) {
+                    rafTmp2 = new RandomAccessFile(files[i + 1], "r");
                 }
 
                 File fOut = new File(absolutePath + File.separator + fileNameMask + files.length + i + ".txt");
@@ -55,22 +55,22 @@ public class SortBigFile {
 
                 String str1 = rafTmp1.readLine();
                 String str2 = null;
-                if(rafTmp2!=null) {
+                if (rafTmp2 != null) {
                     str2 = rafTmp2.readLine();
                 }
                 boolean breakLoop = false;
-                while(!breakLoop) {
+                while (!breakLoop) {
 
-                    if(str2 != null && str1 != null && str1.length() > str2.length()) {
+                    if (str2 != null && str1 != null && str1.length() > str2.length()) {
                         rafTmp.writeBytes(str2 + System.getProperty("line.separator"));
                         str2 = rafTmp2.readLine();
-                    } else if(str2 != null && str1 != null){
+                    } else if (str2 != null && str1 != null) {
                         rafTmp.writeBytes(str1 + System.getProperty("line.separator"));
                         str1 = rafTmp1.readLine();
-                    } else if(str2 != null) {
+                    } else if (str2 != null) {
                         rafTmp.writeBytes(str2 + System.getProperty("line.separator"));
                         str2 = rafTmp2.readLine();
-                    } else if(str1 != null) {
+                    } else if (str1 != null) {
                         rafTmp.writeBytes(str1 + System.getProperty("line.separator"));
                         str1 = rafTmp1.readLine();
                     } else {
@@ -78,13 +78,14 @@ public class SortBigFile {
                     }
                 }
                 rafTmp1.close();
-                if(rafTmp2!=null)rafTmp2.close();
+                if (rafTmp2 != null) {
+                    rafTmp2.close();
+                }
                 rafTmp.close();
                 files[i].delete();
-                if(i+1 < files.length) {
-                    files[i+1].delete();
+                if (i + 1 < files.length) {
+                    files[i + 1].delete();
                 }
-
             }
             files = parent.listFiles(new FilesFilter(fileNameMask));
         }
@@ -93,8 +94,8 @@ public class SortBigFile {
         RandomAccessFile rafDest = new RandomAccessFile(dest, "rw");
         RandomAccessFile rafRead = new RandomAccessFile(files[0], "r");
         String strout;
-        while((strout=rafRead.readLine())!=null) {
-            rafDest.writeBytes(strout + System.getProperty("line.separator") );
+        while ((strout = rafRead.readLine()) != null) {
+            rafDest.writeBytes(strout + System.getProperty("line.separator"));
         }
         rafRead.close();
         rafDest.close();
@@ -102,13 +103,29 @@ public class SortBigFile {
 
     }
 
+    /**
+     * Represents Class to Filter files.
+     */
     private class FilesFilter implements FilenameFilter {
+        /**
+         * Filter mask.
+         */
         private final String fileMask;
 
-        public FilesFilter(String mask) {
+        /**
+         * Constructs new object.
+         * @param mask mask to be applied
+         */
+        FilesFilter(String mask) {
             this.fileMask = mask;
         }
 
+        /**
+         * verifies file name.
+         * @param dir   folder
+         * @param name  name
+         * @return      true in name contains mask
+         */
         @Override
         public boolean accept(File dir, String name) {
             return name.contains(fileMask);
