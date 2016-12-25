@@ -2,4 +2,4 @@
  * @author Vadim Merkotan
  * @since 1.0
  */
-package ru.vmerkotan;
+package ru.vmerkotan.client;
