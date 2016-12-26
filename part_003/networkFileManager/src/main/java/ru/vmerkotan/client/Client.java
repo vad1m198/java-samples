@@ -4,6 +4,7 @@ import ru.vmerkotan.FileManager;
 
 import java.io.*;
 import java.net.*;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -14,8 +15,11 @@ public class Client {
     private static FileManager fileManager = new FileManager();
 
     public static void main(String[] args) throws IOException {
-        InetAddress add = InetAddress.getLocalHost();
-        try(Socket s = new Socket(add, 5000)) {
+        Properties p = new Properties();
+        p.load(new InputStreamReader(new FileInputStream(new File(".\\part_003\\networkFileManager\\app.properties"))));
+        String host = p.getProperty("host");
+        int port = Integer.valueOf(p.getProperty("port"));
+        try(Socket s = new Socket(host, port)) {
             InputStream inStream = s.getInputStream();
             OutputStream outStream = s.getOutputStream();
 

@@ -5,6 +5,7 @@ import ru.vmerkotan.FileManager;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Properties;
 
 /**
  * Created by Вадим on 24.12.2016.
@@ -15,9 +16,12 @@ public class Server {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        String currentDir = "C:\\";
+        Properties p = new Properties();
+        p.load(new InputStreamReader(new FileInputStream(new File(".\\part_003\\networkFileManager\\app.properties"))));
+        int port = Integer.valueOf(p.getProperty("port"));
+        String currentDir = p.getProperty("rootDir");
 
-        try(ServerSocket server = new ServerSocket(5000)) {
+        try(ServerSocket server = new ServerSocket(port)) {
             try (Socket incoming = server.accept()) {
                 System.out.println("Server accepted!!!");
                 InputStream input = incoming.getInputStream();
