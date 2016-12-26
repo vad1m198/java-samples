@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 public class Client {
 
-    static FileManager fileManager = new FileManager();
+    private static FileManager fileManager = new FileManager();
 
     public static void main(String[] args) throws IOException {
         InetAddress add = InetAddress.getLocalHost();
@@ -31,26 +31,9 @@ public class Client {
                 if("exit".equalsIgnoreCase(systemInStr.trim())) {
                     done = true;
                 } else if("get".equals(systemInStr.split(" ")[0].trim())) {
-                    if("200".equalsIgnoreCase(reader.readUTF())) {
-                        String fileName = reader.readUTF();
-                        long size = reader.readLong();
-                        File f = new File( System.getProperty("java.io.tmpdir") +File.separator + fileName);
-                        f.createNewFile();
-                        RandomAccessFile raf = new RandomAccessFile(f, "rw");
-                        raf.setLength(size);
-                        raf.close();
-                        fileManager.readFromStreamToFile(reader, f);
-                    }
+                    fileManager.readInputStreamToFile(reader, System.getProperty("java.io.tmpdir"));
                 } else if("post".equals(systemInStr.split(" ")[0].trim()) && systemInStr.split(" ").length > 1) {
-                    File fileToUpload = new File(systemInStr.split(" ")[1].trim());
-                    if(fileToUpload.exists() && fileToUpload.isFile()) {
-                        out.writeUTF("200");
-                        out.writeUTF(fileToUpload.getName());
-                        out.writeLong(fileToUpload.length());
-                        fileManager.readFromFileToStream(fileToUpload, out);
-                    } else {
-                        out.writeUTF("404");
-                    }
+                    fileManager.writePathToOutputStream(systemInStr.split(" ")[1].trim(), out);
                 }
             }
         }

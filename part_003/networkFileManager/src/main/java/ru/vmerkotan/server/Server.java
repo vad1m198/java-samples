@@ -5,7 +5,6 @@ import ru.vmerkotan.FileManager;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * Created by Вадим on 24.12.2016.
@@ -58,29 +57,11 @@ public class Server {
                             }
                             outputStr.writeUTF("");
                         } else if("get".equals(in.split(" ")[0]) && in.split(" ").length > 1) {
-                            String fileName = in.split(" ")[1];
-                            File file = new File(currentDir + File.separator + fileName);
-                            if( file.exists() && file.isFile()) {
-                                outputStr.writeUTF("200");
-                                outputStr.writeUTF(file.getName());
-                                outputStr.writeLong(file.length());
-                                fileManager.readFromFileToStream(file, outputStr);
-                            } else {
-                                outputStr.writeUTF("404");
-                            }
+                            fileManager.writePathToOutputStream(currentDir + File.separator + in.split(" ")[1], outputStr);
                             Thread.sleep(10L);
                             outputStr.writeUTF("");
                         } else if ("post".equals(in.split(" ")[0].trim())){
-                            if("200".equalsIgnoreCase(inStream.readUTF())) {
-                                String fileName = inStream.readUTF();
-                                long fileSize = inStream.readLong();
-                                File f = new File( currentDir + File.separator + fileName);
-                                f.createNewFile();
-                                RandomAccessFile raf = new RandomAccessFile(f, "rw");
-                                raf.setLength(fileSize);
-                                raf.close();
-                                fileManager.readFromStreamToFile(inStream, f);
-                            }
+                            fileManager.readInputStreamToFile(inStream,currentDir);
                             outputStr.writeUTF("");
                         } else if("exit".equalsIgnoreCase(in.trim())) {
                             done = true;
