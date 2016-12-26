@@ -85,10 +85,25 @@ public class Server {
                         } else if ("post".equals(in.split(" ")[0].trim())){
                             System.out.println("Post is present");
                             if("200".equalsIgnoreCase(scanner.readUTF())) {
-                                System.out.println("File exist");
+
                                 String fileName = scanner.readUTF();
                                 long fileSize = scanner.readLong();
-                                System.out.println(fileName + ":" + fileSize);
+                                System.out.println("File exist " + fileName + ":" + fileSize);
+                                File f = new File( System.getProperty("java.io.tmpdir") + File.separator + fileName);
+                                f.createNewFile();
+                                final int BYTE_ARRAY_SIZE = 4096;
+                                byte[] arr = new byte[BYTE_ARRAY_SIZE];
+
+                                try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(f))) {
+                                    long counter = 0;
+                                    while(counter <= fileSize) {
+                                        scanner.read(arr);
+                                        dos.write(arr, 0, (int) (fileSize - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (fileSize - counter));
+                                        counter += BYTE_ARRAY_SIZE;
+                                    }
+                                    dos.flush();
+                                }
+
                             } else {
                                 System.out.println("File not found");
                             }
