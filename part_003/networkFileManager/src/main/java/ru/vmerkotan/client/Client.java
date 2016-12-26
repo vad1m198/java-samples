@@ -1,5 +1,7 @@
 package ru.vmerkotan.client;
 
+import ru.vmerkotan.FileManager;
+
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
@@ -8,6 +10,8 @@ import java.util.Scanner;
  * Created by Вадим on 24.12.2016.
  */
 public class Client {
+
+    static FileManager fileManager = new FileManager();
 
     public static void main(String[] args) throws IOException {
         InetAddress add = InetAddress.getLocalHost();
@@ -32,44 +36,19 @@ public class Client {
                         long size = reader.readLong();
                         File f = new File( System.getProperty("java.io.tmpdir") +File.separator + fileName);
                         f.createNewFile();
-                        final int BYTE_ARRAY_SIZE = 4096;
-                        byte[] arr = new byte[BYTE_ARRAY_SIZE];
-
-                        try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(f))) {
-                            long counter = 0;
-                            while(counter <= size) {
-                                reader.read(arr);
-                                dos.write(arr, 0, (int) (size - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (size - counter));
-                                counter += BYTE_ARRAY_SIZE;
-                            }
-                        }
+                        RandomAccessFile raf = new RandomAccessFile(f, "rw");
+                        raf.setLength(size);
+                        raf.close();
+                        fileManager.readFromStreamToFile(reader, f);
                     }
                 } else if("post".equals(systemInStr.split(" ")[0].trim()) && systemInStr.split(" ").length > 1) {
                     File fileToUpload = new File(systemInStr.split(" ")[1].trim());
                     if(fileToUpload.exists() && fileToUpload.isFile()) {
-                        System.out.println("File exists");
                         out.writeUTF("200");
                         out.writeUTF(fileToUpload.getName());
                         out.writeLong(fileToUpload.length());
-                        final int BYTE_ARRAY_SIZE = 4096;
-                        byte[] arr = new byte[BYTE_ARRAY_SIZE];
-                        try (ByteArrayOutputStream ous = new ByteArrayOutputStream();
-                             FileInputStream fInput = new FileInputStream(fileToUpload)) {
-
-                            long counter = 0;
-                            long fileSize =  fileToUpload.length();
-                            while ( counter <= fileSize) {
-                                fInput.read(arr);
-                                ous.write(arr, 0, (int) (fileSize - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (fileSize - counter) );
-                                counter += BYTE_ARRAY_SIZE;
-                            }
-                            out.write(ous.toByteArray());
-                        }
-
-
-
+                        fileManager.readFromFileToStream(fileToUpload, out);
                     } else {
-                        System.out.println("File not found");
                         out.writeUTF("404");
                     }
                 }

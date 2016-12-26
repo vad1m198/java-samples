@@ -1,5 +1,7 @@
 package ru.vmerkotan.server;
 
+import ru.vmerkotan.FileManager;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +11,8 @@ import java.util.Scanner;
  * Created by Вадим on 24.12.2016.
  */
 public class Server {
+
+    static FileManager fileManager = new FileManager();
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -20,14 +24,14 @@ public class Server {
                 InputStream input = incoming.getInputStream();
                 OutputStream output = incoming.getOutputStream();
 
-                try (DataInputStream scanner = new DataInputStream(input)) {
+                try (DataInputStream inStream = new DataInputStream(input)) {
                     DataOutputStream outputStr = new DataOutputStream(output);
                     outputStr.writeUTF("Hello! Enter EXIT to stop the program" + System.getProperty("line.separator") +
                                             "Some menu will go here:");
                     boolean done = false;
                     while(!done) {
 
-                        String in = scanner.readUTF();
+                        String in = inStream.readUTF();
                         if("ls".equals(in.trim())) {
                             File file = new File(currentDir);
                             if(file.exists() && file.isDirectory()) {
@@ -58,52 +62,24 @@ public class Server {
                             File file = new File(currentDir + File.separator + fileName);
                             if( file.exists() && file.isFile()) {
                                 outputStr.writeUTF("200");
-                                //write file name
                                 outputStr.writeUTF(file.getName());
-                                //write size
                                 outputStr.writeLong(file.length());
-                                final int BYTE_ARRAY_SIZE = 4096;
-                                byte[] arr = new byte[BYTE_ARRAY_SIZE];
-                                try (ByteArrayOutputStream ous = new ByteArrayOutputStream();
-                                     FileInputStream fInput = new FileInputStream(file)) {
-
-                                    long counter = 0;
-                                    long fileSize =  file.length();
-                                    while ( counter <= fileSize) {
-                                        fInput.read(arr);
-                                        ous.write(arr, 0, (int) (fileSize - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (fileSize - counter) );
-                                        counter += BYTE_ARRAY_SIZE;
-                                    }
-                                    outputStr.write(ous.toByteArray());
-                                }
+                                fileManager.readFromFileToStream(file, outputStr);
                             } else {
                                 outputStr.writeUTF("404");
                             }
                             Thread.sleep(10L);
                             outputStr.writeUTF("");
                         } else if ("post".equals(in.split(" ")[0].trim())){
-                            System.out.println("Post is present");
-                            if("200".equalsIgnoreCase(scanner.readUTF())) {
-
-                                String fileName = scanner.readUTF();
-                                long fileSize = scanner.readLong();
-                                System.out.println("File exist " + fileName + ":" + fileSize);
+                            if("200".equalsIgnoreCase(inStream.readUTF())) {
+                                String fileName = inStream.readUTF();
+                                long fileSize = inStream.readLong();
                                 File f = new File( currentDir + File.separator + fileName);
                                 f.createNewFile();
-                                final int BYTE_ARRAY_SIZE = 4096;
-                                byte[] arr = new byte[BYTE_ARRAY_SIZE];
-
-                                try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(f))) {
-                                    long counter = 0;
-                                    while(counter <= fileSize) {
-                                        scanner.read(arr);
-                                        dos.write(arr, 0, (int) (fileSize - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (fileSize - counter));
-                                        counter += BYTE_ARRAY_SIZE;
-                                    }
-                                }
-
-                            } else {
-                                System.out.println("File not found");
+                                RandomAccessFile raf = new RandomAccessFile(f, "rw");
+                                raf.setLength(fileSize);
+                                raf.close();
+                                fileManager.readFromStreamToFile(inStream, f);
                             }
                             outputStr.writeUTF("");
                         } else if("exit".equalsIgnoreCase(in.trim())) {
