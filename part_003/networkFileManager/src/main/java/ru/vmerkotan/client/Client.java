@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.nio.file.Files;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -30,15 +31,11 @@ public class Client {
                 out.println(systemInStr);
                 if("exit".trim().equalsIgnoreCase(systemInStr)) {
                     done = true;
-                }
-
-                if("get".trim().equalsIgnoreCase(systemInStr.split(" ")[0])) {
-                    if("exist".equalsIgnoreCase(reader.readUTF())) {
+                } else if("get".trim().equalsIgnoreCase(systemInStr.split(" ")[0])) {
+                    if("200".equalsIgnoreCase(reader.readUTF())) {
                         String fileName = reader.readUTF();
-                        //System.out.println("File name " + fileName);
                         long size = reader.readLong();
-                        System.out.println("File size: " + size);
-                        File f = new File("C:" + File.separator + "test" + File.separator + "out"+File.separator + fileName);
+                        File f = new File( System.getProperty("java.io.tmpdir") +File.separator + fileName);
                         f.createNewFile();
                         final int BYTE_ARRAY_SIZE = 4096;
                         byte[] arr = new byte[BYTE_ARRAY_SIZE];
@@ -47,9 +44,10 @@ public class Client {
                             long counter = 0;
                             while(counter <= size) {
                                 reader.read(arr);
-                                dos.write(arr);
+                                dos.write(arr, 0, (int) (size - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (size - counter));
                                 counter += BYTE_ARRAY_SIZE;
                             }
+                            dos.flush();
                         }
                     }
                 }

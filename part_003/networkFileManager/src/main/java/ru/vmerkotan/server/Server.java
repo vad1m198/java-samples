@@ -3,6 +3,9 @@ package ru.vmerkotan.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
@@ -10,9 +13,9 @@ import java.util.Scanner;
  */
 public class Server {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
-        String currentDir = "C:";
+        String currentDir = "C:\\";
 
         try(ServerSocket server = new ServerSocket(5000)) {
             try (Socket incoming = server.accept()) {
@@ -22,7 +25,7 @@ public class Server {
 
                 try (Scanner scanner = new Scanner(input)) {
                     DataOutputStream outputStr = new DataOutputStream(output);
-                    outputStr.writeUTF("Hello! Enter EXIT to stop the programm" + System.getProperty("line.separator") +
+                    outputStr.writeUTF("Hello! Enter EXIT to stop the program" + System.getProperty("line.separator") +
                                             "Some menu will go here:");
                     boolean done = false;
                     while(!done && scanner.hasNextLine()) {
@@ -32,15 +35,12 @@ public class Server {
                             if(file.exists() && file.isDirectory()) {
                                 StringBuilder sb = new StringBuilder();
                                 for(String s: file.list()) {
-                                    System.out.println(s);
                                     sb.append(s + System.getProperty("line.separator"));
                                 }
                                 outputStr.writeUTF(sb.toString());
                                 outputStr.flush();
                             }
-                        }
-
-                        if("cd".equals(in.split(" ")[0]) && in.split(" ").length > 1) {
+                        } else if("cd".equals(in.split(" ")[0]) && in.split(" ").length > 1) {
                             String childPath = in.split(" ")[1];
 
                             if("..".equals(childPath)) {
@@ -50,18 +50,16 @@ public class Server {
                                 }
                             } else {
                                 File file = new File(currentDir + File.separator + childPath);
-                                if(file != null && file.exists() && file.isDirectory()) {
+                                if(file.exists() && file.isDirectory()) {
                                     currentDir = currentDir + File.separator + childPath;
                                 }
                             }
                             outputStr.writeUTF("");
-                        }
-
-                        if("get".equals(in.split(" ")[0]) && in.split(" ").length > 1) {
+                        } else if("get".equals(in.split(" ")[0]) && in.split(" ").length > 1) {
                             String fileName = in.split(" ")[1];
                             File file = new File(currentDir + File.separator + fileName);
-                            if(file != null && file.exists() && file.isFile()) {
-                                outputStr.writeUTF("exist");
+                            if( file.exists() && file.isFile()) {
+                                outputStr.writeUTF("200");
                                 //write file name
                                 outputStr.writeUTF(file.getName());
                                 //write size
@@ -70,27 +68,26 @@ public class Server {
                                 byte[] arr = new byte[BYTE_ARRAY_SIZE];
                                 try (ByteArrayOutputStream ous = new ByteArrayOutputStream();
                                      FileInputStream fInput = new FileInputStream(file)) {
-                                    int availableBytes = -1;
-                                    /*while (( availableBytes = fInput.available()) > 0) {
-                                        System.out.println("availableBytes" + availableBytes);
+
+                                    long counter = 0;
+                                    long fileSize =  file.length();
+                                    while ( counter <= fileSize) {
                                         fInput.read(arr);
-                                        System.out.println("write bytes");
-                                        ous.write(arr,0, availableBytes > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : availableBytes);
-                                        System.out.println("write bytes 2");
-                                    }*/
-                                    while ( fInput.available() > 0) {
-                                        System.out.println(fInput.available());
-                                        fInput.read(arr);
-                                        ous.write(arr);
+                                        ous.write(arr, 0, (int) (fileSize - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (fileSize - counter) );
+                                        counter += BYTE_ARRAY_SIZE;
                                     }
                                     outputStr.write(ous.toByteArray());
+                                    outputStr.flush();
                                 }
+                            } else {
+                                outputStr.writeUTF("404");
                             }
+                            Thread.sleep(10L);
                             outputStr.writeUTF("");
-                        }
-
-                        if("exit".equalsIgnoreCase(in.trim())) {
+                        } else if("exit".equalsIgnoreCase(in.trim())) {
                             done = true;
+                        } else {
+                            outputStr.writeUTF("");
                         }
                     }
                     incoming.close();
