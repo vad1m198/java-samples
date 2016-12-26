@@ -42,7 +42,6 @@ public class Client {
                                 dos.write(arr, 0, (int) (size - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (size - counter));
                                 counter += BYTE_ARRAY_SIZE;
                             }
-                            dos.flush();
                         }
                     }
                 } else if("post".equals(systemInStr.split(" ")[0].trim()) && systemInStr.split(" ").length > 1) {
@@ -65,8 +64,6 @@ public class Client {
                                 counter += BYTE_ARRAY_SIZE;
                             }
                             out.write(ous.toByteArray());
-                            out.flush();
-
                         }
 
 

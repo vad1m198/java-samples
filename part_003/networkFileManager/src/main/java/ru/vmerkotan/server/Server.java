@@ -75,7 +75,6 @@ public class Server {
                                         counter += BYTE_ARRAY_SIZE;
                                     }
                                     outputStr.write(ous.toByteArray());
-                                    outputStr.flush();
                                 }
                             } else {
                                 outputStr.writeUTF("404");
@@ -89,7 +88,7 @@ public class Server {
                                 String fileName = scanner.readUTF();
                                 long fileSize = scanner.readLong();
                                 System.out.println("File exist " + fileName + ":" + fileSize);
-                                File f = new File( System.getProperty("java.io.tmpdir") + File.separator + fileName);
+                                File f = new File( currentDir + File.separator + fileName);
                                 f.createNewFile();
                                 final int BYTE_ARRAY_SIZE = 4096;
                                 byte[] arr = new byte[BYTE_ARRAY_SIZE];
@@ -101,7 +100,6 @@ public class Server {
                                         dos.write(arr, 0, (int) (fileSize - counter) > BYTE_ARRAY_SIZE ? BYTE_ARRAY_SIZE : (int) (fileSize - counter));
                                         counter += BYTE_ARRAY_SIZE;
                                     }
-                                    dos.flush();
                                 }
 
                             } else {
