@@ -29,8 +29,12 @@ public class Server {
 
                 try (DataInputStream inStream = new DataInputStream(input)) {
                     DataOutputStream outputStr = new DataOutputStream(output);
-                    outputStr.writeUTF("Hello! Enter EXIT to stop the program" + System.getProperty("line.separator") +
-                                            "Some menu will go here:");
+                    outputStr.writeUTF("Menu:" + System.getProperty("line.separator") +
+                                            "ls - lists all files/folders in current folder" + System.getProperty("line.separator") +
+                                            "cd 'path' - changes current folder to specified relative path. Type '..' to move to parent folder" + System.getProperty("line.separator") +
+                                            "get 'fileName' - downloads specified fileName to temp folder. Current folder should be the folder you want to download file from" + System.getProperty("line.separator") +
+                                            "post 'path' - uploads specified path to current folder" + System.getProperty("line.separator") +
+                                            "exit - stops the program" + System.getProperty("line.separator"));
                     boolean done = false;
                     while(!done) {
 
@@ -75,7 +79,6 @@ public class Server {
                     }
                     incoming.close();
                 }
-
             }
         }
     }
