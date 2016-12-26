@@ -20,13 +20,14 @@ public class Server {
                 InputStream input = incoming.getInputStream();
                 OutputStream output = incoming.getOutputStream();
 
-                try (Scanner scanner = new Scanner(input)) {
+                try (DataInputStream scanner = new DataInputStream(input)) {
                     DataOutputStream outputStr = new DataOutputStream(output);
                     outputStr.writeUTF("Hello! Enter EXIT to stop the program" + System.getProperty("line.separator") +
                                             "Some menu will go here:");
                     boolean done = false;
-                    while(!done && scanner.hasNextLine()) {
-                        String in = scanner.nextLine();
+                    while(!done) {
+
+                        String in = scanner.readUTF();
                         if("ls".equals(in.trim())) {
                             File file = new File(currentDir);
                             if(file.exists() && file.isDirectory()) {
@@ -80,6 +81,17 @@ public class Server {
                                 outputStr.writeUTF("404");
                             }
                             Thread.sleep(10L);
+                            outputStr.writeUTF("");
+                        } else if ("post".equals(in.split(" ")[0].trim())){
+                            System.out.println("Post is present");
+                            if("200".equalsIgnoreCase(scanner.readUTF())) {
+                                System.out.println("File exist");
+                                String fileName = scanner.readUTF();
+                                long fileSize = scanner.readLong();
+                                System.out.println(fileName + ":" + fileSize);
+                            } else {
+                                System.out.println("File not found");
+                            }
                             outputStr.writeUTF("");
                         } else if("exit".equalsIgnoreCase(in.trim())) {
                             done = true;

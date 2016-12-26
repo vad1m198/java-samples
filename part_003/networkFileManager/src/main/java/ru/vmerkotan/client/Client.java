@@ -15,8 +15,7 @@ public class Client {
             InputStream inStream = s.getInputStream();
             OutputStream outStream = s.getOutputStream();
 
-            PrintWriter out = new PrintWriter(outStream, true);
-
+            DataOutputStream out = new DataOutputStream(outStream);
             DataInputStream reader = new DataInputStream(inStream);
             Scanner systemIn = new Scanner(System.in);
             boolean done = false;
@@ -24,10 +23,10 @@ public class Client {
                 String inStr = reader.readUTF();
                 System.out.println(inStr);
                 String systemInStr = systemIn.nextLine();
-                out.println(systemInStr);
-                if("exit".trim().equalsIgnoreCase(systemInStr)) {
+                out.writeUTF(systemInStr);
+                if("exit".equalsIgnoreCase(systemInStr.trim())) {
                     done = true;
-                } else if("get".trim().equalsIgnoreCase(systemInStr.split(" ")[0])) {
+                } else if("get".equals(systemInStr.split(" ")[0].trim())) {
                     if("200".equalsIgnoreCase(reader.readUTF())) {
                         String fileName = reader.readUTF();
                         long size = reader.readLong();
@@ -45,6 +44,20 @@ public class Client {
                             }
                             dos.flush();
                         }
+                    }
+                } else if("post".equals(systemInStr.split(" ")[0].trim()) && systemInStr.split(" ").length > 1) {
+                    File fileToUpload = new File(systemInStr.split(" ")[1].trim());
+                    if(fileToUpload.exists() && fileToUpload.isFile()) {
+                        System.out.println("File exists");
+                        out.writeUTF("200");
+                        out.writeUTF(fileToUpload.getName());
+                        out.writeLong(fileToUpload.length());
+
+
+
+                    } else {
+                        System.out.println("File not found");
+                        out.writeUTF("404");
                     }
                 }
             }
