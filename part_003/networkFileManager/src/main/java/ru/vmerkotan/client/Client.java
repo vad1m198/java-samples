@@ -2,11 +2,7 @@ package ru.vmerkotan.client;
 
 import java.io.*;
 import java.net.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-import java.nio.file.Files;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * Created by Вадим on 24.12.2016.
