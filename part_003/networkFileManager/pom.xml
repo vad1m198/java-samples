@@ -21,7 +21,7 @@
                 <version>2.7</version>
                 <configuration>
                     <check>
-                        <branchRate>50</branchRate>
+                        <branchRate>40</branchRate>
                         <lineRate>60</lineRate>
                         <haltOnFailure>true</haltOnFailure>
                         <totalBranchRate>50</totalBranchRate>
@@ -32,6 +32,11 @@
                     <formats>
                         <format>html</format>
                     </formats>
+                    <instrumentation>
+                        <excludes>
+                            <exclude>**/Client.class</exclude>
+                        </excludes>
+                    </instrumentation>
                 </configuration>
                 <executions>
                     <execution>

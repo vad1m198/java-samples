@@ -2,10 +2,17 @@ package ru.vmerkotan.client;
 
 import ru.vmerkotan.FileManager;
 
-import java.io.*;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.*;
+import java.io.PrintStream;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.DataOutputStream;
+import java.io.DataInputStream;
+import java.net.Socket;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -21,11 +28,11 @@ public class Client {
     /**
      * to read from.
      */
-    InputStream in;
+    private InputStream in;
     /**
      * to write to.
      */
-    PrintStream outputStream;
+    private PrintStream outputStream;
 
     /**
      * Creates new Client instance.
@@ -58,7 +65,7 @@ public class Client {
      * @throws IOException throws when appear.
      */
     public void init(String host, int port) throws IOException {
-        try(Socket s = new Socket(host, port)) {
+        try (Socket s = new Socket(host, port)) {
             InputStream inStream = s.getInputStream();
             OutputStream outStream = s.getOutputStream();
 
@@ -66,16 +73,16 @@ public class Client {
             DataInputStream reader = new DataInputStream(inStream);
             Scanner systemIn = new Scanner(in);
             boolean done = false;
-            while(!done){
+            while (!done) {
                 String inStr = reader.readUTF();
                 outputStream.println(inStr);
                 String systemInStr = systemIn.nextLine();
                 out.writeUTF(systemInStr);
-                if("exit".equalsIgnoreCase(systemInStr.trim())) {
+                if ("exit".equalsIgnoreCase(systemInStr.trim())) {
                     done = true;
-                } else if("get".equals(systemInStr.split(" ")[0].trim()) && systemInStr.split(" ").length > 1) {
+                } else if ("get".equals(systemInStr.split(" ")[0].trim()) && systemInStr.split(" ").length > 1) {
                     fileManager.readInputStreamToFile(reader, System.getProperty("java.io.tmpdir"));
-                } else if("post".equals(systemInStr.split(" ")[0].trim()) && systemInStr.split(" ").length > 1) {
+                } else if ("post".equals(systemInStr.split(" ")[0].trim()) && systemInStr.split(" ").length > 1) {
                     fileManager.writePathToOutputStream(systemInStr.split(" ")[1].trim(), out);
                 }
             }

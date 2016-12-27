@@ -6,7 +6,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.File;
+import java.io.DataOutputStream;
+import java.io.DataInputStream;
+import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.Socket;
 import static org.hamcrest.core.Is.is;
@@ -62,14 +68,14 @@ public class ServerTest {
     /**
      * Runs Server instance in new thread.
      * Initiates variables.
-     * @throws Exception
+     * @throws Exception when exception appear
      */
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         try {
-            new Thread(new Runnable(){
+            new Thread(new Runnable() {
                 public void run() {
-                    try{
+                    try {
                         Server s = new Server();
 
                         rootDir = tempFolder.newFolder("test");
@@ -83,7 +89,7 @@ public class ServerTest {
                         tempDir.mkdir();
                         temp2.createNewFile();
                         s.init(rootDir.getAbsolutePath(), port);
-                    }catch(Exception ex){
+                    } catch (Exception ex) {
                         System.out.println("Exception in setup method");
                         ex.printStackTrace();
                     }
@@ -103,6 +109,9 @@ public class ServerTest {
 
     }
 
+    /**
+     * clears tempFolder.
+     */
     @After
     public void tearDown() {
         tempFolder.delete();
@@ -121,7 +130,7 @@ public class ServerTest {
         String result = reader.readUTF();
         out.writeUTF("exit");
         String expected = "";
-        for(File f : rootDir.listFiles()) {
+        for (File f : rootDir.listFiles()) {
             expected += f.getName() + System.getProperty("line.separator");
         }
         assertThat(result, is(expected));
@@ -142,7 +151,7 @@ public class ServerTest {
         String result = reader.readUTF();
         out.writeUTF("exit");
         String expected = "";
-        for(File f : tempDir.listFiles()) {
+        for (File f : tempDir.listFiles()) {
             expected += f.getName() + System.getProperty("line.separator");
         }
         assertThat(result, is(expected));
@@ -166,7 +175,7 @@ public class ServerTest {
         out.writeUTF("exit");
 
         String expected = "";
-        for(File f : rootDir.listFiles()) {
+        for (File f : rootDir.listFiles()) {
             expected += f.getName() + System.getProperty("line.separator");
         }
         assertThat(result, is(expected));
@@ -221,7 +230,7 @@ public class ServerTest {
         String result = reader.readUTF();
         out.writeUTF("exit");
         String expected = "";
-        for(File f : tempDir.listFiles()) {
+        for (File f : tempDir.listFiles()) {
             expected += f.getName() + System.getProperty("line.separator");
         }
         assertThat(expected, is(result));
