@@ -2,18 +2,36 @@ package ru.vmerkotan.server;
 
 import ru.vmerkotan.FileManager;
 
-import java.io.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
 /**
+ * Server class presents Socket Server instance.
  * Created by Вадим on 24.12.2016.
  */
 public class Server {
-
+    /**
+     * Holds FileManager instance to call service methods.
+     */
     private FileManager fileManager = new FileManager();
 
+    /**
+     * Runs Server instance.
+     * @param args  args
+     * @throws IOException  when appear
+     * @throws InterruptedException  when appear
+     */
     public static void main(String[] args) throws IOException, InterruptedException {
         Properties p = new Properties();
         p.load(new InputStreamReader(new FileInputStream(new File(".\\part_003\\networkFileManager\\app.properties"))));
@@ -23,7 +41,13 @@ public class Server {
         s.init(currentDir, port);
     }
 
-
+    /**
+     * initiates new Server instance.
+     * @param rootDir   String path to root folder.
+     * @param port      Post to start server socket.
+     * @throws IOException  when appear
+     * @throws InterruptedException  when appear
+     */
     public void init(String rootDir, int port) throws IOException, InterruptedException {
         String currentDir = rootDir;
 
@@ -43,7 +67,6 @@ public class Server {
                             "exit - stops the program" + System.getProperty("line.separator"));
                     boolean done = false;
                     while(!done) {
-//                        System.out.println("In while loop");
                         String in = inStream.readUTF();
                         if("ls".equals(in.trim())) {
                             File file = new File(currentDir);

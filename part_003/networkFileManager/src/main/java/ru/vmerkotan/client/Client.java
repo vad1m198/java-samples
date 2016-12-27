@@ -1,6 +1,5 @@
 package ru.vmerkotan.client;
 
-import org.omg.CORBA.portable.*;
 import ru.vmerkotan.FileManager;
 
 import java.io.*;
@@ -11,20 +10,38 @@ import java.util.Properties;
 import java.util.Scanner;
 
 /**
+ * Class Client presents a client to work with sockets.
  * Created by Вадим on 24.12.2016.
  */
 public class Client {
-
+    /**
+     * Holds FileManager instance to call service methods.
+     */
     private FileManager fileManager = new FileManager();
-
+    /**
+     * to read from.
+     */
     InputStream in;
+    /**
+     * to write to.
+     */
     PrintStream outputStream;
 
+    /**
+     * Creates new Client instance.
+     * @param in    InputStream to read data from.
+     * @param out   PrintStream to print data to.
+     */
     public Client(InputStream in, PrintStream out) {
         this.in = in;
         this.outputStream = out;
     }
 
+    /**
+     * Main method to start Client.
+     * @param args  args
+     * @throws IOException when error appear.
+     */
     public static void main(String[] args) throws IOException {
         Properties p = new Properties();
         p.load(new InputStreamReader(new FileInputStream(new File(".\\part_003\\networkFileManager\\app.properties"))));
@@ -34,9 +51,13 @@ public class Client {
         c.init(host, port);
     }
 
+    /**
+     * Inits new Client.
+     * @param host  host address
+     * @param port  port
+     * @throws IOException throws when appear.
+     */
     public void init(String host, int port) throws IOException {
-
-
         try(Socket s = new Socket(host, port)) {
             InputStream inStream = s.getInputStream();
             OutputStream outStream = s.getOutputStream();

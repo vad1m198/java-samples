@@ -13,6 +13,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
+ * Presents tests for Server class.
  * Created by vmerkotan on 12/26/2016.
  */
 public class ServerTest {
@@ -58,6 +59,11 @@ public class ServerTest {
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
+    /**
+     * Runs Server instance in new thread.
+     * Initiates variables.
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception{
         try {
@@ -88,7 +94,7 @@ public class ServerTest {
             e.printStackTrace();
         }
 
-        Socket socket = new Socket(InetAddress.getLocalHost(), 6543);
+        Socket socket = new Socket(InetAddress.getLocalHost(), port);
         InputStream inStream = socket.getInputStream();
         OutputStream outStream = socket.getOutputStream();
 
