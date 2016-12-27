@@ -41,7 +41,7 @@ public class FindRunner {
 
         if (args.length != 7) {
             StringBuilder sb = new StringBuilder();
-            sb.append("Invalid arguments number. Please see the example: -d c:/ -n *.txt -m(-f) -o log.txt" + System.getProperty("line.separator"));
+            sb.append("Invalid arguments number. Please see the example: -d <folder absolute path to start search from> -n *.txt -m(-f) -o <file name to write results to>" + System.getProperty("line.separator"));
             for (Key k: keys) {
                 sb.append(k.getKey() + "   " + k.getInfo() + System.getProperty("line.separator"));
             }
