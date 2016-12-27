@@ -13,6 +13,7 @@
 		<module>inputOutput</module>
 		<module>consoleChat</module>
 		<module>networkFileManager</module>
+		<module>find</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
