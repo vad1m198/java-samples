@@ -3,6 +3,14 @@ package ru.vmerkotan;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 
 /**
  * Runner class to run find.
@@ -11,10 +19,10 @@ public class FindRunner {
     /**
      * Array to hold possible program keys.
      */
-    private Key[] keys = new Key[5];
+    private Key[] keys = new Key[3];
     /**
      * Main method.
-     * @param args String Example: -d c:/ -n *.txt -m(-r) -o log.txt
+     * @param args String Example: -d c:/ -n *.txt -o log.txt
      * @throws IOException when exception appear.
      */
     public static void main(String[] args) throws IOException {
@@ -28,20 +36,17 @@ public class FindRunner {
      * @throws IOException when exception appear.
      */
 	private void init(String[] args) throws IOException {
-	    Key directoryKey = new Key("-d", "Specify folder to start search from");
-        Key nameKey = new Key("-n", "File name or mask to search");
-        Key maskKey = new Key("-m", "Search by mask");
-        Key fullMatchKey = new Key("-f", "Search by full match");
-        Key outputKey = new Key("-o", "Specify file name to write results to");
+	    Key directoryKey = new Key("-d", "<Folder absolute path to start search from>");
+        Key nameKey = new Key("-n", "<File name or mask to search>");
+        Key outputKey = new Key("-o", "<Specify relative path to write results to>");
         keys[0] = directoryKey;
         keys[1] = nameKey;
-        keys[2] = maskKey;
-        keys[3] = fullMatchKey;
-        keys[4] = outputKey;
 
-        if (args.length != 7) {
+        keys[2] = outputKey;
+
+        if (args.length != 6) {
             StringBuilder sb = new StringBuilder();
-            sb.append("Invalid arguments number. Please see the example: -d <folder absolute path to start search from> -n *.txt -m(-f) -o <file name to write results to>" + System.getProperty("line.separator"));
+            sb.append("Invalid arguments number. Please see the example: -d c:/ -n *.txt -o log.txt" + System.getProperty("line.separator"));
             for (Key k: keys) {
                 sb.append(k.getKey() + "   " + k.getInfo() + System.getProperty("line.separator"));
             }
@@ -50,53 +55,32 @@ public class FindRunner {
 
         this.validateKeys(args[0], new Key[]{directoryKey});
         this.validateKeys(args[2], new Key[]{nameKey});
-        this.validateKeys(args[4], new Key[]{maskKey, fullMatchKey});
-        this.validateKeys(args[5], new Key[]{outputKey});
+        this.validateKeys(args[4], new Key[]{outputKey});
+        String startSearchFrom = args[1];
+        String searchMask = args[3];
+        String outputRelativePath = args[5];
 
-        File start = new File(args[1]);
-        if (!start.exists() || !start.isDirectory()) {
+        Path start = Paths.get(startSearchFrom);
+        if (!Files.exists(start) || !Files.isDirectory(start)) {
             throw new InvalidArgumentsException(args[1] + " is invalid location. It should be existing folder");
         }
-        File outputFile = new File(System.getProperty("java.io.tmpdir") + args[6]);
+        File outputFile = new File(System.getProperty("java.io.tmpdir") + outputRelativePath);
         if (outputFile.exists()) {
             outputFile.delete();
         }
+        outputFile.getParentFile().mkdirs();
         boolean isOutput = outputFile.createNewFile();
         if (!isOutput) {
-            throw new InvalidArgumentsException(args[6] + " is invalid file name.");
+            throw new InvalidArgumentsException(outputRelativePath + " is invalid file name.");
         }
 
-        boolean isFullMatch = args[4].equals(maskKey.getKey());
-
+        StringBuffer sb = new StringBuffer();
+        Files.walkFileTree(start, new Finder(searchMask, sb));
         try (FileWriter writer = new FileWriter(outputFile)) {
-            writer.write(findValidFileNames(start, args[3]));
+            writer.write(sb.toString());
         }
+
     }
-
-    /**
-     * Recursively looks for files by name.
-     * @param folder    to start from
-     * @param fileName  fileName to look for
-     * @return  String file paths
-     */
-    private String findValidFileNames(File folder, String fileName) {
-	    String result = "";
-        if (folder == null || !folder.exists() || !folder.isDirectory()) {
-	        throw new RuntimeException();
-        } else {
-            File[] files = folder.listFiles() == null ? new File[0] : folder.listFiles();
-            for (File f: files) {
-	            if (f != null && f.isDirectory()) {
-                    result += findValidFileNames(f, fileName);
-                } else if (f != null && f.getName().equalsIgnoreCase(fileName)) {
-	                result += f.getAbsolutePath() + System.getProperty("line.separator");
-                }
-            }
-        }
-        return result;
-    }
-
-
 
     /**
      * validates argument.
@@ -115,5 +99,70 @@ public class FindRunner {
             errorMessage.append(k.getKey() + "   " + k.getInfo() + System.getProperty("line.separator"));
         }
         throw new InvalidArgumentsException(errorMessage.toString());
+    }
+
+    /**
+     * Finder class represents a class to match file against pattern
+     * and write absolute paths to StringBuffer.
+     */
+    class Finder extends SimpleFileVisitor<Path> {
+        /**
+         * Holds internal PathMatcher.
+         */
+        private PathMatcher matcher;
+        /**
+         * StringBuffer to aggregate results.
+         */
+        private StringBuffer sb;
+
+        /**
+         * Constructs new Finder instance.
+         * @param pattern   String global pattern to match.
+         * @param sb        StringBuffer to write results to.
+         */
+        Finder(String pattern, StringBuffer sb) {
+            this.sb = sb;
+            matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+        }
+
+        /**
+         * Invoked for a file in a directory.
+         * <p> Unless overridden, this method returns {@link FileVisitResult#CONTINUE
+         * CONTINUE}.
+         * @param path  Path of current file.
+         * @param attrs BasicFileAttributes of current file.
+         * @return FileVisitResult.CONTINUE
+         */
+        @Override
+        public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
+            validateFile(path, attrs);
+            return FileVisitResult.CONTINUE;
+        }
+
+        /**
+         * Invoked for a file that could not be visited.
+         * <p> Unless overridden, this method re-throws the I/O exception that prevented
+         * the file from being visited.
+         * @param path  Path of current file.
+         * @param exc   IOException
+         * @return      FileVisitResult.CONTINUE
+         * @throws IOException when exception appear
+         */
+        @Override
+        public FileVisitResult visitFileFailed(Path path, IOException exc) throws IOException {
+            return FileVisitResult.CONTINUE;
+        }
+
+        /**
+         * Validates that file name is not null and file name mathces
+         * against pattern.
+         * @param file  Path to validate.
+         * @param attrs file attributes.
+         */
+        private void validateFile(Path file, BasicFileAttributes attrs) {
+            if (file.getFileName() != null && attrs.isRegularFile() && matcher.matches(file.getFileName())) {
+                sb.append(file.toAbsolutePath() + System.getProperty("line.separator"));
+            }
+        }
     }
 }
