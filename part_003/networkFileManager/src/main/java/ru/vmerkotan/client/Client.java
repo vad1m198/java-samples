@@ -64,7 +64,7 @@ public class Client {
      * @param port  port
      * @throws IOException throws when appear.
      */
-    public void init(String host, int port) throws IOException {
+    private void init(String host, int port) throws IOException {
         try (Socket s = new Socket(host, port)) {
             InputStream inStream = s.getInputStream();
             OutputStream outStream = s.getOutputStream();
