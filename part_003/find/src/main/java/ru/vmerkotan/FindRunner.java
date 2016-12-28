@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
@@ -27,15 +28,17 @@ public class FindRunner {
      */
     public static void main(String[] args) throws IOException {
         FindRunner fr = new FindRunner();
-        fr.init(args);
+        String tempFolderPath = System.getProperty("java.io.tmpdir");
+        fr.init(args, tempFolderPath);
 	}
 
     /**
      * Main method.
      * @param args String[] arguments from main method.
+     * @param tempFolderPath path to temp folder to store output file to.
      * @throws IOException when exception appear.
      */
-	private void init(String[] args) throws IOException {
+	public void init(String[] args, String tempFolderPath) throws IOException {
 	    Key directoryKey = new Key("-d", "<Folder absolute path to start search from>");
         Key nameKey = new Key("-n", "<File name or mask to search>");
         Key outputKey = new Key("-o", "<Specify relative path to write results to>");
@@ -64,15 +67,19 @@ public class FindRunner {
         if (!Files.exists(start) || !Files.isDirectory(start)) {
             throw new InvalidArgumentsException(args[1] + " is invalid location. It should be existing folder");
         }
-        File outputFile = new File(System.getProperty("java.io.tmpdir") + outputRelativePath);
+
+        try {
+            Paths.get(tempFolderPath + File.separator + outputRelativePath);
+        } catch (InvalidPathException ipe) {
+            throw new InvalidArgumentsException(outputRelativePath + " is invalid file name.");
+        }
+
+        File outputFile = new File(tempFolderPath + File.separator + outputRelativePath);
         if (outputFile.exists()) {
             outputFile.delete();
         }
         outputFile.getParentFile().mkdirs();
-        boolean isOutput = outputFile.createNewFile();
-        if (!isOutput) {
-            throw new InvalidArgumentsException(outputRelativePath + " is invalid file name.");
-        }
+        outputFile.createNewFile();
 
         StringBuffer sb = new StringBuffer();
         Files.walkFileTree(start, new Finder(searchMask, sb));
