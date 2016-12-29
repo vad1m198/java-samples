@@ -12,7 +12,7 @@
 	<modules>
 		<module>inputOutput</module>
 		<module>consoleChat</module>
-		<module>networkFileManager</module>
+		<module>sockets</module>
 		<module>find</module>
 	</modules>
 	<properties>
