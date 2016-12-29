@@ -39,11 +39,10 @@ public class GetAction extends Action {
      * Executes Get action.
      *
      * @param param Parameters to run action with.
-     * @throws IOException
+     * @throws IOException when error appear
      */
     @Override
     public void execute(String param) throws IOException {
-        System.out.println("GetAction was invoked");
         if(Files.exists(Paths.get(workingDirPath.getPath().toString(), param)) && Files.isRegularFile(Paths.get(workingDirPath.getPath().toString(), param))) {
             byte[] bytes = Files.readAllBytes(Paths.get(workingDirPath.getPath().toString(), param));
             outputStream.writeUTF("200");
@@ -51,6 +50,7 @@ public class GetAction extends Action {
             outputStream.writeUTF(new String(bytes, Charset.defaultCharset()));
             outputStream.writeUTF("File was transferred successfully");
         } else {
+            outputStream.writeUTF("404");
             outputStream.writeUTF("Path does not exist or target is not a file");
         }
 

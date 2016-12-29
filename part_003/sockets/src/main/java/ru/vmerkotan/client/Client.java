@@ -69,9 +69,10 @@ public class Client {
                 String systemInStr = systemIn.nextLine();
 
                 try {
-                    manager.executeByKey(systemInStr);
+                    manager.executeByKey(systemInStr.trim());
                 } catch (InvalidActionKeyException rte) {
-                    System.out.println(rte.getMessage());
+//                    System.out.println(rte.getMessage());
+                    out.writeUTF(systemInStr.trim());
                 }
                 if ("exit".equalsIgnoreCase(systemInStr.trim())) {
                     done = true;

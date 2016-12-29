@@ -42,7 +42,6 @@ public class ChangeDirAction extends Action {
      */
     @Override
     public void execute(String param) throws IOException {
-        System.out.println("Executing Change Dir Action");
 
         if (Files.exists(Paths.get(workingDirPath.getPath().toString(), param)) && !param.equals("..") && Paths.get(workingDirPath.getPath().toString(), param).toFile().isDirectory()) {
             workingDirPath.setPath(Paths.get(workingDirPath.getPath().toString(), param));
