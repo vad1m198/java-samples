@@ -1,6 +1,7 @@
 package ru.vmerkotan.client.actions;
 
 import ru.vmerkotan.Action;
+import ru.vmerkotan.manager.InvalidActionKeyException;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -36,11 +37,13 @@ public class PostAction extends Action {
      */
     @Override
     public void execute(String param) throws IOException {
-        if(Paths.get(param).isAbsolute() && Files.exists(Paths.get(param))) {
+        if(Paths.get(param).isAbsolute() && Files.exists(Paths.get(param)) && Files.isRegularFile(Paths.get(param))) {
             outputStream.writeUTF(getKey());
             outputStream.writeUTF(String.valueOf(Paths.get(param).getFileName()));
             byte[] bytes = Files.readAllBytes(Paths.get(param));
             outputStream.writeUTF(new String(bytes, Charset.defaultCharset()));
+        } else {
+            throw new InvalidActionKeyException("path is not absolute or file does not exist");
         }
     }
 }

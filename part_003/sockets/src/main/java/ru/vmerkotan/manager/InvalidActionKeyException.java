@@ -10,7 +10,7 @@ public class InvalidActionKeyException extends RuntimeException {
      * Initiates new InvalidActionKeyException instance.
      * @param s message
      */
-    InvalidActionKeyException(String s) {
+    public InvalidActionKeyException(String s) {
         super(s);
     }
 }

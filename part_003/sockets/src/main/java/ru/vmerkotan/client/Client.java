@@ -63,16 +63,21 @@ public class Client {
             manager.addAction(new PostAction("post", "post file to server", out));
             Scanner systemIn = new Scanner(System.in);
             boolean done = false;
+            boolean hasError = false;
             while (!done) {
-                String inStr = reader.readUTF();
-                System.out.println("incoming message >>>>> " + System.getProperty("line.separator") + inStr);
+                if(!hasError) {
+                    String inStr = reader.readUTF();
+                    System.out.println("incoming message >>>>> " + System.getProperty("line.separator") + inStr);
+                }
+
                 String systemInStr = systemIn.nextLine();
 
                 try {
                     manager.executeByKey(systemInStr.trim());
+                    hasError = false;
                 } catch (InvalidActionKeyException rte) {
-//                    System.out.println(rte.getMessage());
-                    out.writeUTF(systemInStr.trim());
+                    hasError = true;
+                    System.out.println(rte.getMessage());
                 }
                 if ("exit".equalsIgnoreCase(systemInStr.trim())) {
                     done = true;
