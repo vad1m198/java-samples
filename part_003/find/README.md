@@ -1,7 +1,7 @@
 ## This is simple search application to search files by name
 
 To compile jar file run `mvn clean package`
-To run the program try `java -jar find.jar -d c:/ -n *.txt -m -o log.txt` from target folder.
+To run the program try `java -jar find.jar -d c:/ -n *.txt -o log.txt` from target folder.
 After program finishes results will be in specified output path in temporary folder.
 
 Main keys:
