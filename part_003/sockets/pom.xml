@@ -35,7 +35,7 @@
                     </execution>
                 </executions>
             </plugin>
-		  <!--plugin>
+		  <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.7</version>
@@ -55,6 +55,7 @@
                     <instrumentation>
                         <excludes>
                             <exclude>**/Client.class</exclude>
+                            <exclude>**/client/actions/*.class</exclude>
                         </excludes>
                     </instrumentation>
                 </configuration>
@@ -69,7 +70,7 @@
                         </goals>
                     </execution>
                 </executions>
-			</plugin-->
+			</plugin>
 		</plugins>
 	  </build>
 </project>

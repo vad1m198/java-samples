@@ -7,14 +7,14 @@ import ru.vmerkotan.client.actions.GetAction;
 import ru.vmerkotan.client.actions.ListAction;
 import ru.vmerkotan.manager.InvalidActionKeyException;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.io.File;
-import java.io.DataOutputStream;
-import java.io.DataInputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.Scanner;
@@ -50,7 +50,7 @@ public class Client {
      * @param tempDir  String path to tempDir to store files.
      * @throws IOException throws when appear.
      */
-    private void init(String host, int port, String tempDir) throws IOException {
+    void init(String host, int port, String tempDir) throws IOException {
         try (Socket s = new Socket(host, port)) {
             InputStream inStream = s.getInputStream();
             OutputStream outStream = s.getOutputStream();
@@ -65,7 +65,7 @@ public class Client {
             boolean done = false;
             boolean hasError = false;
             while (!done) {
-                if(!hasError) {
+                if (!hasError) {
                     String inStr = reader.readUTF();
                     System.out.println("incoming message >>>>> " + System.getProperty("line.separator") + inStr);
                 }

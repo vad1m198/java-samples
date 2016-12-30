@@ -37,7 +37,7 @@ public class ActionsManager {
      * Returns all actions from manager.
      * @return Action[] actions
      */
-    public Action[] getAllActions() {
+    Action[] getAllActions() {
         return Arrays.copyOfRange(actions, 0, position);
     }
 
@@ -60,5 +60,20 @@ public class ActionsManager {
         if (!wasFound) {
             throw new InvalidActionKeyException("'" + key + "'" + " command was not recognized");
         }
+    }
+
+    /**
+     * Returns all Actions description.
+     * @return String concatenates of all Strings description.
+     */
+    public String getKeysDescription() {
+        StringBuilder sb = new StringBuilder();
+        for (Action a: this.getAllActions()) {
+            sb.append(a.getKey())
+                .append(" ")
+                .append(a.getDescription())
+                .append(System.getProperty("line.separator"));
+        }
+        return sb.toString();
     }
 }

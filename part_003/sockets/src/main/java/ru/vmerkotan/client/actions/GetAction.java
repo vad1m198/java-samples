@@ -1,14 +1,12 @@
 package ru.vmerkotan.client.actions;
 
 import ru.vmerkotan.Action;
-import ru.vmerkotan.PathWrapper;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -33,6 +31,7 @@ public class GetAction extends Action {
      *
      * @param key  String action key.
      * @param desc Action description.
+     * @param outputPath outputPath.
      * @param inputStream  DataInputStream to read data from.
      * @param outputStream DataOutputStream to write data to.
      */
@@ -52,7 +51,7 @@ public class GetAction extends Action {
     @Override
     public void execute(String param) throws IOException {
        outputStream.writeUTF(getKey() + " " + param);
-       if("200".equals(inputStream.readUTF())) {
+       if ("200".equals(inputStream.readUTF())) {
            String fileName = inputStream.readUTF();
            String content = inputStream.readUTF();
            Files.createFile(Paths.get(outputPath, fileName));

@@ -33,6 +33,9 @@ public class PostAction extends Action {
      *
      * @param key  String action key.
      * @param desc Action description.
+     * @param workingDirPath path to working dir.
+     * @param outputStream DataOutputStream to write data to.
+     * @param inputStream DataInputStream to read data from.
      */
     public PostAction(String key, String desc, PathWrapper workingDirPath, DataOutputStream outputStream, DataInputStream inputStream) {
         super(key, desc);

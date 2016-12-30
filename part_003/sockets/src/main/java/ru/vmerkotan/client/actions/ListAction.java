@@ -1,13 +1,9 @@
 package ru.vmerkotan.client.actions;
 
 import ru.vmerkotan.Action;
-import ru.vmerkotan.PathWrapper;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * Action to list files and folders names from working folder.

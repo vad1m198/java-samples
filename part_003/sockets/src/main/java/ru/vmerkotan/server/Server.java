@@ -53,7 +53,7 @@ public class Server {
      * @param workDir   Path to folder to start app.
      * @throws IOException  when appear
      */
-    private void init(int port, String workDir) throws IOException {
+    void init(int port, String workDir) throws IOException {
         PathWrapper wrapper = new PathWrapper(Paths.get(workDir));
         try (ServerSocket server = new ServerSocket(port)) {
             try (Socket incoming = server.accept()) {
@@ -63,12 +63,12 @@ public class Server {
 
                 try (DataInputStream inStream = new DataInputStream(input)) {
                     DataOutputStream outputStr = new DataOutputStream(output);
-                    manager.addAction(new ListAction("ls", "list Files", wrapper, outputStr));
-                    manager.addAction(new ChangeDirAction("cd", "list Files", wrapper, outputStr));
-                    manager.addAction(new GetAction("get", "get file from server", wrapper, outputStr));
-                    manager.addAction(new PostAction("post", "post file to server", wrapper, outputStr, inStream));
+                    manager.addAction(new ListAction("ls", "lists all files and folders form current folder", wrapper, outputStr));
+                    manager.addAction(new ChangeDirAction("cd", "change folder", wrapper, outputStr));
+                    manager.addAction(new GetAction("get", "download specified file to local folder", wrapper, outputStr));
+                    manager.addAction(new PostAction("post", "upload file to current folder", wrapper, outputStr, inStream));
                     boolean done = false;
-                    outputStr.writeUTF("Server is ready");
+                    outputStr.writeUTF(manager.getKeysDescription());
                     while (!done) {
                         String in = inStream.readUTF();
                         try {

@@ -31,13 +31,13 @@ public class PostAction extends Action {
     }
 
     /**
-     * Executes post Action
+     * Executes post Action.
      * @param param Parameters to run action with.
      * @throws IOException  when exception appear.
      */
     @Override
     public void execute(String param) throws IOException {
-        if(Paths.get(param).isAbsolute() && Files.exists(Paths.get(param)) && Files.isRegularFile(Paths.get(param))) {
+        if (Paths.get(param).isAbsolute() && Files.exists(Paths.get(param)) && Files.isRegularFile(Paths.get(param))) {
             outputStream.writeUTF(getKey());
             outputStream.writeUTF(String.valueOf(Paths.get(param).getFileName()));
             byte[] bytes = Files.readAllBytes(Paths.get(param));

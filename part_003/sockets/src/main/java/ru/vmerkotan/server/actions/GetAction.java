@@ -28,6 +28,8 @@ public class GetAction extends Action {
      *
      * @param key  String action key.
      * @param desc Action description.
+     * @param workingDirPath Current dir path.
+     * @param outputStream DataOutputStream to write to.
      */
     public GetAction(String key, String desc, PathWrapper workingDirPath, DataOutputStream outputStream) {
         super(key, desc);
@@ -43,7 +45,7 @@ public class GetAction extends Action {
      */
     @Override
     public void execute(String param) throws IOException {
-        if(Files.exists(Paths.get(workingDirPath.getPath().toString(), param)) && Files.isRegularFile(Paths.get(workingDirPath.getPath().toString(), param))) {
+        if (Files.exists(Paths.get(workingDirPath.getPath().toString(), param)) && Files.isRegularFile(Paths.get(workingDirPath.getPath().toString(), param))) {
             byte[] bytes = Files.readAllBytes(Paths.get(workingDirPath.getPath().toString(), param));
             outputStream.writeUTF("200");
             outputStream.writeUTF(String.valueOf(Paths.get(workingDirPath.getPath().toString(), param).getFileName()));
