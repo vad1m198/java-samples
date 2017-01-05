@@ -28,6 +28,7 @@
 		<module>part_001</module>
 		<module>part_002</module>
 		<module>part_003</module>
+		<module>part_004</module>
 	</modules>
 	
 	<build>
