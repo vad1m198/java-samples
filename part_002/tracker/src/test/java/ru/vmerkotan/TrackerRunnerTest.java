@@ -22,7 +22,9 @@ public class TrackerRunnerTest {
 			new String[] {"0", "name", "description", "y"}
 		);
 		Tracker tracker = new Tracker();
-		new TrackerRunner(input, tracker).init();
+        MenuTracker menu = new MenuTracker(input, tracker);
+        menu.fillActions();
+		new TrackerRunner(input, tracker, menu).init();
 		assertThat("Ticket should be added to Tracker", tracker.getAllTickets()[0].getName(), is("name"));
 		assertThat("Ticket should be added to Tracker", tracker.getAllTickets().length, is(1));
 	}
@@ -40,7 +42,9 @@ public class TrackerRunnerTest {
 		Input input = new StubInput(
 			new String[] {"2", String.valueOf(ticket.getId()), "new name", "new description", "y"}
 		);
-		new TrackerRunner(input, tracker).init();
+        MenuTracker menu = new MenuTracker(input, tracker);
+        menu.fillActions();
+		new TrackerRunner(input, tracker, menu).init();
 		assertThat("Ticket should be updated in Tracker", tracker.getAllTickets()[0].getName(), is("new name"));
 		assertThat("Tickets length should not be changed", tracker.getAllTickets().length, is(1));
 	}
@@ -57,7 +61,9 @@ public class TrackerRunnerTest {
 		Input input = new StubInput(
 			new String[] {"3", String.valueOf(ticket.getId()), "3", "y"}
 		);
-		new TrackerRunner(input, tracker).init();
+        MenuTracker menu = new MenuTracker(input, tracker);
+        menu.fillActions();
+		new TrackerRunner(input, tracker, menu).init();
 	}
 
 	/**
@@ -72,7 +78,9 @@ public class TrackerRunnerTest {
 		Input input = new StubInput(
 			new String[] {"4", String.valueOf(ticket.getId()), "new comment", "y"}
 		);
-		new TrackerRunner(input, tracker).init();
+        MenuTracker menu = new MenuTracker(input, tracker);
+        menu.fillActions();
+		new TrackerRunner(input, tracker, menu).init();
 		assertThat("Ticket comments length should be updated", tracker.getAllTickets()[0].getComments().length, is(1));
 	}
 
@@ -87,7 +95,9 @@ public class TrackerRunnerTest {
 		Input input = new StubInput(
 			new String[] {"1", "y"}
 		);
-		new TrackerRunner(input, tracker).init();
+        MenuTracker menu = new MenuTracker(input, tracker);
+        menu.fillActions();
+		new TrackerRunner(input, tracker, menu).init();
 	}
 
 	/**
@@ -101,7 +111,9 @@ public class TrackerRunnerTest {
 		Input input = new StubInput(
 			new String[] {"5", "name", "y"}
 		);
-		new TrackerRunner(input, tracker).init();
+        MenuTracker menu = new MenuTracker(input, tracker);
+        menu.fillActions();
+		new TrackerRunner(input, tracker, menu).init();
 	}
 
 	/**
@@ -116,6 +128,8 @@ public class TrackerRunnerTest {
 		Input input = new StubInput(
 			new String[] {"6", "456789", "y"}
 		);
-		new TrackerRunner(input, tracker).init();
+        MenuTracker menu = new MenuTracker(input, tracker);
+        menu.fillActions();
+		new TrackerRunner(input, tracker, menu).init();
 	}
 }

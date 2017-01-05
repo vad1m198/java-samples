@@ -38,20 +38,19 @@ public class FindRunner {
      * @param tempFolderPath path to temp folder to store output file to.
      * @throws IOException when exception appear.
      */
-	public void init(String[] args, String tempFolderPath) throws IOException {
+    void init(String[] args, String tempFolderPath) throws IOException {
 	    Key directoryKey = new Key("-d", "<Folder absolute path to start search from>");
         Key nameKey = new Key("-n", "<File name or mask to search>");
         Key outputKey = new Key("-o", "<Specify relative path to write results to>");
-        keys[0] = directoryKey;
-        keys[1] = nameKey;
-
-        keys[2] = outputKey;
+        this.keys[0] = directoryKey;
+        this.keys[1] = nameKey;
+        this.keys[2] = outputKey;
 
         if (args.length != 6) {
             StringBuilder sb = new StringBuilder();
-            sb.append("Invalid arguments number. Please see the example: -d c:/ -n *.txt -o log.txt" + System.getProperty("line.separator"));
+            sb.append("Invalid arguments number. Please see the example: -d c:/ -n *.txt -o log.txt").append(System.getProperty("line.separator"));
             for (Key k: keys) {
-                sb.append(k.getKey() + "   " + k.getInfo() + System.getProperty("line.separator"));
+                sb.append(k.getKey()).append("   ").append(k.getInfo()).append(System.getProperty("line.separator"));
             }
             throw new InvalidArgumentsException(sb.toString());
         }
@@ -101,9 +100,9 @@ public class FindRunner {
             }
         }
         StringBuilder errorMessage = new StringBuilder();
-	    errorMessage.append(arg + " is invalid argument. Should be one of the following: " + System.getProperty("line.separator"));
+	    errorMessage.append(arg).append(" is invalid argument. Should be one of the following: ").append(System.getProperty("line.separator"));
 	    for (Key k: keys) {
-            errorMessage.append(k.getKey() + "   " + k.getInfo() + System.getProperty("line.separator"));
+            errorMessage.append(k.getKey()).append("   ").append(k.getInfo()).append(System.getProperty("line.separator"));
         }
         throw new InvalidArgumentsException(errorMessage.toString());
     }
@@ -168,7 +167,7 @@ public class FindRunner {
          */
         private void validateFile(Path file, BasicFileAttributes attrs) {
             if (file.getFileName() != null && attrs.isRegularFile() && matcher.matches(file.getFileName())) {
-                sb.append(file.toAbsolutePath() + System.getProperty("line.separator"));
+                sb.append(file.toAbsolutePath()).append(System.getProperty("line.separator"));
             }
         }
     }
