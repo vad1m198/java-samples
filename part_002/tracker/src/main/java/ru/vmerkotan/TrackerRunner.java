@@ -12,11 +12,6 @@ public class TrackerRunner {
 	 */
 	private final Input input;
     /**
-     * Tracker instance.
-     */
-	private final Tracker tracker;
-
-    /**
      * MenuTracker instance.
      */
     private final MenuTracker menu;
@@ -24,12 +19,10 @@ public class TrackerRunner {
     /**
      * Creates new TrackerRunner object.
      * @param i Input
-     * @param tracker Tracker
      * @param menu MenuTracker
      */
-    TrackerRunner(final Input i, final Tracker tracker, final MenuTracker menu) {
+    TrackerRunner(final Input i, final MenuTracker menu) {
 		this.input = i;
-		this.tracker = tracker;
 		this.menu = menu;
 	}
 
@@ -42,7 +35,7 @@ public class TrackerRunner {
 		Tracker tracker = new Tracker();
 		MenuTracker menu = new MenuTracker(input, tracker);
 		menu.fillActions();
-		new TrackerRunner(input, tracker, menu).init();
+		new TrackerRunner(input, menu).init();
 	}
 
     /**

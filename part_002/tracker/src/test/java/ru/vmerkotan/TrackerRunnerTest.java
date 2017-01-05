@@ -24,7 +24,7 @@ public class TrackerRunnerTest {
 		Tracker tracker = new Tracker();
         MenuTracker menu = new MenuTracker(input, tracker);
         menu.fillActions();
-		new TrackerRunner(input, tracker, menu).init();
+		new TrackerRunner(input, menu).init();
 		assertThat("Ticket should be added to Tracker", tracker.getAllTickets()[0].getName(), is("name"));
 		assertThat("Ticket should be added to Tracker", tracker.getAllTickets().length, is(1));
 	}
@@ -44,7 +44,7 @@ public class TrackerRunnerTest {
 		);
         MenuTracker menu = new MenuTracker(input, tracker);
         menu.fillActions();
-		new TrackerRunner(input, tracker, menu).init();
+		new TrackerRunner(input, menu).init();
 		assertThat("Ticket should be updated in Tracker", tracker.getAllTickets()[0].getName(), is("new name"));
 		assertThat("Tickets length should not be changed", tracker.getAllTickets().length, is(1));
 	}
@@ -63,7 +63,7 @@ public class TrackerRunnerTest {
 		);
         MenuTracker menu = new MenuTracker(input, tracker);
         menu.fillActions();
-		new TrackerRunner(input, tracker, menu).init();
+		new TrackerRunner(input, menu).init();
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class TrackerRunnerTest {
 		);
         MenuTracker menu = new MenuTracker(input, tracker);
         menu.fillActions();
-		new TrackerRunner(input, tracker, menu).init();
+		new TrackerRunner(input, menu).init();
 		assertThat("Ticket comments length should be updated", tracker.getAllTickets()[0].getComments().length, is(1));
 	}
 
@@ -97,7 +97,7 @@ public class TrackerRunnerTest {
 		);
         MenuTracker menu = new MenuTracker(input, tracker);
         menu.fillActions();
-		new TrackerRunner(input, tracker, menu).init();
+		new TrackerRunner(input, menu).init();
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class TrackerRunnerTest {
 		);
         MenuTracker menu = new MenuTracker(input, tracker);
         menu.fillActions();
-		new TrackerRunner(input, tracker, menu).init();
+		new TrackerRunner(input, menu).init();
 	}
 
 	/**
@@ -130,6 +130,6 @@ public class TrackerRunnerTest {
 		);
         MenuTracker menu = new MenuTracker(input, tracker);
         menu.fillActions();
-		new TrackerRunner(input, tracker, menu).init();
+		new TrackerRunner(input, menu).init();
 	}
 }
