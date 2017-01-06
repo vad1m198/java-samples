@@ -1,8 +1,10 @@
 package ru.vmerkotan;
 
 import org.junit.Test;
+import ru.vmerkotan.actions.CosAction;
 import ru.vmerkotan.actions.DivideAction;
 import ru.vmerkotan.actions.MultiplyAction;
+import ru.vmerkotan.actions.SinAction;
 import ru.vmerkotan.actions.SubtractAction;
 import ru.vmerkotan.actions.SumAction;
 import ru.vmerkotan.input.Input;
@@ -30,6 +32,8 @@ public class InteractCalcTest {
         calc.addAction(new SubtractAction("sub", "This operation subtracts second argument from the first"));
         calc.addAction(new MultiplyAction("mul", "This operation multiplies all passed arguments"));
         calc.addAction(new DivideAction("div", "This operation divides first argument by second"));
+        calc.addAction(new CosAction("cos", "This operation calculates cosine of given argument"));
+        calc.addAction(new SinAction("sin", "This operation calculates sinus of given argument"));
     }
 
     /**
@@ -142,6 +146,62 @@ public class InteractCalcTest {
         runner = new InteractCalc(calc, input, output);
         runner.init();
         assertThat(5.0, is(closeTo(calc.getResult(), 0.1)));
+    }
+
+    /**
+     * Verify CosAction invalid arguments number.
+     * When pass invalid arguments number then no error.
+     */
+    @Test
+    public void whenCosPassWrongArgsNumberThenNoError() {
+        String[] answers = new String[]{"cos", "0 1", "cos", "0", "no", "exit"};
+        Input input = new TestInput(answers);
+        Output output = new TestOutput();
+        runner = new InteractCalc(calc, input, output);
+        runner.init();
+        assertThat(1.0, is(closeTo(calc.getResult(), 0.1)));
+    }
+
+    /**
+     * Verify CosAction.
+     * When pass 0 the result 1;
+     */
+    @Test
+    public void whenCosPassZeroThenResultOne() {
+        String[] answers = new String[]{"cos", "0", "no", "exit"};
+        Input input = new TestInput(answers);
+        Output output = new TestOutput();
+        runner = new InteractCalc(calc, input, output);
+        runner.init();
+        assertThat(1.0, is(closeTo(calc.getResult(), 0.1)));
+    }
+
+    /**
+     * Verify SinAction invalid arguments number.
+     * When pass invalid arguments number then no error.
+     */
+    @Test
+    public void whenSinPassWrongArgsNumberThenNoError() {
+        String[] answers = new String[]{"sin", "0 1", "sin", "0", "no", "exit"};
+        Input input = new TestInput(answers);
+        Output output = new TestOutput();
+        runner = new InteractCalc(calc, input, output);
+        runner.init();
+        assertThat(0.0, is(closeTo(calc.getResult(), 0.1)));
+    }
+
+    /**
+     * Verify SinAction.
+     * When pass 0 the result 1;
+     */
+    @Test
+    public void whenSinPassZeroThenResultOne() {
+        String[] answers = new String[]{"sin", "0", "no", "exit"};
+        Input input = new TestInput(answers);
+        Output output = new TestOutput();
+        runner = new InteractCalc(calc, input, output);
+        runner.init();
+        assertThat(0.0, is(closeTo(calc.getResult(), 0.1)));
     }
 
     /**

@@ -82,7 +82,7 @@ class Calculator {
     String getDescriptions() {
         StringBuilder sb = new StringBuilder();
         for (Action ac: this.actions) {
-            if(ac != null) {
+            if (ac != null) {
                 sb.append(ac.getKey()).append("  -  ").append(ac.getDescription()).append(System.getProperty("line.separator"));
             }
         }

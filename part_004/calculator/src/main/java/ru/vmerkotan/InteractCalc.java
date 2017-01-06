@@ -1,7 +1,9 @@
 package ru.vmerkotan;
 
+import ru.vmerkotan.actions.CosAction;
 import ru.vmerkotan.actions.DivideAction;
 import ru.vmerkotan.actions.MultiplyAction;
+import ru.vmerkotan.actions.SinAction;
 import ru.vmerkotan.actions.SubtractAction;
 import ru.vmerkotan.actions.SumAction;
 import ru.vmerkotan.exceptions.InvalidArgumentsException;
@@ -53,6 +55,8 @@ public class InteractCalc {
         calc.addAction(new SubtractAction("sub", "This operation subtracts second argument from the first"));
         calc.addAction(new MultiplyAction("mul", "This operation multiplies all passed arguments"));
         calc.addAction(new DivideAction("div", "This operation divides first argument by second"));
+        calc.addAction(new CosAction("cos", "This operation calculates cosine of given argument"));
+        calc.addAction(new SinAction("sin", "This operation calculates sinus of given argument"));
         Input input = new ConsoleInput();
         Output output = new ConsoleOutput();
         InteractCalc runner = new InteractCalc(calc, input, output);
