@@ -49,7 +49,7 @@ class Calculator {
     void executeByKey(String key, String[] params) {
         boolean keyFound = false;
         for (Action ac: this.actions) {
-            if (ac.getKey().equals(key)) {
+            if (ac != null && ac.getKey().equals(key)) {
                 for (int i = 0; i < params.length; i++) {
                     if ("-r".equals(params[i])) {
                         params[i] = String.valueOf(this.result);
@@ -82,7 +82,9 @@ class Calculator {
     String getDescriptions() {
         StringBuilder sb = new StringBuilder();
         for (Action ac: this.actions) {
-            sb.append(ac.getKey()).append("  -  ").append(ac.getDescription()).append(System.getProperty("line.separator"));
+            if(ac != null) {
+                sb.append(ac.getKey()).append("  -  ").append(ac.getDescription()).append(System.getProperty("line.separator"));
+            }
         }
         return sb.toString();
     }
