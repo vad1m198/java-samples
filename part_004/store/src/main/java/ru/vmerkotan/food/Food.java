@@ -27,6 +27,10 @@ public class Food {
      * Food discount.
      */
     private long discount;
+    /**
+     * Marks that food can be renewed.
+     */
+    private boolean canReproduct;
 
     /**
      * Sets discount value.
@@ -44,13 +48,15 @@ public class Food {
      * @param createdDate       Created date
      * @param price             Price
      * @param discount          Discount
+     * @param canReproduct      is Food can be recycled
      */
-    public Food(String name, long expirationDate, long createdDate, long price, long discount) {
+    public Food(String name, long expirationDate, long createdDate, long price, long discount, boolean canReproduct) {
         this.name = name;
         this.expirationDate = expirationDate;
         this.createdDate = createdDate;
         this.price = price;
         this.discount = discount;
+        this.canReproduct = canReproduct;
     }
 
     /**
@@ -96,5 +102,14 @@ public class Food {
      */
     public long getDiscount() {
         return discount;
+    }
+
+    /**
+     * Returns true is food can be reproduct.
+     *
+     * @return true if canReproduct true.
+     */
+    public boolean isReproduct() {
+        return canReproduct;
     }
 }

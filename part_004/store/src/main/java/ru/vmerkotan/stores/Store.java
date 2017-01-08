@@ -1,5 +1,6 @@
 package ru.vmerkotan.stores;
 
+import ru.vmerkotan.exceptions.StoreIsFullException;
 import ru.vmerkotan.food.Food;
 
 import java.util.Arrays;
@@ -12,12 +13,27 @@ public class Store {
     /**
      * Holds all food added to store.
      */
-    private Food[] foods = new Food[0];
+    private Food[] foods;
     /**
      * holds current position from internal
      * Food[].
      */
     private int position = 0;
+    /**
+     * store capacity. Amount of Food
+     * objects that can be stored.
+     */
+    private int capacity;
+
+    /**
+     * Creates new Store instance.
+     *
+     * @param capacity store capacity.
+     */
+    public Store(int capacity) {
+        this.capacity = capacity;
+        this.foods = new Food[capacity];
+    }
 
     /**
      * Adds food to the store.
@@ -25,10 +41,8 @@ public class Store {
      * @param food Food to add.
      */
     public void addFood(Food food) {
-        if (food != null) {
-            if (this.position == this.foods.length) {
-                this.foods = Arrays.copyOf(this.foods, this.position == 0 ? 1 : this.foods.length * 2);
-            }
+        if (this.position >= this.capacity) {
+            throw new StoreIsFullException("Store is full.");
         }
         this.foods[position++] = food;
     }
@@ -49,4 +63,12 @@ public class Store {
         return Arrays.copyOf(result, counter);
     }
 
+    /**
+     * Verifies that current store is full.
+     *
+     * @return true if store is full, false otherwise
+     */
+    public boolean isFull() {
+        return this.position >= this.capacity;
+    }
 }
