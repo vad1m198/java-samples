@@ -174,4 +174,36 @@ public class ControlQualityTest {
         firstWarehouse.addFood(firstFood);
         firstWarehouse.addFood(firstFood);
     }
+
+    /**
+     * Verify resort method.
+     */
+    @Test
+    public void whenResortThenFoodshouldbeResorted() {
+        Warehouse warehouse = new Warehouse(10);
+        Trash trash = new Trash(1);
+        RecycleBin recycle = new RecycleBin(1);
+        Shop shop = new Shop(1);
+        long currentTime = System.currentTimeMillis();
+
+        Food trashFood = new Food("trashFood", currentTime - 10, currentTime - 50, 100, 0, false);
+        Food recycleFood = new Food("recycleFood", currentTime - 10, currentTime - 50, 100, 0, true);
+        Food shopFood = new Food("shopFood", currentTime + 3000, currentTime - 1500, 100, 0, false);
+        warehouse.addFood(trashFood);
+        warehouse.addFood(recycleFood);
+        warehouse.addFood(shopFood);
+
+        Store[] arr = new Store[]{warehouse, trash, recycle, shop};
+        ControlQuality cq = new ControlQuality(arr);
+        cq.resort();
+
+        assertThat(warehouse.getAllFoods().length, is(0));
+        assertThat(trash.getAllFoods().length, is(1));
+        assertThat(recycle.getAllFoods().length, is(1));
+        assertThat(shop.getAllFoods().length, is(1));
+
+        assertThat(shop.getAllFoods()[0], is(shopFood));
+        assertThat(trash.getAllFoods()[0], is(trashFood));
+        assertThat(recycle.getAllFoods()[0], is(recycleFood));
+    }
 }

@@ -79,6 +79,24 @@ public class ControlQuality {
     }
 
     /**
+     * Resorts food.
+     */
+    public void resort() {
+        Food[] result = new Food[0];
+        for (Store s: this.stores) {
+            Food[] storeFood = s.getAllFoods();
+            s.clearStore();
+            Food[] tmp = new Food[result.length + storeFood.length];
+            System.arraycopy(result, 0, tmp, 0, result.length);
+            System.arraycopy(storeFood, 0, tmp, result.length, storeFood.length);
+            result = tmp;
+        }
+        for (Food f: result) {
+            this.addFood(f);
+        }
+    }
+
+    /**
      * Adds food to proper store.
      *
      * @param type Store type.

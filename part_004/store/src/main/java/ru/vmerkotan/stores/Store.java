@@ -71,4 +71,11 @@ public class Store {
     public boolean isFull() {
         return this.position >= this.capacity;
     }
+
+    /**
+     * Initiates foods array with new Food[].
+     */
+    public void clearStore() {
+        this.foods = new Food[capacity];
+    }
 }
