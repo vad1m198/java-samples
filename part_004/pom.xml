@@ -13,6 +13,7 @@
 		<module>calculator</module>
 		<module>store</module>
 		<module>menu</module>
+		<module>generator</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
