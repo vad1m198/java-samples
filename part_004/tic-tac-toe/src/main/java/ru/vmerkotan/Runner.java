@@ -146,7 +146,7 @@ public class Runner {
     /**
      * Reads X and Y values to make user move.
      */
-    public void userMove() {
+    private void userMove() {
         boolean valid = false;
         while (!valid) {
             this.out.write("Please type the X coordinate: ");
@@ -168,7 +168,7 @@ public class Runner {
     /**
      * Contender move.
      */
-    public void contenderMove() {
+    private void contenderMove() {
         Point p = this.contender.getMove();
         this.out.write("Contender move is: " + p.getX() + ":" + p.getY());
         this.field.makeMove(p, this.contenderSign);
