@@ -18,9 +18,9 @@ import java.nio.file.attribute.BasicFileAttributes;
  */
 public class FindRunner {
     /**
-     * Array to hold possible program keys.
+     * Keys manager to hold keys.
      */
-    private Key[] keys = new Key[3];
+    private KeysManager manager = new KeysManager();
     /**
      * Main method.
      * @param args String Example: -d c:/ -n *.txt -o log.txt
@@ -42,17 +42,14 @@ public class FindRunner {
 	    Key directoryKey = new Key("-d", "<Folder absolute path to start search from>");
         Key nameKey = new Key("-n", "<File name or mask to search>");
         Key outputKey = new Key("-o", "<Specify relative path to write results to>");
-        this.keys[0] = directoryKey;
-        this.keys[1] = nameKey;
-        this.keys[2] = outputKey;
+        manager.addKey(directoryKey);
+        manager.addKey(nameKey);
+        manager.addKey(outputKey);
 
         if (args.length != 6) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Invalid arguments number. Please see the example: -d c:/ -n *.txt -o log.txt").append(System.getProperty("line.separator"));
-            for (Key k: keys) {
-                sb.append(k.getKey()).append("   ").append(k.getInfo()).append(System.getProperty("line.separator"));
-            }
-            throw new InvalidArgumentsException(sb.toString());
+            String sb = "Invalid arguments number. Please see the example: -d c:/ -n *.txt -o log.txt" + System.getProperty("line.separator")
+                    + manager.getKeysDescription();
+            throw new InvalidArgumentsException(sb);
         }
 
         this.validateKeys(args[0], new Key[]{directoryKey});
