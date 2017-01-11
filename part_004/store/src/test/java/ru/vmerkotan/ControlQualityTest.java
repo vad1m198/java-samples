@@ -9,7 +9,11 @@ import ru.vmerkotan.stores.RecycleBin;
 import ru.vmerkotan.stores.Shop;
 import ru.vmerkotan.stores.Store;
 import ru.vmerkotan.stores.Trash;
+import ru.vmerkotan.stores.Types;
 import ru.vmerkotan.stores.Warehouse;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -28,8 +32,9 @@ public class ControlQualityTest {
     @Test
     public void whenAddTrashFoodThenAddToTrashStore() {
         Trash t = new Trash(10);
-        Store[] arr = new Store[]{t};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.TRASH, new Store[]{t});
+        ControlQuality cq = new ControlQuality(map);
         long currentTime = System.currentTimeMillis();
 
         Food trashFood = new Food("trashFood", currentTime - 10, currentTime - 50, 100, 0, false);
@@ -45,8 +50,9 @@ public class ControlQualityTest {
     @Test
     public void whenCanReproductThenAddToRecycleStore() {
         RecycleBin r = new RecycleBin(10);
-        Store[] arr = new Store[]{r};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.RECYCLE, new Store[]{r});
+        ControlQuality cq = new ControlQuality(map);
         long currentTime = System.currentTimeMillis();
 
         Food recycleFood = new Food("recycleFood", currentTime - 10, currentTime - 50, 100, 0, true);
@@ -62,8 +68,9 @@ public class ControlQualityTest {
     @Test
     public void whenAddShopFoodWithDiscountThenAddToShopStore() {
         Shop s = new Shop(10);
-        Store[] arr = new Store[]{s};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.SHOP, new Store[]{s});
+        ControlQuality cq = new ControlQuality(map);
         long currentTime = System.currentTimeMillis();
 
         Food shopFoodWithDiscount = new Food("shopFoodWithDiscount", currentTime + 1000, currentTime - 3500, 100, 0, false);
@@ -80,8 +87,9 @@ public class ControlQualityTest {
     @Test
     public void whenAddShopFoodWithoutDiscountThenAddToShopStore() {
         Shop s = new Shop(10);
-        Store[] arr = new Store[]{s};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.SHOP, new Store[]{s});
+        ControlQuality cq = new ControlQuality(map);
         long currentTime = System.currentTimeMillis();
 
         Food shopFoodWithoutDiscount = new Food("shopFoodWithoutDiscount", currentTime + 3000, currentTime - 1500, 100, 0, false);
@@ -97,7 +105,9 @@ public class ControlQualityTest {
     public void whenAddWarehouseFoodThenAddToWarehouseStore() {
         Warehouse w = new Warehouse(10);
         Store[] arr = new Store[]{w};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.WAREHOUSE, arr);
+        ControlQuality cq = new ControlQuality(map);
         long currentTime = System.currentTimeMillis();
 
         Food warehouseFood = new Food("warehouseFood", currentTime + 4000, currentTime - 1, 100, 0, false);
@@ -113,8 +123,9 @@ public class ControlQualityTest {
     @Test
     public void whenAddVegetableThenAddToFridge() {
         FridgeStore f = new FridgeStore(10);
-        Store[] arr = new Store[]{f};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.FRIDGE, new Store[]{f});
+        ControlQuality cq = new ControlQuality(map);
         long currentTime = System.currentTimeMillis();
 
         Vegetables vegetable = new Vegetables("warehouseFood", currentTime + 4000, currentTime - 1, 100, 0, false);
@@ -127,10 +138,11 @@ public class ControlQualityTest {
      * If no stores were found then throw.
      */
     @Test(expected = RuntimeException.class)
-    public void whenNoProperStpresThenThrow() {
+    public void whenNoProperStoresThenThrow() {
         Warehouse w = new Warehouse(1);
-        Store[] arr = new Store[]{w};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.WAREHOUSE, new Store[]{w});
+        ControlQuality cq = new ControlQuality(map);
         long currentTime = System.currentTimeMillis();
 
         Food firstFood = new Food("warehouseFood", currentTime + 4000, currentTime - 1, 100, 0, false);
@@ -149,8 +161,9 @@ public class ControlQualityTest {
     public void whenWarehouseIsFullThenAddToSecondWarehouse() {
         Warehouse firstWarehouse = new Warehouse(1);
         Warehouse secondWarehouse = new Warehouse(1);
-        Store[] arr = new Store[]{firstWarehouse, secondWarehouse};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.WAREHOUSE, new Store[]{firstWarehouse, secondWarehouse});
+        ControlQuality cq = new ControlQuality(map);
         long currentTime = System.currentTimeMillis();
 
         Food firstFood = new Food("warehouseFood", currentTime + 4000, currentTime - 1, 100, 0, false);
@@ -179,7 +192,7 @@ public class ControlQualityTest {
      * Verify resort method.
      */
     @Test
-    public void whenResortThenFoodshouldbeResorted() {
+    public void whenResortThenFoodShouldbeResorted() {
         Warehouse warehouse = new Warehouse(10);
         Trash trash = new Trash(1);
         RecycleBin recycle = new RecycleBin(1);
@@ -193,8 +206,12 @@ public class ControlQualityTest {
         warehouse.addFood(recycleFood);
         warehouse.addFood(shopFood);
 
-        Store[] arr = new Store[]{warehouse, trash, recycle, shop};
-        ControlQuality cq = new ControlQuality(arr);
+        Map<Types, Store[]> map = new HashMap<>();
+        map.put(Types.WAREHOUSE, new Store[]{warehouse});
+        map.put(Types.TRASH, new Store[]{trash});
+        map.put(Types.RECYCLE, new Store[]{recycle});
+        map.put(Types.SHOP, new Store[]{shop});
+        ControlQuality cq = new ControlQuality(map);
         cq.resort();
 
         assertThat(warehouse.getAllFoods().length, is(0));
