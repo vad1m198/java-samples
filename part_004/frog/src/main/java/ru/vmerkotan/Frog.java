@@ -14,10 +14,10 @@ public class Frog {
     private Field field;
 
     public Frog(Point startPoint, Point destinationPoint, Field field) {
-        if(startPoint.getCircle() < 0 || startPoint.getCircle() > field.getCirclesNumber()
-                || startPoint.getSector() < 0 || startPoint.getSector() > field.getSectorsNumber()
-                || destinationPoint.getCircle() < 0 || destinationPoint.getCircle() > field.getCirclesNumber()
-                || destinationPoint.getSector() < 0 || destinationPoint.getSector() > field.getSectorsNumber()) {
+        if(startPoint.getCircle() < 1 || startPoint.getCircle() > field.getCirclesNumber()
+                || startPoint.getSector() < 1 || startPoint.getSector() > field.getSectorsNumber()
+                || destinationPoint.getCircle() < 1 || destinationPoint.getCircle() > field.getCirclesNumber()
+                || destinationPoint.getSector() < 1 || destinationPoint.getSector() > field.getSectorsNumber()) {
             throw new RuntimeException("Start or destination points are out of field.");
         }
         this.currentPoint = startPoint;
@@ -31,10 +31,10 @@ public class Frog {
         }
 
         if(!isPossibleMove()) {
-            throw new RuntimeException("Move is impossible");
+            throw new ImpossibleMoveException("Move is impossible");
         }
 
-
+        //find segments number which  % 3 == 0
 
         return new Point[]{new Point(1,1)};
     }
@@ -42,18 +42,47 @@ public class Frog {
     private boolean isPossibleMove() {
         int sectorsToPass;
         int circlesToPass;
-        if(destinationPoint.getSector() >= currentPoint.getSector()) {
+        if (destinationPoint.getSector() >= currentPoint.getSector()) {
             sectorsToPass = destinationPoint.getSector() - currentPoint.getSector();
         } else {
             sectorsToPass = this.field.getSectorsNumber() - this.currentPoint.getSector() + this.destinationPoint.getSector();
         }
 
-        circlesToPass = Math.abs(this.currentPoint.getCircle() - this.destinationPoint.getCircle());
+        circlesToPass = this.destinationPoint.getCircle() - this.currentPoint.getCircle();
 
-        if(sectorsToPass == 0 || sectorsToPass + circlesToPass < 3) {
+        if (sectorsToPass == 0) {
             return false;
         }
+
+        int numberOfHops = getNumberOfHops(Math.abs(circlesToPass), sectorsToPass);
+
+        if(numberOfHops > sectorsToPass || (numberOfHops == 2 && Math.abs(circlesToPass) == 2)) {
+            return false;
+        }
+
+        Point[] result = new Point[numberOfHops];
+
+        for(int i = 0; i < numberOfHops; i++) {
+            Point[] points = getPossibleMoves();
+            for(Point p: points) {
+
+            }
+
+        }
+
         return true;
+    }
+
+    private int getNumberOfHops(int circlesNum, int sectorsNum) {
+        int sum = circlesNum + sectorsNum;
+        int mod = sum % 3;
+        if (mod == 0) {
+            return sum / 3;
+        } else if( mod == 1) {
+            return (sum + 4) / 3;
+        } else {
+            return (sum + 1) / 3;
+        }
     }
 
     private Point[] getPossibleMoves() {
