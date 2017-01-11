@@ -9,7 +9,7 @@ import java.util.Arrays;
  * {@code Store} class represents
  * basic class for different kinds of stores.
  */
-public class Store {
+public abstract class Store {
     /**
      * Holds all food added to store.
      */
