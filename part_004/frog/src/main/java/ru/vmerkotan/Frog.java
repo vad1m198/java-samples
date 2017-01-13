@@ -7,128 +7,154 @@ import java.util.Arrays;
  *
  * Created by vmerkotan on 1/11/2017.
  */
-public class Frog {
-
-    private Point currentPoint;
+class Frog {
+    /**
+     * Point to start from.
+     */
+    private Point startPoint;
+    /**
+     * Point to get to.
+     */
     private Point destinationPoint;
+    /**
+     * Field instance to perform on.
+     */
     private Field field;
-
-    public Frog(Point startPoint, Point destinationPoint, Field field) {
-        if(startPoint.getCircle() < 1 || startPoint.getCircle() > field.getCirclesNumber()
+    /**
+     * Holds max steps that can be performed.
+     */
+    private int maxCount = 50;
+    /**
+     * Min steps to get to destination point.
+     */
+    private int minSteps = 0;
+    /**
+     * was valid route found.
+     */
+    private boolean routeFound = false;
+    /**
+     *
+     */
+    private String path = "";
+    /**
+     * Creates new Frog instance.
+     *
+     * @param startPoint        Point to start from.
+     * @param destinationPoint  Point to get to.
+     * @param field             Field instance to perform on.
+     */
+    Frog(Point startPoint, Point destinationPoint, Field field) {
+        if (startPoint.getCircle() < 1 || startPoint.getCircle() > field.getCirclesNumber()
                 || startPoint.getSector() < 1 || startPoint.getSector() > field.getSectorsNumber()
                 || destinationPoint.getCircle() < 1 || destinationPoint.getCircle() > field.getCirclesNumber()
                 || destinationPoint.getSector() < 1 || destinationPoint.getSector() > field.getSectorsNumber()) {
             throw new RuntimeException("Start or destination points are out of field.");
         }
-        this.currentPoint = startPoint;
+        this.startPoint = startPoint;
         this.destinationPoint = destinationPoint;
         this.field = field;
     }
 
-    public Point[] getRoute() {
-        if(currentPoint.equals(destinationPoint)) {
-            return new Point[0];
+    /**
+     * Gets minimal route to get to destination point.
+     *
+     * @return  String representation of minimal path.
+     */
+    String getRoute() {
+        if (startPoint.equals(destinationPoint)) {
+            this.routeFound = true;
+        } else {
+            recursiveJump(this.startPoint, 0, this.path);
         }
-
-        if(!isPossibleMove()) {
-            throw new ImpossibleMoveException("Move is impossible");
+        if (!this.routeFound) {
+            throw new ImpossibleMoveException("Route can not be created");
         }
-
-        //find segments number which  % 3 == 0
-
-        return new Point[]{new Point(1,1)};
+        return this.path;
     }
 
-    private boolean isPossibleMove() {
-        int sectorsToPass;
-        int circlesToPass;
-        if (destinationPoint.getSector() >= currentPoint.getSector()) {
-            sectorsToPass = destinationPoint.getSector() - currentPoint.getSector();
-        } else {
-            sectorsToPass = this.field.getSectorsNumber() - this.currentPoint.getSector() + this.destinationPoint.getSector();
-        }
+    /**
+     * Performs moves and write result to class variables.
+     *
+     * @param point         Point to make jump from.
+     * @param count         How many jumps were performed previously.
+     * @param previousPath  String representation of previous jumps.
+     */
+    private void recursiveJump(Point point, int count, String previousPath) {
+        if (point.equals(this.destinationPoint)) {
 
-        circlesToPass = this.destinationPoint.getCircle() - this.currentPoint.getCircle();
+            if (this.minSteps == 0 || this.minSteps > count) {
 
-        if (sectorsToPass == 0) {
-            return false;
-        }
-
-        int numberOfHops = getNumberOfHops(Math.abs(circlesToPass), sectorsToPass);
-
-        if(numberOfHops > sectorsToPass || (numberOfHops == 2 && Math.abs(circlesToPass) == 2)) {
-            return false;
-        }
-
-        Point[] result = new Point[numberOfHops];
-
-        for(int i = 0; i < numberOfHops; i++) {
-            Point[] points = getPossibleMoves();
-            for(Point p: points) {
-
+                this.minSteps = count;
+                this.path = previousPath;
+                routeFound = true;
             }
+        } else if (count < maxCount && (this.minSteps == 0 || this.minSteps > count)) {
 
-        }
-
-        return true;
-    }
-
-    private int getNumberOfHops(int circlesNum, int sectorsNum) {
-        int sum = circlesNum + sectorsNum;
-        int mod = sum % 3;
-        if (mod == 0) {
-            return sum / 3;
-        } else if( mod == 1) {
-            return (sum + 4) / 3;
-        } else {
-            return (sum + 1) / 3;
+            Point[] points = getPossibleMoves(point);
+            for (Point p: points) {
+                recursiveJump(p, count + 1, previousPath + "[" + p.getSector() + ":" + p.getCircle()  + "] ");
+            }
         }
     }
 
-    private Point[] getPossibleMoves() {
+    /**
+     * Returns possible moves that can be performed on field.
+     * Also consider field boundaries and is Point is occupied or not.
+     *
+     * @param point Point to start moves from.
+     * @return      Point[] of possible moves.
+     */
+    private Point[] getPossibleMoves(Point point) {
         Point[] result = new Point[5];
         int counter = 0;
-        Point p1 = new Point(this.currentPoint.getSector() + 3 > this.field.getSectorsNumber()
-                ? this.currentPoint.getSector() - this.field.getSectorsNumber() + 3
-                : this.currentPoint.getSector() + 3, currentPoint.getCircle());
-        result[counter++] = p1;
-        if(this.currentPoint.getCircle() + 1 <= this.field.getCirclesNumber()) {
-            Point p2 = new Point(this.currentPoint.getSector() + 2 > this.field.getSectorsNumber()
-                    ? this.currentPoint.getSector() - this.field.getSectorsNumber() + 2
-                    : this.currentPoint.getSector() + 2, currentPoint.getCircle() + 1);
-            if(!this.field.isOccupied(p2)) {
+        Point p1 = new Point(point.getSector() + 3 > this.field.getSectorsNumber()
+                ? point.getSector() - this.field.getSectorsNumber() + 3
+                : point.getSector() + 3, point.getCircle());
+        if (!this.field.isOccupied(p1)) {
+            result[counter++] = p1;
+        }
+        if (point.getCircle() + 1 <= this.field.getCirclesNumber()) {
+            Point p2 = new Point(point.getSector() + 2 > this.field.getSectorsNumber()
+                    ? point.getSector() - this.field.getSectorsNumber() + 2
+                    : point.getSector() + 2, point.getCircle() + 1);
+            if (!this.field.isOccupied(p2)) {
                 result[counter++] = p2;
             }
         }
-
-        if(this.currentPoint.getCircle() - 1 > 0) {
-            Point p3 = new Point(this.currentPoint.getSector() + 2 > this.field.getSectorsNumber()
-                    ? this.currentPoint.getSector() - this.field.getSectorsNumber() + 2
-                    : this.currentPoint.getSector() + 2, currentPoint.getCircle() - 1);
-            if(!this.field.isOccupied(p3)) {
+        if (point.getCircle() - 1 > 0) {
+            Point p3 = new Point(point.getSector() + 2 > this.field.getSectorsNumber()
+                    ? point.getSector() - this.field.getSectorsNumber() + 2
+                    : point.getSector() + 2, point.getCircle() - 1);
+            if (!this.field.isOccupied(p3)) {
                 result[counter++] = p3;
             }
         }
-
-        if(this.currentPoint.getCircle() + 2 <= this.field.getCirclesNumber()) {
-            Point p4 = new Point(this.currentPoint.getSector() + 1 > this.field.getSectorsNumber()
-                    ? this.currentPoint.getSector() - this.field.getSectorsNumber() + 1
-                    : this.currentPoint.getSector() + 1, currentPoint.getCircle() + 2);
-            if(!this.field.isOccupied(p4)) {
+        if (point.getCircle() + 2 <= this.field.getCirclesNumber()) {
+            Point p4 = new Point(point.getSector() + 1 > this.field.getSectorsNumber()
+                    ? point.getSector() - this.field.getSectorsNumber() + 1
+                    : point.getSector() + 1, point.getCircle() + 2);
+            if (!this.field.isOccupied(p4)) {
                 result[counter++] = p4;
             }
         }
-
-        if(this.currentPoint.getCircle() - 2 > 0) {
-            Point p5 = new Point(this.currentPoint.getSector() + 1 > this.field.getSectorsNumber()
-                    ? this.currentPoint.getSector() - this.field.getSectorsNumber() + 1
-                    : this.currentPoint.getSector() + 1, currentPoint.getCircle() - 2);
-            counter++;
-            if(!this.field.isOccupied(p5)) {
+        if (point.getCircle() - 2 > 0) {
+            Point p5 = new Point(point.getSector() + 1 > this.field.getSectorsNumber()
+                    ? point.getSector() - this.field.getSectorsNumber() + 1
+                    : point.getSector() + 1, point.getCircle() - 2);
+            if (!this.field.isOccupied(p5)) {
                 result[counter++] = p5;
             }
         }
         return Arrays.copyOf(result, counter);
+    }
+
+    /**
+     * Returns minimal steps count.
+     *
+     * @return int minimal steps count.
+     */
+    int getMinimalStepsNumber() {
+        return this.minSteps;
     }
 
 
