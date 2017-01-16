@@ -72,6 +72,15 @@ public class GameField {
      * @return true if some line contains of equal Strings.
      */
     public boolean isWinner() {
+        return checkHorizontalLines() || checkVerticalLines() || checkDiagonalLine() || checkReverseDiagonalLine();
+    }
+
+    /**
+     * checks all horizontal lines from the field.
+     *
+     * @return if all Strings in some horizontal lines are equals.
+     */
+    private boolean checkHorizontalLines() {
         for (int i = 0; i < this.field.length; i++) {
             boolean validHorizontal = true;
             for (int j = 0; j < this.field.length; j++) {
@@ -83,6 +92,16 @@ public class GameField {
             if (validHorizontal) {
                 return true;
             }
+        }
+        return false;
+    }
+    /**
+     * checks all vertical lines from the field.
+     *
+     * @return if all Strings in line are equals.
+     */
+    private boolean checkVerticalLines() {
+        for (int i = 0; i < this.field.length; i++) {
             boolean validVertical = true;
             for (int j = 0; j < this.field.length; j++) {
                 if (this.field[i][i] == null || !this.field[i][i].equals(this.field[j][i])) {
@@ -93,29 +112,39 @@ public class GameField {
             if (validVertical) {
                 return true;
             }
-            boolean validDiagonal = true;
-            for (int j = 0; j < this.field.length; j++) {
-                if (this.field[0][0] == null || !this.field[0][0].equals(this.field[j][j])) {
-                    validDiagonal = false;
-                    break;
-                }
-            }
-            if (validDiagonal) {
-                return true;
-            }
-            boolean validDiagonalReverse = true;
-            for (int j = 0; j < this.field.length; j++) {
-                if (this.field[0][this.field.length - 1] == null
-                        || !this.field[0][this.field.length - 1].equals(this.field[j][this.field.length - 1 - j])) {
-                    validDiagonalReverse = false;
-                    break;
-                }
-            }
-            if (validDiagonalReverse) {
-                return true;
-            }
         }
         return false;
+    }
+    /**
+     * checks diagonal line from the field.
+     *
+     * @return if all Strings in lines are equals.
+     */
+    private boolean checkDiagonalLine() {
+        boolean validDiagonal = true;
+        for (int j = 0; j < this.field.length; j++) {
+            if (this.field[0][0] == null || !this.field[0][0].equals(this.field[j][j])) {
+                validDiagonal = false;
+                break;
+            }
+        }
+        return validDiagonal;
+    }
+    /**
+     * checks reverse diagonal line from the field.
+     *
+     * @return if all Strings in lines are equals.
+     */
+    private boolean checkReverseDiagonalLine() {
+        boolean validDiagonalReverse = true;
+        for (int j = 0; j < this.field.length; j++) {
+            if (this.field[0][this.field.length - 1] == null
+                    || !this.field[0][this.field.length - 1].equals(this.field[j][this.field.length - 1 - j])) {
+                validDiagonalReverse = false;
+                break;
+            }
+        }
+        return validDiagonalReverse;
     }
 
     /**
