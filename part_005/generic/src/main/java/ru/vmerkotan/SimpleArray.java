@@ -1,5 +1,7 @@
 package ru.vmerkotan;
 
+import java.util.Arrays;
+
 /**
  * {@code SimpleArray} class represents a simple
  * generic container.
@@ -32,9 +34,7 @@ class SimpleArray<T> {
      */
     void add(T value) {
         if (this.position >= objects.length) {
-            Object[] newObjects = new Object[this.objects.length == 0 ? 1 : this.objects.length * 2];
-            System.arraycopy(this.objects, 0, newObjects, 0, this.objects.length);
-            this.objects = newObjects;
+            this.objects = Arrays.copyOf(this.objects, this.objects.length == 0 ? 1 : this.objects.length * 2);
         }
         this.objects[position++] = value;
     }

@@ -11,7 +11,8 @@
 	</parent>
 	<modules>
 		<module>iterator</module>
-		<module>generic</module>		
+		<module>generic</module>
+		<module>list</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
