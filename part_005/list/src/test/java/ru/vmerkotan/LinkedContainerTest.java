@@ -3,6 +3,7 @@ package ru.vmerkotan;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -24,6 +25,35 @@ public class LinkedContainerTest {
         assertThat(container.get(0), is("String 1"));
         assertThat(container.get(1), is("String 2"));
         assertThat(container.get(2), is("String 3"));
+    }
+
+    /**
+     * Test remove method.
+     */
+    @Test
+    public void whenRemoveFirstElementThenGetShouldReturnCorrect() {
+        LinkedContainer<String> container = new LinkedContainer<>();
+        container.add("String 1");
+        container.add("String 2");
+        container.add("String 3");
+        container.remove(0);
+        assertThat(container.get(0), is("String 2"));
+        assertThat(container.get(1), is("String 3"));
+    }
+
+    /**
+     * Test remove method.
+     */
+    @Test
+    public void whenRemoveLastElementThenGetShouldReturnCorrect() {
+        LinkedContainer<String> container = new LinkedContainer<>();
+        container.add("String 1");
+        container.add("String 2");
+        container.add("String 3");
+        container.remove(2);
+        assertThat(container.get(0), is("String 1"));
+        assertThat(container.get(1), is("String 2"));
+        assertNull(container.get(2));
     }
 
 }
