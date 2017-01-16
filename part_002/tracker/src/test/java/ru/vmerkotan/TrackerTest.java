@@ -125,7 +125,7 @@ public class TrackerTest {
      * should update Ticket object with passed name and description
      */
     @Test
-    public void whenUpdateTicketThenProperTicketShopuldBeUpdated() {
+    public void whenUpdateTicketThenProperTicketShouldBeUpdated() {
         Tracker tracker = new Tracker();
         String ticketName = "Ticket name";
         String ticketDescription = "Ticket description";

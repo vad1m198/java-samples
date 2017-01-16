@@ -86,6 +86,7 @@ public class MenuTracker {
 		this.actions[position++] = this.new DeleteItem("Delete Item");
 		this.actions[position++] = this.new AddComment("Comment Item");
 		this.actions[position++] = this.new FilterItemsByName("Filter Items by name");
+        this.actions[position++] = new MenuTracker.FilterItemsCreatedAfter("Filter Items by created Date");
 	}
 
     /**
@@ -93,7 +94,7 @@ public class MenuTracker {
      * @param action UserAction to add
      */
 	public void addAction(UserAction action) {
-		this.actions[position++] = action;
+        this.actions[position++] = action;
 	}
 
 	/**
@@ -121,7 +122,8 @@ public class MenuTracker {
 	*/
 	public int[] getActionsKeys() {
 		int[] result = new int[this.actions.length];
-		for (int i = 0; i < this.actions.length; i++) {
+
+        for (int i = 0; i < this.actions.length; i++) {
 			result[i] = this.actions[i].key();
 		}
 		return result;
@@ -309,4 +311,58 @@ public class MenuTracker {
 			}
 		}
 	}
+
+    /**
+     * The {@code FilterItemsCreatedAfter} class represents filter actions by created date.
+     * @since  1.0
+     */
+    private static class FilterItemsCreatedAfter extends BaseAction {
+        /**
+         * Constructs new object.
+         *
+         * @param name String name of action
+         */
+        FilterItemsCreatedAfter(String name) {
+            super(name);
+        }
+
+        /**
+         * returns UserAction key.
+         * @return key
+         */
+        public int key() {
+            return 6;
+        }
+
+        /**
+         * Performs filtering Items by createdDate which created date is greater then passed value.
+         * Prints Items to console
+         * @param input 	 Input system instance
+         * @param tracker Tracker instance to work with
+         */
+        public void execute(Input input, Tracker tracker) {
+            String createdDateStr = input.ask("Please type target created date:");
+            Ticket[] tickets = new Ticket[0];
+            try {
+                long createdDate = Long.parseLong(createdDateStr);
+                for (Ticket ticket: tracker.filterTicketsCreatedAfter(createdDate)) {
+                    System.out.println(String.format("%s. %s. %s", ticket.getId(), ticket.getName(), ticket.getDescription()));
+                    for (String s: ticket.getComments()) {
+                        System.out.println("	Comment: " + s);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("[ERROR] Invalid Id. Please type valid Id number.");
+            }
+        }
+
+        /**
+         * Returns key and name of action.
+         * @return String information about UserAction
+         */
+        public String info() {
+            return String.format("%s. %s", this.key(), "Filter Items by created name");
+        }
+
+    };
 }
