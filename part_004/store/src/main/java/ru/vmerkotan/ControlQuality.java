@@ -17,15 +17,15 @@ class ControlQuality {
     /**
      * Internal Store[].
      */
-    private Map<Types, Store[]> mapTypeToStores;
+    private Store[] stores;
 
     /**
-     * Constructs new ControlQuality object.
+     * Creates new ControlQuality object.
      *
-     * @param mapTypeToStores Map<String, Store[]> stores. Map Store type to Stores[].
+     * @param stores Store[]
      */
-    ControlQuality(Map<Types, Store[]> mapTypeToStores) {
-        this.mapTypeToStores = mapTypeToStores;
+    ControlQuality(Store[] stores) {
+        this.stores = stores;
     }
 
     /**
@@ -34,24 +34,16 @@ class ControlQuality {
      * @param food Food to be added.
      */
     void addFood(Food food) {
-        long currentTime = System.currentTimeMillis();
-        long createdDate = food.getCreatedDate();
-        long expirationDate = food.getExpirationDate();
-        if (currentTime >= expirationDate && !food.isReproduct()) {
-            this.addToStore(Types.TRASH, food);
-        } else if (currentTime >= expirationDate && food.isReproduct()) {
-            this.addToStore(Types.RECYCLE, food);
-        } else if ((float) (currentTime - createdDate) / (expirationDate - createdDate) >= 0.75f) {
-            food.setDiscount(10);
-            this.addToStore(Types.SHOP, food);
-        } else if ((float) (currentTime - createdDate) / (expirationDate - createdDate) >= 0.25f) {
-            this.addToStore(Types.SHOP, food);
-        } else {
-            if (food instanceof Vegetables) {
-                this.addToStore(Types.FRIDGE, food);
-            } else {
-                this.addToStore(Types.WAREHOUSE, food);
+        boolean wasAdded = false;
+        for (Store s: this.stores) {
+            if (s.isAppropriate(food) && !s.isFull()) {
+                s.addFood(food);
+                wasAdded = true;
+                break;
             }
+        }
+        if (!wasAdded) {
+            throw new RuntimeException("All stores are full");
         }
     }
 
@@ -60,8 +52,7 @@ class ControlQuality {
      */
     void resort() {
         Food[] result = new Food[0];
-        for (Map.Entry<Types, Store[]> entry: this.mapTypeToStores.entrySet()) {
-            for (Store s: entry.getValue()) {
+            for (Store s: this.stores) {
                 Food[] storeFood = s.getAllFoods();
                 s.clearStore();
                 Food[] tmp = new Food[result.length + storeFood.length];
@@ -69,37 +60,9 @@ class ControlQuality {
                 System.arraycopy(storeFood, 0, tmp, result.length, storeFood.length);
                 result = tmp;
             }
-        }
 
         for (Food f: result) {
             this.addFood(f);
         }
     }
-
-    /**
-     * Adds food to proper store.
-     *
-     * @param type Store type.
-     * @param food  Food to be added.
-     */
-    private void addToStore(Types type, Food food) {
-        Store[] stores = this.mapTypeToStores.get(type);
-        boolean wasAdded = false;
-        if (stores == null) {
-            throw new RuntimeException("No stores of type " + type + " were found");
-        }
-
-        for (Store s: stores) {
-            if (!s.isFull()) {
-                s.addFood(food);
-                wasAdded = true;
-                break;
-            }
-        }
-
-        if (!wasAdded) {
-            throw new RuntimeException("All stores of type " + type + " are full");
-        }
-    }
-
 }

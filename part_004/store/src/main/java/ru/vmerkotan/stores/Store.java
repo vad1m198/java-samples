@@ -78,4 +78,12 @@ public abstract class Store {
     public void clearStore() {
         this.foods = new Food[capacity];
     }
+
+    /**
+     * Verifies if current type of food can be added.
+     *
+     * @param food  Food to add.
+     * @return      true if food can be added, else false.
+     */
+    public abstract boolean isAppropriate(Food food);
 }

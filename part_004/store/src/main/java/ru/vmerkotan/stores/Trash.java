@@ -1,5 +1,7 @@
 package ru.vmerkotan.stores;
 
+import ru.vmerkotan.food.Food;
+
 /**
  * {@code Trash} represents a simple
  * Trash to store Food.
@@ -14,5 +16,15 @@ public class Trash extends Store {
      */
     public Trash(int capacity) {
         super(capacity);
+    }
+
+    @Override
+    public boolean isAppropriate(Food food) {
+        long currentTime = System.currentTimeMillis();
+        long expirationDate = food.getExpirationDate();
+        if (currentTime >= expirationDate && !food.isReproduct()) {
+            return true;
+        }
+        return false;
     }
 }

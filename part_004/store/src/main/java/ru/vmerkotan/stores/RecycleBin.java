@@ -1,5 +1,7 @@
 package ru.vmerkotan.stores;
 
+import ru.vmerkotan.food.Food;
+
 /**
  * {@code RecycleBin} class represents
  * store to hold Food that can be restored.
@@ -14,5 +16,12 @@ public class RecycleBin extends Store {
       */
     public RecycleBin(int capacity) {
         super(capacity);
+    }
+
+    @Override
+    public boolean isAppropriate(Food food) {
+        long currentTime = System.currentTimeMillis();
+        long expirationDate = food.getExpirationDate();
+        return currentTime >= expirationDate && food.isReproduct();
     }
 }

@@ -1,5 +1,8 @@
 package ru.vmerkotan.stores;
 
+import ru.vmerkotan.food.Food;
+import ru.vmerkotan.food.Vegetables;
+
 /**
  * {@code FridgeStore} class represents
  * store with low temperature.
@@ -15,5 +18,13 @@ public class FridgeStore extends Store {
      */
     public FridgeStore(int capacity) {
         super(capacity);
+    }
+
+    @Override
+    public boolean isAppropriate(Food food) {
+        long currentTime = System.currentTimeMillis();
+        long createdDate = food.getCreatedDate();
+        long expirationDate = food.getExpirationDate();
+        return (float) (currentTime - createdDate) / (expirationDate - createdDate) < 0.25f && (food instanceof Vegetables);
     }
 }
