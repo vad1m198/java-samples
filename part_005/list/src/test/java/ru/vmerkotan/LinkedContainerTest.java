@@ -28,6 +28,32 @@ public class LinkedContainerTest {
     }
 
     /**
+     * Test size get methods.
+     */
+    @Test
+    public void whenAddElementThenSizeShouldReturnCorrect() {
+        LinkedContainer<String> container = new LinkedContainer<>();
+        container.add("String 1");
+        container.add("String 2");
+        container.add("String 3");
+        assertThat(container.size(), is(3));
+    }
+
+    /**
+     * Test size get methods.
+     */
+    @Test
+    public void whenAddAndRemoveElementThenSizeShouldReturnCorrect() {
+        LinkedContainer<String> container = new LinkedContainer<>();
+        container.add("String 1");
+        container.add("String 2");
+        container.add("String 3");
+        container.remove(0);
+        assertThat(container.size(), is(2));
+    }
+
+
+    /**
      * Test remove method.
      */
     @Test

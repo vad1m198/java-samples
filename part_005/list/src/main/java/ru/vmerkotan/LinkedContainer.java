@@ -15,6 +15,10 @@ public class LinkedContainer<T> implements SimpleContainer<T> {
      * Last Link.
      */
     private Node<T> last;
+    /**
+     * holds container size.
+     */
+    private int size;
 
     @Override
     public void add(T t) {
@@ -27,6 +31,7 @@ public class LinkedContainer<T> implements SimpleContainer<T> {
             last = new Node<>(l, t, null);
             l.next = last;
         }
+        size++;
     }
 
     @Override
@@ -42,7 +47,6 @@ public class LinkedContainer<T> implements SimpleContainer<T> {
             current = current.next;
             counter++;
         }
-
         return result;
     }
 
@@ -58,7 +62,10 @@ public class LinkedContainer<T> implements SimpleContainer<T> {
             if (counter == index) {
                 Node prev = current.prev;
                 Node next = current.next;
-                if (next == null) {
+                if (prev == null && next == null) {
+                    this.first = null;
+                    this.last = null;
+                } else if (next == null) {
                     prev.next = null;
                     this.last = prev;
                 } else if (prev == null) {
@@ -74,7 +81,16 @@ public class LinkedContainer<T> implements SimpleContainer<T> {
             current = current.next;
             counter++;
         }
+        size--;
+    }
 
+    /**
+     * Returns size of the container.
+     *
+     * @return int size of container.
+     */
+    public int size() {
+        return this.size;
     }
 
     /**
