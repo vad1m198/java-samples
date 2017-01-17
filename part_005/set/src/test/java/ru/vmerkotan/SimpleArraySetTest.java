@@ -40,11 +40,29 @@ public class SimpleArraySetTest {
      * Verify duplicates.
      */
     @Test
-    public void whenAddDuplicatesThenNOnlyOneElementShouldBeAdded() {
+    public void whenAddDuplicatesThenOnlyOneElementShouldBeAdded() {
         SimpleArraySet<String> set = new SimpleArraySet<>();
         set.add("Test");
         set.add("Test");
         assertThat(set.next(), is("Test"));
+        assertFalse(set.hasNext());
+    }
+
+    /**
+     * Verify sort order.
+     * When add Objects.
+     * Next should return values based on it hashcode.
+     */
+    @Test
+    public void whenAddValuesThenNextShouldReturnInOrder() {
+        SimpleArraySet<String> set = new SimpleArraySet<>();
+        set.add("test");
+        set.add("String");
+        set.add("new");
+
+        assertThat(set.next(), is("String"));
+        assertThat(set.next(), is("new"));
+        assertThat(set.next(), is("test"));
         assertFalse(set.hasNext());
     }
 
