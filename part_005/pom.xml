@@ -15,6 +15,7 @@
 		<module>list</module>
 		<module>set</module>
 		<module>map</module>
+		<module>order-book</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
