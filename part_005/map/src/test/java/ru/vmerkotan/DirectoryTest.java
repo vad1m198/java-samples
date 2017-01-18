@@ -3,7 +3,10 @@ package ru.vmerkotan;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNull;
 
 /**
  * Tests for Directory class.
@@ -20,6 +23,18 @@ public class DirectoryTest {
         assertTrue(dir.insert("1", "test"));
 
         assertThat(dir.get("1"), is("test"));
+    }
+
+    /**
+     * test insert/get method.
+     */
+    @Test
+    public void whenInsertTheSameKeyThanGetShouldReturnOverridedValue() {
+        Directory<String, String> dir = new Directory<>();
+        assertTrue(dir.insert("1", "test"));
+        assertFalse(dir.insert("1", "test123"));
+
+        assertThat(dir.get("1"), is("test123"));
     }
 
     /**
@@ -50,9 +65,8 @@ public class DirectoryTest {
     public void whenNextThanReturnEntry() {
         Directory<String, String> dir = new Directory<>();
         dir.insert("1", "test");
-        Directory.DirEntry entry= dir.next();
+        Directory.DirEntry entry = dir.next();
         assertThat(entry.getValue(), is("test"));
         assertThat(entry.getKey(), is("1"));
-
     }
 }
