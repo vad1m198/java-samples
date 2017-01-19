@@ -16,6 +16,7 @@
 		<module>generator</module>
 		<module>tic-tac-toe</module>
 		<module>frog</module>
+		<module>accumulations</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
