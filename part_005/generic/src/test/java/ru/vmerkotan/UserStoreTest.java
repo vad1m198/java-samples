@@ -3,6 +3,7 @@ package ru.vmerkotan;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -21,7 +22,7 @@ public class UserStoreTest {
         u.setId("1");
         store.add(u);
 
-        assertThat(store.get(0).getId(), is("1"));
+        assertThat(store.get("1"), is(u));
     }
 
     /**
@@ -31,11 +32,13 @@ public class UserStoreTest {
     public void whenUpdateThenValueShouldBeUpdated() {
         UserStore store = new UserStore(10);
         User u = new User();
+        u.setId("1");
         User updated = new User();
+        updated.setId("1");
         store.add(u);
-        store.put(0, updated);
+        store.put("1", updated);
 
-        assertThat(store.get(0), is(updated));
+        assertThat(store.get("1"), is(updated));
     }
 
     /**
@@ -45,10 +48,12 @@ public class UserStoreTest {
     public void whenDeleteThenValueShouldBeRemoved() {
         UserStore store = new UserStore(10);
         User firstUser = new User();
+        firstUser.setId("1");
         User secondUser = new User();
+        secondUser.setId("2");
         store.add(firstUser);
         store.add(secondUser);
-        store.delete(0);
-        assertThat(store.get(0), is(secondUser));
+        store.delete("1");
+        assertNull(store.get("1"));
     }
 }

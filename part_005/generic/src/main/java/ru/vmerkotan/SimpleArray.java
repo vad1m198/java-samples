@@ -71,4 +71,13 @@ class SimpleArray<T> {
         this.objects = objects;
         this.position--;
     }
+
+    /**
+     * Returns array size.
+     *
+     * @return size of the array.
+     */
+    int size() {
+        return this.position;
+    }
 }

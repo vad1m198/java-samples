@@ -3,6 +3,7 @@ package ru.vmerkotan;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -22,7 +23,7 @@ public class RoleStoreTest {
         u.setId("1");
         store.add(u);
 
-        assertThat(store.get(0).getId(), is("1"));
+        assertThat(store.get("1"), is(u));
     }
 
     /**
@@ -32,11 +33,13 @@ public class RoleStoreTest {
     public void whenUpdateThenValueShouldBeUpdated() {
         RoleStore store = new RoleStore(10);
         Role u = new Role();
+        u.setId("1");
         Role updated = new Role();
+        updated.setId("1");
         store.add(u);
-        store.put(0, updated);
+        store.put("1", updated);
 
-        assertThat(store.get(0), is(updated));
+        assertThat(store.get("1"), is(updated));
     }
 
     /**
@@ -46,11 +49,13 @@ public class RoleStoreTest {
     public void whenDeleteThenValueShouldBeRemoved() {
         RoleStore store = new RoleStore(10);
         Role firstUser = new Role();
+        firstUser.setId("1");
         Role secondUser = new Role();
+        secondUser.setId("2");
         store.add(firstUser);
         store.add(secondUser);
-        store.delete(0);
-        assertThat(store.get(0), is(secondUser));
+        store.delete("1");
+        assertNull(store.get("1"));
     }
 
 }

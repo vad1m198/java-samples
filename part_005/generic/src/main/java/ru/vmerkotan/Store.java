@@ -14,26 +14,26 @@ public interface Store<T extends Base> {
     void add(T value);
 
     /**
-     * Returns value from index position.
+     * Returns value by id.
      *
-     * @param index position to get value from.
+     * @param id Object idintificagtor.
      * @return T value with position index.
      */
-    T get(int index);
+    T get(String id);
 
     /**
      * Updates value on the index position with passed value.
      *
-     * @param index int position to update value.
+     * @param id String id to update.
      * @param value T instance to put.
      */
-    void put(int index, T value);
+    void put(String id, T value);
 
     /**
-     * Removes value from index position.
+     * Removes value by id.
      *
-     * @param index int position to remove value from.
+     * @param id String object id to delete.
      */
-    void delete(int index);
+    void delete(String id);
 
 }
