@@ -6,6 +6,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 /**
  * Tests for PrimesIterator class.
@@ -14,22 +15,23 @@ import static org.junit.Assert.assertFalse;
 public class PrimesIteratorTest {
     /**
      * When iterator length is one then hasNext()
-     * should return false.
+     * should return true.
      */
     @Test
     public void whenLengthIsOneThenHasNextFalse() {
-        PrimesIterator<Integer> it = new PrimesIterator<>(new Integer[]{1});
-        assertFalse(it.hasNext());
+        PrimesIterator it = new PrimesIterator(new Integer[]{1});
+        assertTrue(it.hasNext());
     }
 
     /**
-     * When iterator length is one then next()
+     * When iterator length is one then twice next()
      * should return null.
      */
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test
     public void whenLengthIsOneThenNextThrow() {
-        PrimesIterator<Integer> it = new PrimesIterator<>(new Integer[]{1});
+        PrimesIterator it = new PrimesIterator(new Integer[]{1});
         it.next();
+        assertNull(it.next());
     }
 
     /**
@@ -38,8 +40,8 @@ public class PrimesIteratorTest {
      */
     @Test
     public void whenLengthIsGreaterOneThenReturnValid() {
-        PrimesIterator<Integer> it = new PrimesIterator<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
-        Integer[] expected = new Integer[]{2, 3, 4, 6, 8, 12, 14};
+        PrimesIterator it = new PrimesIterator(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
+        Integer[] expected = new Integer[]{1, 2, 3, 5, 7, 11, 13};
         Integer[] actual = new Integer[7];
         actual[0] = it.next();
         assertTrue(it.hasNext());
