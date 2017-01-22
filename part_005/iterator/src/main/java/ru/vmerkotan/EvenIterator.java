@@ -5,48 +5,44 @@ import java.util.Iterator;
 /**
  * EvenIterator class represents iterator of event indexes.
  * Created by Вадим on 01.01.2017.
- *
- * @param <T> Type Generic.
  */
-public class EvenIterator<T> implements Iterator<T> {
+public class EvenIterator implements Iterator<Integer> {
     /**
      * holds elements to iterate.
      */
-    private final T[] array;
+    private final Integer[] array;
     /**
-     * current position.
+     * Holds position of next element to return.
      */
-    private int index = 0;
+    private int position = -1;
 
     /**
      * Creates new EvenIterator object.
      *
-     * @param array T[] elements to iterate.
+     * @param array Integer[] elements to iterate.
      */
-    public EvenIterator(final T[] array) {
+    public EvenIterator(final Integer[] array) {
         this.array = array;
     }
 
-    /**
-     * Returns {@code true} if the iteration has more elements.
-     * (In other words, returns {@code true} if {@link #next} would
-     * return an element rather than throwing an exception.)
-     *
-     * @return {@code true} if the iteration has more elements
-     */
     @Override
     public boolean hasNext() {
-        return index < this.array.length;
+        for (int i = position + 1; i < this.array.length; i++) {
+            if (this.array[i] % 2 == 0) {
+                return true;
+            }
+        }
+        return false;
     }
-    /**
-     * Returns the next element in the iteration.
-     *
-     * @return the next element in the iteration
-     */
+
     @Override
-    public T next() {
-        T result = this.array[index];
-        index += 2;
-        return result;
+    public Integer next() {
+        for (int i = position + 1; i < this.array.length; i++) {
+            if (this.array[i] % 2 == 0) {
+                this.position = i;
+                return this.array[i];
+            }
+        }
+        return null;
     }
 }

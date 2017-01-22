@@ -3,9 +3,10 @@ package ru.vmerkotan;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for EvenIterator class.
@@ -20,7 +21,7 @@ public class EvenIteratorTest {
      */
     @Test
     public void whenLengthIsOneThenHasNextReturnTrue() {
-        EvenIterator<Integer> it = new EvenIterator<>(new Integer[]{1});
+        EvenIterator it = new EvenIterator(new Integer[]{2});
         assertTrue(it.hasNext());
     }
 
@@ -30,8 +31,8 @@ public class EvenIteratorTest {
      */
     @Test
     public void whenLengthIsOneThenNextThrow() {
-        EvenIterator<Integer> it = new EvenIterator<>(new Integer[]{1});
-        assertThat(it.next(), is(1));
+        EvenIterator it = new EvenIterator(new Integer[]{4});
+        assertThat(it.next(), is(4));
     }
 
     /**
@@ -40,7 +41,7 @@ public class EvenIteratorTest {
      */
     @Test
     public void whenLengthIsTwoThenHasNextReturnFalse() {
-        EvenIterator<Integer> it = new EvenIterator<>(new Integer[]{1, 3});
+        EvenIterator it = new EvenIterator(new Integer[]{2});
         it.next();
         assertFalse(it.hasNext());
     }
@@ -51,20 +52,19 @@ public class EvenIteratorTest {
      */
     @Test
     public void whenLengthIsZeroThenHasNextReturnFalse() {
-        EvenIterator<Integer> it = new EvenIterator<>(new Integer[]{});
+        EvenIterator it = new EvenIterator(new Integer[]{});
         assertFalse(it.hasNext());
     }
 
     /**
-     * If Iterator has two element and next()
-     * was invoked twice then throw
-     * return second element.
+     * If Iterator has one element and next()
+     * was invoked twice then return null.
      */
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test
     public void whenLengthIsTwoThenTwiceNextThrow() {
-        EvenIterator<Integer> it = new EvenIterator<>(new Integer[]{1, 3});
+        EvenIterator it = new EvenIterator(new Integer[]{2});
         it.next();
-        it.next();
+        assertNull(it.next());
     }
 
     /**
@@ -72,10 +72,10 @@ public class EvenIteratorTest {
      * then next() should return first, third, fifth.
      */
     @Test
-    public void whenLengthSixThenNextReturnelements() {
-        EvenIterator<Integer> it = new EvenIterator<>(new Integer[]{1, 3, 5, 7, 10, 15});
-        int[] expected = new int[]{1, 5, 10};
-        int[] actual = new int[3];
+    public void whenLengthSixThenNextReturnElements() {
+        EvenIterator it = new EvenIterator(new Integer[]{2, 3, 4, 7, 6, 15});
+        Integer[] expected = new Integer[]{2, 4, 6};
+        Integer[] actual = new Integer[3];
         actual[0] = it.next();
         actual[1] = it.next();
         actual[2] = it.next();
