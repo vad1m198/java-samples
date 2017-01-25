@@ -32,7 +32,7 @@ public class SimpleArraySet<T> implements SimpleSet<T> {
      * its load factor is greater then 0.75.
      */
     private void resize() {
-        if ((float) size / this.objects.length >= LOAD_FACTOR) {
+        if ((float) this.objects.length / size <= LOAD_FACTOR) {
             this.objects = Arrays.copyOf(this.objects, this.objects.length * 2);
         }
     }
