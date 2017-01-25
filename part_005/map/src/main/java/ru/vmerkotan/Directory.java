@@ -102,8 +102,10 @@ public class Directory<K, V> implements Iterator<Directory.DirEntry<K, V>> {
         Node<K, V> prev = null;
             while (node != null) {
                 if (node.key.equals(key)) {
-                    if (prev == null) {
+                    if (prev == null && node.next == null) {
                         this.objects[cellToSearch] = null;
+                    } else if (prev == null) {
+                        this.objects[cellToSearch] = node.next;
                     } else {
                         prev.next = node.next;
                     }
