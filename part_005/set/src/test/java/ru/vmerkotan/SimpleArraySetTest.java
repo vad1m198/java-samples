@@ -29,10 +29,13 @@ public class SimpleArraySetTest {
     @Test
     public void whenContainsThenNextShouldReturnFirstElement() {
         SimpleArraySet<String> set = new SimpleArraySet<>();
-        set.add("Test");
-        set.add("Test1");
-        assertThat(set.next(), is("Test"));
+        String test1 = "Test1";
+        String test = "Test";
+        set.add(test);
+        set.add(test1);
+
         assertThat(set.next(), is("Test1"));
+        assertThat(set.next(), is("Test"));
         assertFalse(set.hasNext());
     }
 
