@@ -13,10 +13,6 @@ public class SimpleArraySet<T> implements SimpleSet<T> {
      * Array to hold container items.
      */
     private Node[] objects = new Node[10];
-    /**
-     * Current counts occupied cells number in internal objects array.
-     */
-    private int occupiedCellsAmount;
 
     /**
      * Counts size.
@@ -36,7 +32,7 @@ public class SimpleArraySet<T> implements SimpleSet<T> {
      * its load factor is greater then 0.75.
      */
     private void resize() {
-        if ((float) occupiedCellsAmount / this.objects.length >= LOAD_FACTOR) {
+        if ((float) size / this.objects.length >= LOAD_FACTOR) {
             this.objects = Arrays.copyOf(this.objects, this.objects.length * 2);
         }
     }
@@ -51,7 +47,6 @@ public class SimpleArraySet<T> implements SimpleSet<T> {
         Node node = this.objects[cellIndexToAdd];
         if (node == null) {
             this.objects[cellIndexToAdd] = new Node<>(t, null, null);
-            occupiedCellsAmount++;
             size++;
         } else {
             if (node.key.equals(t)) {
