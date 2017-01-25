@@ -3,10 +3,10 @@ package ru.vmerkotan;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for Directory class.
@@ -68,5 +68,17 @@ public class DirectoryTest {
         Directory.DirEntry entry = dir.next();
         assertThat(entry.getValue(), is("test"));
         assertThat(entry.getKey(), is("1"));
+    }
+
+    /**
+     * test get method.
+     */
+    @Test
+    public void whenOverlapInitialLOadFactorThanWorksProperly() {
+        Directory<String, String> dir = new Directory<>();
+        for (int i = 0; i < 25; i++) {
+            dir.insert("" + i, "test" + i);
+        }
+        assertThat(dir.get("24"), is("test24"));
     }
 }

@@ -1,240 +1,215 @@
 package ru.vmerkotan;
 
-
 import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * Directory class represent a simple key-value data structure.
+ * SimpleArraySet class is a simple set implementation
+ * based on arrays.
  *
- * @param <K>   Generic key type.
- * @param <V>   Generic value type.
+ * @param <K> generic type.
+ * @param <V> generic type.
  */
 public class Directory<K, V> implements Iterator<Directory.DirEntry<K, V>> {
     /**
-     * Holds all added objects.
+     * Array to hold container items.
      */
-    private Entry<K, V>[] arr = new Entry[10];
+    private Node<K, V>[] objects = new Node[16];
+
     /**
-     * Current pointer to return.
-     */
-    private Entry<K, V> current;
-    /**
-     * Next pointer to return.
-     */
-    private Entry<K, V> next;
-    /**
-     * Counts iterators.
-     */
-    private int counter;
-    /**
-     * size of the container.
+     * Counts size.
      */
     private int size;
     /**
-     * Load factor.
+     * Default load factor.
      */
     private static final float LOAD_FACTOR = 0.75f;
     /**
-     * How many cells are occupied in arr array.
+     * Node to hold value for nex() method.
      */
-    private int occupiedCells;
+    private Node<K, V> nodeToReturn;
 
-    @Override
-    public boolean hasNext() {
-        if (current == null && size > 0) {
-            for (int i = 0; i < this.arr.length; i++) {
-                if (this.arr[i] != null) {
-                    next = this.arr[i];
-                    counter = i;
-                    break;
-                }
-            }
+    /**
+     * increase private array size if
+     * its load factor is greater then 0.75.
+     */
+    private void resize() {
+        if ((float) this.objects.length / size <= LOAD_FACTOR) {
+            this.objects = Arrays.copyOf(this.objects, this.objects.length * 2);
         }
-        return next != null;
-    }
-
-    @Override
-    public Directory.DirEntry<K, V> next() {
-        if (hasNext()) {
-            Entry<K, V> toReturn = next;
-            current = next;
-            if (current == null) {
-                for (int i = counter; i < this.arr.length; i++) {
-                    if (this.arr[i] != null) {
-                        next = this.arr[i];
-                        counter = i;
-                        break;
-                    }
-                }
-            }
-            return toReturn;
-        } else {
-            return null;
-        }
-
     }
 
     /**
-     * Inserts value by Key in container.
+     * Inserts new value by key.
      *
-     * @param key   Key to add.
-     * @param value Value to holds.
-     * @return      True if insert was successful.
+     * @param key       key value.
+     * @param value     value.
+     * @return          true if value was added. If value was overridden return false.
      */
-    boolean insert(K key, V value) {
-        boolean result = false;
-        boolean wasFound = false;
+    public boolean insert(K key, V value) {
         resize();
-        Entry<K, V> entryToAdd = new Entry<>(key, value, null);
-        int cellToAdd = key == null ? 0 : Math.abs(key.hashCode()) % this.arr.length;
-        Entry<K, V> entry = this.arr[cellToAdd];
-        if (entry == null) {
-            this.arr[cellToAdd] = entryToAdd;
-            occupiedCells++;
+        int cellIndexToAdd = Math.abs(key.hashCode()) % this.objects.length;
+        Node<K, V> node = this.objects[cellIndexToAdd];
+
+        if (node == null) {
+            this.objects[cellIndexToAdd] = new Node<>(key, value, null);
             size++;
-            result = true;
+            return true;
         } else {
-             do {
-                if (entry.getKey().equals(key)) {
-                    entry.setValue(value);
-                    wasFound = true;
-                    break;
+            Node<K, V> prev = null;
+            while (node != null) {
+                if (node.key.equals(key)) {
+                    node.value = value;
+                    return false;
                 }
-                if (entry.next != null) {
-                    entry = entry.next;
-                } else {
-                    break;
-                }
-            } while (true);
-
-            if (!wasFound) {
-                entry.next = entryToAdd;
-                size++;
-                result = true;
+                prev = node;
+                node = node.next;
             }
+            prev.next = new Node<>(key, value, null);
+            size++;
+            return true;
         }
-
-        return result;
-    }
-
-    /**
-     * Removes instance from container by key.
-     *
-     * @param key   Key to remove.
-     * @return      true if key was removed.
-     */
-    boolean delete(K key) {
-        boolean result = false;
-        int cellToSearch = key == null ? 0 : Math.abs(key.hashCode()) % this.arr.length;
-        Entry<K, V> entry = this.arr[cellToSearch];
-        if (entry != null) {
-            if (entry.getKey().equals(key)) {
-                this.arr[cellToSearch] = null;
-                result = true;
-                size--;
-            } else {
-                while (entry.next != null) {
-                    Entry<K, V> entryNext = entry.next;
-                    if (entryNext.equals(key)) {
-                        entry.next = null;
-                        result = true;
-                        size--;
-                    } else {
-                        entry = entry.next;
-                    }
-                }
-            }
-        }
-        return result;
     }
 
     /**
      * Returns value by passed key.
      *
-     * @param key   Key to insert.
-     * @return      value by key.
+     * @param key   Key to look for.
+     * @return      value.
      */
     V get(K key) {
-        int cellToGet = key == null ? 0 : Math.abs(key.hashCode()) % this.arr.length;
-        Entry<K, V> entry = this.arr[cellToGet];
-        if (entry == null) {
-            return null;
-        }
-        do {
-            if (entry.getKey().equals(key)) {
-                return entry.getValue();
+        int cellToSearch = Math.abs(key.hashCode()) % this.objects.length;
+        Node<K, V> node = this.objects[cellToSearch];
+            while (node != null) {
+                if (node.key.equals(key)) {
+                    return node.value;
+                }
+                node  = node.next;
             }
-            if (entry.next != null) {
-                entry = entry.next;
-            } else {
-                break;
-            }
-        } while (true);
         return null;
     }
 
     /**
-     * Resize internal array based on load factor.
+     * Removes value from the map.
+     *
+     * @param key   Key to search value for.
+     * @return      true if value was founded else false.
      */
-    private void resize() {
-        if ((float) occupiedCells / this.arr.length >= LOAD_FACTOR) {
-            this.arr = Arrays.copyOf(this.arr, this.arr.length * 2);
+    boolean delete(K key) {
+        int cellToSearch = Math.abs(key.hashCode()) % this.objects.length;
+
+        Node<K, V> node = this.objects[cellToSearch];
+        Node<K, V> prev = null;
+            while (node != null) {
+                if (node.key.equals(key)) {
+                    if (prev == null) {
+                        this.objects[cellToSearch] = null;
+                    } else {
+                        prev.next = node.next;
+                    }
+                    size--;
+                    return true;
+                }
+                prev = node;
+                node = node.next;
+            }
+        return false;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if (nodeToReturn == null && size > 0) {
+            return true;
+        } else if (nodeToReturn == null && size == 0) {
+            return  false;
         }
+
+        if (nodeToReturn.next != null) {
+            return true;
+        } else {
+            for (int i = nodeToReturn.key.hashCode(); i < this.objects.length; i++) {
+                if (objects[i] != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+    @Override
+    public Directory.DirEntry<K, V> next() {
+
+        if (nodeToReturn == null && size > 0) {
+            for (int i = 0; i < this.objects.length; i++) {
+                if (this.objects[i] != null) {
+                    this.nodeToReturn = this.objects[i];
+                    return nodeToReturn;
+                }
+            }
+        } else if (nodeToReturn == null && size == 0) {
+            return null;
+        }
+
+        if (nodeToReturn.next != null) {
+            this.nodeToReturn = this.nodeToReturn.next;
+            return this.nodeToReturn;
+        } else {
+            for (int i = (Math.abs(this.nodeToReturn.key.hashCode()) % this.objects.length) + 1; i < this.objects.length; i++) {
+                if (this.objects[i] != null) {
+                    this.nodeToReturn = this.objects[i];
+                    return nodeToReturn;
+                }
+            }
+        }
+        return null;
     }
 
     /**
-     * Class to hold Key value pairs.
+     * Internal class to hold links.
      *
-     * @param <K>   key generic type.
-     * @param <V>   value generic type.
+     * @param <M>   generic type for key.
+     * @param <E>   generic type for value.
      */
-    private class Entry<K, V> implements DirEntry<K, V> {
+    private class Node<M, E> implements DirEntry<M, E> {
         /**
-         * key.
+         * Current item.
          */
-        private K key;
+        private E value;
         /**
-         * Value.
+         * Current item key.
          */
-        private V value;
+        private M key;
         /**
-         * Link to next instance.
+         * Link to next item.
          */
-        private Entry<K, V> next;
+        private Node<M, E> next;
 
         /**
-         * Creates new Entry instance.
+         * Creates new Node instance.
          *
-         * @param key   Key to add.
-         * @param value Value to add.
-         * @param next  Link to next instance.
+         * @param key       key value
+         * @param element   element value
+         * @param next      link to next Node
          */
-        Entry(K key, V value, Entry<K, V> next) {
+        Node(M key, E element, Node<M, E> next) {
+            this.value = element;
             this.key = key;
-            this.value = value;
             this.next = next;
         }
 
         @Override
-        public K getKey() {
+        public M getKey() {
             return this.key;
         }
 
         @Override
-        public V getValue() {
+        public E getValue() {
             return this.value;
         }
-
-        /**
-         * Sets passed value.
-         *
-         * @param value value to set.
-         */
-        void setValue(V value) {
-            this.value = value;
-        }
     }
+
 
     /**
      * Interface to represents entry in key value structures.
@@ -256,6 +231,7 @@ public class Directory<K, V> implements Iterator<Directory.DirEntry<K, V>> {
          * @return  value cost.
          */
         V getValue();
-
     }
+
+
 }
