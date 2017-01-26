@@ -30,6 +30,7 @@
 		<module>part_003</module>
 		<module>part_004</module>
 		<module>part_005</module>
+		<module>part_006</module>
 	</modules>
 	
 	<build>
