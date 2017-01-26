@@ -15,6 +15,7 @@
 		<module>list</module>
 		<module>set</module>
 		<module>map</module>
+		<module>tree</module>
 		<module>order-book</module>
 		<module>task-reports</module>
 	</modules>
