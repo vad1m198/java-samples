@@ -1,0 +1,32 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>	
+	<artifactId>part_007</artifactId>
+	<groupId>part_007</groupId>
+	<packaging>pom</packaging>
+	<version>1.0</version>
+	<parent>
+		<groupId>ru.vmerkotan</groupId>
+		<artifactId>java-samples</artifactId>
+		<version>1.0</version>
+	</parent>
+	<modules>
+		<module>threads</module>		
+	</modules>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+		<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<compilerVersion>1.8</compilerVersion>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
