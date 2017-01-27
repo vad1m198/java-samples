@@ -10,7 +10,8 @@
 		<version>1.0</version>
 	</parent>
 	<modules>
-		<module>threads</module>		
+		<module>threads</module>
+		<module>jmm</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
