@@ -19,10 +19,11 @@ public class UserStorageTest {
         storage.add(u2);
 
         Thread t1 = new Thread(() -> storage.transferMoney(0, 1, 100));
-        Thread t2 = new Thread(() -> storage.transferMoney(0, 1, 100));
         Thread t3 = new Thread(() -> storage.transferMoney(0, 1, 100));
-        Thread t4 = new Thread(() -> storage.transferMoney(0, 1, 100));
+        Thread t2 = new Thread(() -> storage.transferMoney(1, 0, 100));
         Thread t5 = new Thread(() -> storage.transferMoney(0, 1, 100));
+        Thread t4 = new Thread(() -> storage.transferMoney(1, 0, 100));
+
         t1.start();
         t2.start();
         t3.start();
@@ -35,8 +36,8 @@ public class UserStorageTest {
         t4.join();
         t5.join();
 
-        assertThat(storage.get(0).getAmount(), is(500));
-        assertThat(storage.get(1).getAmount(), is(1500));
+        assertThat(storage.get(0).getAmount(), is(900));
+        assertThat(storage.get(1).getAmount(), is(1100));
     }
 
 
