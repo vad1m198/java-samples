@@ -7,17 +7,16 @@ import org.junit.Test;
  *
  * Created by vmerkotan on 1/27/2017.
  */
-public class SimpleRunnableTest {
+public class SimpleWritableRunnableTest {
 
     @Test
-    public void countWhiteSpacesAndSomeChars() throws InterruptedException {
+    public void countWhiteSpacesAndSomeChars() {
         String testTxt = "Some text to test work of the program on";
         SimpleWritableRunnable spaces = new SimpleWritableRunnable(testTxt, ' ');
         SimpleWritableRunnable chars = new SimpleWritableRunnable(testTxt, 't');
 
         (new Thread(spaces)).start();
         (new Thread(chars)).start();
-        Thread.sleep(1000);
 
     }
 
