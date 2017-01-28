@@ -43,6 +43,7 @@ public class ProducerConsumerTest {
         public void run() {
                 for(int i = 0; i < 100; i++) {
                 try {
+//                    Thread.sleep(50);
                     pc.get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -62,6 +63,7 @@ public class ProducerConsumerTest {
             for(int i = 0; i < 100; i++) {
                 int tmp = random.nextInt();
                 try {
+                    Thread.sleep(random.nextInt(500));
                     pc.put(tmp);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
