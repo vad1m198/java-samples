@@ -14,6 +14,7 @@
 		<module>jmm</module>
 		<module>monitore</module>
 		<module>blocking</module>
+		<module>pool</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
