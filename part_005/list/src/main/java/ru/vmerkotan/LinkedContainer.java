@@ -94,6 +94,26 @@ public class LinkedContainer<T> implements SimpleContainer<T> {
     }
 
     /**
+     * Reverts container order
+     */
+    public void revert() {
+        Node<T> tmpFirst = first;
+        Node<T> tmpLast = last;
+
+        Node<T> current = first;
+        while(current != null) {
+            Node<T> tmp = current.next;
+            current.next = current.prev;
+            current.prev = tmp;
+            current = tmp;
+        }
+
+        first = tmpLast;
+        last = tmpFirst;
+
+    }
+
+    /**
      * Internal class to holds links.
      *
      * @param <E> generic type
